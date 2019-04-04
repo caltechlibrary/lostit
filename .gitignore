@@ -67,3 +67,7 @@ __pycache__
 
 build
 dist
+README.html
+ABOUT.html
+*.~is
+dev/installers/windows/holdit_innosetup_script.iss
