@@ -1,7 +1,7 @@
-Lost It!
+Lost It!<img width="15%" align="right" src=".graphics/missing-book.svg">
 ========
 
-When an item is discovered missing from the shelves of the Caltech Library stacks, the information needs to be recorded in the Caltech TIND server and a separate tracking spreadsheet. _Lost It!_ is a program to simplify the process of doing this.
+When an item is discovered missing from the shelves of the Caltech Library stacks, the information needs to be recorded in the Caltech TIND server as well as a tracking spreadsheet kept by the Library circulation staff. _Lost It!_ is a program to simplify the process of doing this.
 
 *Authors*:      [Michael Hucka](http://github.com/mhucka)<br>
 *Repository*:   [https://github.com/caltechlibrary/lostit](https://github.com/caltechlibrary/lostit)<br>
@@ -36,6 +36,12 @@ sudo python3 -m pip install .
 --------------------------
 
 If you find an issue, please submit it in [the GitHub issue tracker](https://github.com/caltechlibrary/lostit/issues) for this repository.
+
+
+☺︎ Acknowledgments
+-----------------------
+
+The [vector artwork](https://thenounproject.com/term/book/2349051/) of a book used as a starting point for the logo for this repository was created by [Scott Desmond](https://thenounproject.com/thezyna/) for the [Noun Project](https://thenounproject.com).  It is licensed under the Creative Commons [Attribution 3.0 Unported](https://creativecommons.org/licenses/by/3.0/deed.en) license.
 
 
 ☮︎ Copyright and license
