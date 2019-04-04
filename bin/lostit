@@ -21,7 +21,7 @@ except:
 
 # Hand over to the command line interface.
 import lostit
-from lostit.__main__ import main as main
+from holdit.__main__ import main as main
 
 if __name__ == "__main__":
     plac.call(main)
