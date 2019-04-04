@@ -1,0 +1,1458 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://opengraphprotocol.org/schema/"
+      lang="en"
+      xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="en"/>
+    <title>Holds - Caltech Library Catalog</title>
+    
+    <link rev="made" href="mailto:support@tind.io"/>
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.4/dist/css/lightgallery.min.css" type="text/css"/>
+
+    <link rel="stylesheet" href="/img/invenio.css?590a628a43715de1e58d88e8eac71e77" type="text/css"/>
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" type="text/css" href="/img/invenio-ie7.css" />
+    <![endif]-->
+    <!--[if gt IE 8]>
+      <style type="text/css">div.restrictedflag {filter:none;}</style>
+    <![endif]-->
+    <link rel="canonical" href="https://caltech.tind.io/admin2/bibcirculation/requests" />
+    <link rel="alternate" hreflang="en" href="https://caltech.tind.io/admin2/bibcirculation/requests?ln=en" />
+
+    <link rel="alternate" type="application/rss+xml" title="Caltech Library Catalog RSS"
+          href="https://caltech.tind.io/rss"/>
+    <link rel="search" type="application/opensearchdescription+xml"
+          href="https://caltech.tind.io/opensearchdescription"
+          title="Caltech Library Catalog"/>
+    <link rel="unapi-server" type="application/xml" title="unAPI" href="https://caltech.tind.io/unapi"/>
+    
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    
+    
+    
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/tind.js?1d99bb1c5a88c50c58dec0d1e5498292"></script>
+    
+    
+    <script src="/js/popup.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="/img/popup.css" />
+    <link rel="stylesheet" type="text/css" href="/img/bibcirculation.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script type="text/javascript">
+     var ajax_url = "/admin2/bibcirculation/requests";
+     var sort = "request_date";
+     var list_type = "holds";
+     $(document).on('click', '.dropdown-menu', function (e) {
+       e.stopPropagation();
+     });
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="/js/bibcirculation.js" type="text/javascript"></script>
+    
+    
+    
+  </head>
+  <body class="admin">
+    <div class="pageheader">
+      
+      <!-- replaced page header -->
+      <div class="headerbox headerlogo">
+        <div class="topleftmenu-wrapper">
+          <ul class="menu neutrallist">
+            
+          </ul>
+        </div>
+
+        <a class="menu-toggle">
+          <span class="menu-icon"><i class="fa fa-fw fa-bars"></i></span>
+        </a>
+        <ul class="menu topmenu neutrallist" style="display:none;">
+          <li class="headermoduleboxbody">
+            <a class="header"
+               href="/?ln=en">Search</a>
+          </li>
+          
+          <li class="headermoduleboxbody">
+            <div class="hassubmenu">
+              <a hreflang="en" class="header" href="https://caltech.tind.io/youraccount/display?ln=en">Personalize</a>
+              <ul class="subsubmenu"><li><a href="https://caltech.tind.io/youraccount/display?ln=en">Your account</a></li><li><a href="https://caltech.tind.io/youralerts/list?ln=en">Your alerts</a></li><li><a href="https://caltech.tind.io/yourbaskets/display?ln=en">Your baskets</a></li><li><a href="https://caltech.tind.io/yourcomments?ln=en">Your comments</a></li><li><a href="https://caltech.tind.io/yourgroups/display?ln=en">Your groups</a></li><li><a href="https://caltech.tind.io/yourloans/display?ln=en">Your loans</a></li><li><a href="https://caltech.tind.io/yourmessages/display?ln=en">Your messages</a></li><li><a href="https://caltech.tind.io/youralerts/display?ln=en">Your searches</a></li></ul><div class="subsubmenu-wrapper"><ul class="subsubmenu"><li><a href="https://caltech.tind.io/youraccount/display?ln=en">Your account</a></li><li><a href="https://caltech.tind.io/youralerts/list?ln=en">Your alerts</a></li><li><a href="https://caltech.tind.io/yourbaskets/display?ln=en">Your baskets</a></li><li><a href="https://caltech.tind.io/yourcomments?ln=en">Your comments</a></li><li><a href="https://caltech.tind.io/yourgroups/display?ln=en">Your groups</a></li><li><a href="https://caltech.tind.io/yourloans/display?ln=en">Your loans</a></li><li><a href="https://caltech.tind.io/yourmessages/display?ln=en">Your messages</a></li><li><a href="https://caltech.tind.io/youralerts/display?ln=en">Your searches</a></li></ul></div></div>
+          </li>
+          
+          <li class="headermoduleboxbody">
+            <a class="header"
+               href="/help/?ln=en">Help</a>
+          </li>
+          
+          
+          <li class="headermoduleboxbodyselected scroll-depth-1" id="admin-menu-wrapper">
+            
+            
+            <div class="hassubmenu on">
+              <a hreflang="en"
+                 class="headerselected"
+                 href="https://caltech.tind.io/youraccount/youradminactivities?ln=en">
+                Administration
+              </a>
+              <ul class="subsubmenu">
+                
+
+                
+                
+                <li>
+                  <a href="https://caltech.tind.io/admin/bibcirculation/bibcirculationadmin.py?ln=en">Circulation</a>
+                </li>
+                
+                
+                <li>
+                  <a href="https://caltech.tind.io/lists/?ln=en">Global Lists</a>
+                </li>
+                
+                
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/self_checkout?ln=en">Legacy: Self Checkout</a>
+                </li>
+                
+                
+              </ul>
+
+              
+              
+            </div>
+            
+
+          </li>
+          
+          
+          
+          
+          <li class="headermoduleboxbody">
+            <a class="header" href="http://library.caltech.edu/about/contactus.php">
+              Contact Us
+            </a>
+          </li>
+          
+          
+          
+        </ul>
+        <div class="userinfoboxbody">
+          <i class="user-icon"></i>
+          <a class="userinfo account" href="https://caltech.tind.io/youraccount/display?ln=en">mhucka@caltech.edu</a><span class="separator"> :: </span><a class="userinfo logout" href="https://caltech.tind.io/youraccount/logout?ln=en">logout</a>
+        </div>
+      </div>
+      <table class="navtrailbox">
+        <tr>
+          <td class="navtrailboxbody">
+            <a href="/?ln=en" class="navtrail">Home</a> &gt; <a class="navtrail" href="https://caltech.tind.io/help/admin">Admin Area</a> &gt; <a class="navtrail" href="https://caltech.tind.io/admin2/bibcirculation/loan_on_desk_step1?ln=en">Circulation Management</a>  &gt; Holds
+          </td>
+        </tr>
+      </table>
+      <!-- end replaced page header -->
+      
+    </div>
+
+    <div class="headerboxbodylogo-wrapper">
+      
+      <div class="headerboxbodylogo scrolled">
+        <div class="logo-wrapper">
+          
+          <a class="header-link"
+             href="/?ln=en">Caltech Library Catalog</a>
+          
+        </div>
+      </div>
+    </div>
+
+
+    <!-- FOR CERTAIN SUB-PAGES, PAGEBODY and P.B.STRIPEMIDDLE SHOULD BE INCLUDED ie. "Search tips", "Advanced search" etc. -->
+    <div class="pagebody ">
+      <div class="pagebodystripemiddle">
+        
+        
+        <div class="headline_div"><h1 class="headline">Holds</h1></div>
+        
+        
+        
+        
+        
+        
+        <link rel="stylesheet" type="text/css" href="/img/bibcirculation-print.css?98fa58ebd95d9cf0061f9ad3f8bd4f27" media="print"/>
+        <div>
+          <map name="Navigation_Bar" id="cdlnav">
+            <div id="bibcircmenu" class="cdsweb">
+              <!-- <h2><a name="localNavLinks">Main navigation links:</a></h2> -->
+              <ul>
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/borrower_search_result?action=loan_on_desk_step2&ln=en">Checkout</a>
+                </li>
+
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/loan_return?ln=en">Checkin</a>
+                </li>
+
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/borrower_search_result?action=create_new_request_step1&ln=en">New hold request</a>
+                </li>
+
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/borrower_search_result?action=get_borrower_details&ln=en">Borrowers</a>
+                </li>
+
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/item_search?ln=en">Items</a>
+                </li>
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/locations?ln=en">Locations</a>
+                </li>
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/location_exceptions?ln=en">Location exceptions</a>
+                </li>
+                <li>
+                  <a data-toggle="rule-submenu">Rule management</a>
+                  <ul class="bibcirc-submenu" id="rule-submenu">
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/loan_rules">Loan rules</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/patron_types">Patron types</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/item_types">Item types</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/rules_selection">Rules selection</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="hassubmenu"><a data-toggle="loan-submenu">Lists</a>
+                  <ul class="bibcirc-submenu" id="loan-submenu">
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/loans?ln=en">Loans</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/requests?ln=en">Holds</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/loans_with_requests?ln=en">Loans with holds</a>
+                    </li>
+                  </ul>
+                </li>
+                
+                <div class="spacer"></div>
+                <li>
+                  <a data-toggle="ill-submenu">Interlibrary Loans</a>
+                  <ul class="bibcirc-submenu" id="ill-submenu">
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/ill_search?ln=en">Search: ILL history</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/register_ill_book_request?ln=en">Register ILL request: Book</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/register_ill_article_request_step1">Register ILL request: Article</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_ill_request?status=new&ln=en">ILL list: New</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_ill_request?status=requested&ln=en">ILL list: Requested
+                      </a></li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_ill_request?status=received&ln=en">ILL list: Received
+                      </a></li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_ill_request?status=on loan&ln=en">ILL list: On loan
+                      </a></li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_ill_request?status=returned&ln=en">ILL list: Returned
+                      </a></li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_ill_request?status=cancelled&ln=en">ILL list: Cancelled
+                      </a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a data-toggle="purchases-submenu">Purchases</a>
+                  <ul class="bibcirc-submenu" id="purchases-submenu">
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/register_purchase_request_step1?ln=en">Register purchase request</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_purchase?status=New&ln=en">Purchase list:
+                        New</a></li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_purchase?status=On order&ln=en">Purchase list:
+                        On order</a></li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_purchase?status=Received&ln=en">Purchase list:
+                        Received</a></li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/list_purchase?status=Cancelled&ln=en">Purchase list:
+                        Cancelled</a></li>
+                  </ul>
+                </li>
+                <div class="spacer"></div>
+                <li><a data-toggle="libraries-submenu">Libraries</a>
+                  <ul class="bibcirc-submenu" id="libraries-submenu">
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/search_library_step1?ln=en">Search</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/add_new_library_step1?ln=en">Add new library</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/update_library_info_step1?ln=en">Update library info</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a data-toggle="vendors-submenu">Vendors</a>
+                  <ul class="bibcirc-submenu" id="vendors-submenu">
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/search_vendor_step1?ln=en">Search</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/add_new_vendor_step1?ln=en">Add new vendor</a>
+                    </li>
+                    <li>
+                      <a href="https://caltech.tind.io/admin2/bibcirculation/update_vendor_info_step1?ln=en">Update vendor info</a>
+                    </li>
+                  </ul>
+                </li>
+                <div class="spacer"></div>
+                <li>
+                  <a href="https://caltech.tind.io/admin2/bibcirculation/list_templates?ln=en">Email templates</a>
+                </li>
+              </ul>
+              <div class="clear"></div>
+            </div>
+          </map>
+        </div>
+
+        <br />
+
+        <div>
+          
+          <form class='circulation_list_menu'>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Library <span id="nof_libraries" class="facet_nof"></span> <span class="caret"></span></button>
+              <ul class="facet dropdown-menu">
+                <li class="facet-search"><input type="text" data-search="libraries" placeholder="Search..."></li>
+                <li role="separator" class="divider"></li>
+                <div class="clear-facet"><strong>✕</strong>&nbsp;&nbsp;Clear selection</div>
+                <div class="dropdown-elems">
+                  <li><label class="checkboxes_exp_loan" for="library_16"><input id="library_16" type="checkbox" name="libraries" value="Annex"> Annex</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_18"><input id="library_18" type="checkbox" name="libraries" value="Archives"> Archives</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_20"><input id="library_20" type="checkbox" name="libraries" value="Cahill Astronomy Library"> Cahill Astronomy Library</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_15"><input id="library_15" type="checkbox" name="libraries" value="Dabney Humanities Library"> Dabney Humanities Library</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_17"><input id="library_17" type="checkbox" name="libraries" value="Geology Library"> Geology Library</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_21"><input id="library_21" type="checkbox" name="libraries" value="Kerckhoff"> Kerckhoff</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_1"><input id="library_1" type="checkbox" name="libraries" value="Main Library"> Main Library</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_13"><input id="library_13" type="checkbox" name="libraries" value="Millikan Library"> Millikan Library</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_24"><input id="library_24" type="checkbox" name="libraries" value="none "> none </label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_25"><input id="library_25" type="checkbox" name="libraries" value="Offsite Storage"> Offsite Storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_19"><input id="library_19" type="checkbox" name="libraries" value="Owens Valley"> Owens Valley</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_23"><input id="library_23" type="checkbox" name="libraries" value="Parsons-Gates Annex"> Parsons-Gates Annex</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_14"><input id="library_14" type="checkbox" name="libraries" value="Sherman Fairchild Library"> Sherman Fairchild Library</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="library_22"><input id="library_22" type="checkbox" name="libraries" value="World Wide Web"> World Wide Web</label></li>
+                </div>
+              </ul>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Location <span id="nof_locations" class="facet_nof"></span> <span class="caret"></span></button>
+              <ul class="facet dropdown-menu">
+                <li class="facet-search"><input type="text" data-search="locations" placeholder="Search..."></li>
+                <li role="separator" class="divider"></li>
+                <div class="clear-facet"><strong>✕</strong>&nbsp;&nbsp;Clear selection</div>
+                <div class="dropdown-elems">
+                  <li><label class="checkboxes_exp_loan" for="location_370"><input id="location_370" type="checkbox" name="locations" value="370" library="Offsite Storage"> ant - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_340"><input id="location_340" type="checkbox" name="locations" value="340" library="Archives"> ar - Archives</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_348"><input id="location_348" type="checkbox" name="locations" value="348" library="Archives"> arf - Archives folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_430"><input id="location_430" type="checkbox" name="locations" value="430" library="Archives"> arf+ - Archives oversize folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_557"><input id="location_557" type="checkbox" name="locations" value="557" library="Archives"> arr - Archives reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_345"><input id="location_345" type="checkbox" name="locations" value="345" library="Archives"> arx - Archives rare books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_361"><input id="location_361" type="checkbox" name="locations" value="361" library="Archives"> arx+ - Archives rare folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_385"><input id="location_385" type="checkbox" name="locations" value="385" library="Offsite Storage"> ax01 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_473"><input id="location_473" type="checkbox" name="locations" value="473" library="Offsite Storage"> ax02 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_400"><input id="location_400" type="checkbox" name="locations" value="400" library="Offsite Storage"> ax03 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_451"><input id="location_451" type="checkbox" name="locations" value="451" library="Offsite Storage"> ax04 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_471"><input id="location_471" type="checkbox" name="locations" value="471" library="Offsite Storage"> ax05 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_406"><input id="location_406" type="checkbox" name="locations" value="406" library="Offsite Storage"> ax06 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_390"><input id="location_390" type="checkbox" name="locations" value="390" library="Offsite Storage"> ax07 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_358"><input id="location_358" type="checkbox" name="locations" value="358" library="Offsite Storage"> ax08 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_331"><input id="location_331" type="checkbox" name="locations" value="331" library="Offsite Storage"> ax09 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_388"><input id="location_388" type="checkbox" name="locations" value="388" library="Offsite Storage"> ax10 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_436"><input id="location_436" type="checkbox" name="locations" value="436" library="Offsite Storage"> ax11 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_365"><input id="location_365" type="checkbox" name="locations" value="365" library="Offsite Storage"> ax12 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_442"><input id="location_442" type="checkbox" name="locations" value="442" library="Offsite Storage"> ax13 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_444"><input id="location_444" type="checkbox" name="locations" value="444" library="Offsite Storage"> ax14 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_379"><input id="location_379" type="checkbox" name="locations" value="379" library="Offsite Storage"> ax15 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_475"><input id="location_475" type="checkbox" name="locations" value="475" library="Offsite Storage"> ax16 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_454"><input id="location_454" type="checkbox" name="locations" value="454" library="Offsite Storage"> ax17 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_403"><input id="location_403" type="checkbox" name="locations" value="403" library="Offsite Storage"> ax18 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_383"><input id="location_383" type="checkbox" name="locations" value="383" library="Offsite Storage"> ax19 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_407"><input id="location_407" type="checkbox" name="locations" value="407" library="Offsite Storage"> ax20 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_397"><input id="location_397" type="checkbox" name="locations" value="397" library="Offsite Storage"> ax21 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_424"><input id="location_424" type="checkbox" name="locations" value="424" library="Offsite Storage"> ax22 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_377"><input id="location_377" type="checkbox" name="locations" value="377" library="Offsite Storage"> ax23 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_438"><input id="location_438" type="checkbox" name="locations" value="438" library="Offsite Storage"> ax24 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_334"><input id="location_334" type="checkbox" name="locations" value="334" library="Offsite Storage"> ax25 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_411"><input id="location_411" type="checkbox" name="locations" value="411" library="Offsite Storage"> ax26 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_435"><input id="location_435" type="checkbox" name="locations" value="435" library="Offsite Storage"> ax27 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_356"><input id="location_356" type="checkbox" name="locations" value="356" library="Offsite Storage"> ax28 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_421"><input id="location_421" type="checkbox" name="locations" value="421" library="Offsite Storage"> ax29 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_373"><input id="location_373" type="checkbox" name="locations" value="373" library="Offsite Storage"> ax30 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_362"><input id="location_362" type="checkbox" name="locations" value="362" library="Offsite Storage"> ax31 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_347"><input id="location_347" type="checkbox" name="locations" value="347" library="Offsite Storage"> ax38 - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_649"><input id="location_649" type="checkbox" name="locations" value="649" library="Cahill Astronomy Library"> ca - Cahill</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_355"><input id="location_355" type="checkbox" name="locations" value="355" library="Cahill Astronomy Library"> caf - Cahill folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_376"><input id="location_376" type="checkbox" name="locations" value="376" library="Cahill Astronomy Library"> caff - Cahill oversize</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_513"><input id="location_513" type="checkbox" name="locations" value="513" library="Cahill Astronomy Library"> caj - Cahill journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_360"><input id="location_360" type="checkbox" name="locations" value="360" library="Cahill Astronomy Library"> cam - Cahill books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_453"><input id="location_453" type="checkbox" name="locations" value="453" library="Cahill Astronomy Library"> cao - Cahill office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_666"><input id="location_666" type="checkbox" name="locations" value="666" library="Cahill Astronomy Library"> car - Cahill reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_694"><input id="location_694" type="checkbox" name="locations" value="694" library="Cahill Astronomy Library"> cav - Cahill reserves</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_664"><input id="location_664" type="checkbox" name="locations" value="664" library="Millikan Library"> clso - CLS NT Network</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_698"><input id="location_698" type="checkbox" name="locations" value="698" library="Sherman Fairchild Library"> cr01 - Course Reserves 01</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_701"><input id="location_701" type="checkbox" name="locations" value="701" library="Geology Library"> crgeoc - Geology Circ Reserve</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_422"><input id="location_422" type="checkbox" name="locations" value="422" library="Dabney Humanities Library"> da - Dabney</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_394"><input id="location_394" type="checkbox" name="locations" value="394" library="Dabney Humanities Library"> daat - Dabney atlas case</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_582"><input id="location_582" type="checkbox" name="locations" value="582" library="Dabney Humanities Library"> daav - Dabney video collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_357"><input id="location_357" type="checkbox" name="locations" value="357" library="Dabney Humanities Library"> dabf - Dabney folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_366"><input id="location_366" type="checkbox" name="locations" value="366" library="Dabney Humanities Library"> dabff - Dabney oversized</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_327"><input id="location_327" type="checkbox" name="locations" value="327" library="Dabney Humanities Library"> dabm - Dabney basement books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_531"><input id="location_531" type="checkbox" name="locations" value="531" library="Dabney Humanities Library"> daj - Dabney journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_590"><input id="location_590" type="checkbox" name="locations" value="590" library="Dabney Humanities Library"> damu - Dabney audio collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_688"><input id="location_688" type="checkbox" name="locations" value="688" library="Dabney Humanities Library"> dan - Dabney new books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_605"><input id="location_605" type="checkbox" name="locations" value="605" library="Dabney Humanities Library"> danp - Dabney newspapers</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_502"><input id="location_502" type="checkbox" name="locations" value="502" library="Dabney Humanities Library"> daqr - Dabney quick reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_339"><input id="location_339" type="checkbox" name="locations" value="339" library="Dabney Humanities Library"> dar - Dabney reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_396"><input id="location_396" type="checkbox" name="locations" value="396" library="Dabney Humanities Library"> darf - Dabney reference folio</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_552"><input id="location_552" type="checkbox" name="locations" value="552" library="Dabney Humanities Library"> darff - Dabney reference oversize</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_677"><input id="location_677" type="checkbox" name="locations" value="677" library="Dabney Humanities Library"> datp - Dabney tape cabinet</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_659"><input id="location_659" type="checkbox" name="locations" value="659" library="Dabney Humanities Library"> dav - Dabney reserves</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_643"><input id="location_643" type="checkbox" name="locations" value="643" library="Millikan Library"> doc - Government documents</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_683"><input id="location_683" type="checkbox" name="locations" value="683" library="Sherman Fairchild Library"> eread - Electronic reader</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_601"><input id="location_601" type="checkbox" name="locations" value="601" library="Parsons-Gates Annex"> ga - Gates Annex</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_332"><input id="location_332" type="checkbox" name="locations" value="332" library="Geology Library"> ge - Geology</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_693"><input id="location_693" type="checkbox" name="locations" value="693" library="Geology Library"> gea2 - Geology A-2</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_483"><input id="location_483" type="checkbox" name="locations" value="483" library="Geology Library"> gea3 - Geology A-3</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_549"><input id="location_549" type="checkbox" name="locations" value="549" library="Geology Library"> gea4 - Geology A-4</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_527"><input id="location_527" type="checkbox" name="locations" value="527" library="Geology Library"> gea7 - Geology A-7</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_642"><input id="location_642" type="checkbox" name="locations" value="642" library="Geology Library"> gea8 - Geology A-8</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_646"><input id="location_646" type="checkbox" name="locations" value="646" library="Geology Library"> gea9 - Geology A-9</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_548"><input id="location_548" type="checkbox" name="locations" value="548" library="Geology Library"> geb10 - Geology B-10</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_626"><input id="location_626" type="checkbox" name="locations" value="626" library="Geology Library"> geb15 - Geology B-15</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_608"><input id="location_608" type="checkbox" name="locations" value="608" library="Geology Library"> geb19 - Geology B-19</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_512"><input id="location_512" type="checkbox" name="locations" value="512" library="Geology Library"> geb20 - Geology B-20</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_542"><input id="location_542" type="checkbox" name="locations" value="542" library="Geology Library"> geb21 - Geology B-21</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_610"><input id="location_610" type="checkbox" name="locations" value="610" library="Geology Library"> geb22 - Geology B-22</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_419"><input id="location_419" type="checkbox" name="locations" value="419" library="Geology Library"> geb23 - Geology B-23</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_596"><input id="location_596" type="checkbox" name="locations" value="596" library="Geology Library"> geb24 - Geology B-24</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_468"><input id="location_468" type="checkbox" name="locations" value="468" library="Geology Library"> geb25 - Geology B-25</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_460"><input id="location_460" type="checkbox" name="locations" value="460" library="Geology Library"> geb26 - Geology B-26</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_455"><input id="location_455" type="checkbox" name="locations" value="455" library="Geology Library"> geb27 - Geology B-27</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_440"><input id="location_440" type="checkbox" name="locations" value="440" library="Geology Library"> geb28 - Geology B-28</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_507"><input id="location_507" type="checkbox" name="locations" value="507" library="Geology Library"> geb29 - Geology B-29</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_482"><input id="location_482" type="checkbox" name="locations" value="482" library="Geology Library"> geb30 - Geology B-30</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_458"><input id="location_458" type="checkbox" name="locations" value="458" library="Geology Library"> geb31 - Geology B-31</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_501"><input id="location_501" type="checkbox" name="locations" value="501" library="Geology Library"> geb32 - Geology B-32</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_459"><input id="location_459" type="checkbox" name="locations" value="459" library="Geology Library"> geb34 - Geology B-34</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_532"><input id="location_532" type="checkbox" name="locations" value="532" library="Geology Library"> geb35 - Geology B-35</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_607"><input id="location_607" type="checkbox" name="locations" value="607" library="Geology Library"> geb36 - Geology B-36</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_635"><input id="location_635" type="checkbox" name="locations" value="635" library="Geology Library"> geb37 - Geology B-37</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_479"><input id="location_479" type="checkbox" name="locations" value="479" library="Geology Library"> geb38 - Geology B-38</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_628"><input id="location_628" type="checkbox" name="locations" value="628" library="Geology Library"> geb39 - Geology B-39</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_448"><input id="location_448" type="checkbox" name="locations" value="448" library="Geology Library"> geb40 - Geology B-40</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_580"><input id="location_580" type="checkbox" name="locations" value="580" library="Geology Library"> geb41 - Geology B-41</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_495"><input id="location_495" type="checkbox" name="locations" value="495" library="Geology Library"> geb42 - Geology B-42</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_516"><input id="location_516" type="checkbox" name="locations" value="516" library="Geology Library"> geb43 - Geology B-43</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_535"><input id="location_535" type="checkbox" name="locations" value="535" library="Geology Library"> geb44 - Geology B-44</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_480"><input id="location_480" type="checkbox" name="locations" value="480" library="Geology Library"> geb45 - Geology B-45</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_425"><input id="location_425" type="checkbox" name="locations" value="425" library="Geology Library"> geb46 - Geology B-46</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_545"><input id="location_545" type="checkbox" name="locations" value="545" library="Geology Library"> geb47 - Geology B-47</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_517"><input id="location_517" type="checkbox" name="locations" value="517" library="Geology Library"> geb48 - Geology B-48</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_518"><input id="location_518" type="checkbox" name="locations" value="518" library="Geology Library"> geb49 - Geology B-49</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_577"><input id="location_577" type="checkbox" name="locations" value="577" library="Geology Library"> geb5 - Geology B-5</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_374"><input id="location_374" type="checkbox" name="locations" value="374" library="Geology Library"> geb50 - Geology B-50</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_414"><input id="location_414" type="checkbox" name="locations" value="414" library="Geology Library"> geb51 - Geology B-51</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_457"><input id="location_457" type="checkbox" name="locations" value="457" library="Geology Library"> geb52 - Geology B-52</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_364"><input id="location_364" type="checkbox" name="locations" value="364" library="Geology Library"> geb53 - Geology B-53</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_441"><input id="location_441" type="checkbox" name="locations" value="441" library="Geology Library"> geb54 - Geology B-54</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_604"><input id="location_604" type="checkbox" name="locations" value="604" library="Geology Library"> geb55 - Geology B-55</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_567"><input id="location_567" type="checkbox" name="locations" value="567" library="Geology Library"> geb56 - Geology B-56</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_568"><input id="location_568" type="checkbox" name="locations" value="568" library="Geology Library"> geb57 - Geology B-57</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_481"><input id="location_481" type="checkbox" name="locations" value="481" library="Geology Library"> geb58 - Geology B-58</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_395"><input id="location_395" type="checkbox" name="locations" value="395" library="Geology Library"> geb59 - Geology B-59</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_623"><input id="location_623" type="checkbox" name="locations" value="623" library="Geology Library"> geb5a - Geology B-5a</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_583"><input id="location_583" type="checkbox" name="locations" value="583" library="Geology Library"> geb6 - Geology B-6</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_528"><input id="location_528" type="checkbox" name="locations" value="528" library="Geology Library"> geb60 - Geology B-60</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_524"><input id="location_524" type="checkbox" name="locations" value="524" library="Geology Library"> geb61 - Geology B-61</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_389"><input id="location_389" type="checkbox" name="locations" value="389" library="Geology Library"> geb62 - Geology B-62</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_470"><input id="location_470" type="checkbox" name="locations" value="470" library="Geology Library"> geb63 - Geology B-63</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_445"><input id="location_445" type="checkbox" name="locations" value="445" library="Geology Library"> geb64 - Geology B-64</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_616"><input id="location_616" type="checkbox" name="locations" value="616" library="Geology Library"> geb65 - Geology B-65</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_629"><input id="location_629" type="checkbox" name="locations" value="629" library="Geology Library"> geb66 - Geology B-66</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_352"><input id="location_352" type="checkbox" name="locations" value="352" library="Geology Library"> geb68 - Geology B-68</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_600"><input id="location_600" type="checkbox" name="locations" value="600" library="Geology Library"> geb7 - Geology B-7</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_404"><input id="location_404" type="checkbox" name="locations" value="404" library="Geology Library"> geb8a - Geology B8A-8a</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_476"><input id="location_476" type="checkbox" name="locations" value="476" library="Geology Library"> geb9 - Geology B-9</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_526"><input id="location_526" type="checkbox" name="locations" value="526" library="Geology Library"> ged1 - Geology D-1</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_602"><input id="location_602" type="checkbox" name="locations" value="602" library="Geology Library"> ged10 - Geology D-10</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_631"><input id="location_631" type="checkbox" name="locations" value="631" library="Geology Library"> ged11 - Geology D-11</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_571"><input id="location_571" type="checkbox" name="locations" value="571" library="Geology Library"> ged12 - Geology D-12</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_614"><input id="location_614" type="checkbox" name="locations" value="614" library="Geology Library"> ged13 - Geology D-13</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_624"><input id="location_624" type="checkbox" name="locations" value="624" library="Geology Library"> ged14 - Geology D-14</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_499"><input id="location_499" type="checkbox" name="locations" value="499" library="Geology Library"> ged15 - Geology D-15</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_515"><input id="location_515" type="checkbox" name="locations" value="515" library="Geology Library"> ged16 - Geology D-16</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_510"><input id="location_510" type="checkbox" name="locations" value="510" library="Geology Library"> ged17 - Geology D-17</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_417"><input id="location_417" type="checkbox" name="locations" value="417" library="Geology Library"> ged18 - Geology D-18</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_550"><input id="location_550" type="checkbox" name="locations" value="550" library="Geology Library"> ged19 - Geology D-19</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_543"><input id="location_543" type="checkbox" name="locations" value="543" library="Geology Library"> ged2 - Geology D-2</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_539"><input id="location_539" type="checkbox" name="locations" value="539" library="Geology Library"> ged20 - Geology D-20</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_530"><input id="location_530" type="checkbox" name="locations" value="530" library="Geology Library"> ged21 - Geology D-21</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_611"><input id="location_611" type="checkbox" name="locations" value="611" library="Geology Library"> ged22 - Geology D-22</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_573"><input id="location_573" type="checkbox" name="locations" value="573" library="Geology Library"> ged23 - Geology D-23</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_672"><input id="location_672" type="checkbox" name="locations" value="672" library="Geology Library"> ged3 - Geology D-3</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_634"><input id="location_634" type="checkbox" name="locations" value="634" library="Geology Library"> ged4 - Geology D-4</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_639"><input id="location_639" type="checkbox" name="locations" value="639" library="Geology Library"> ged5 - Geology D-5</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_546"><input id="location_546" type="checkbox" name="locations" value="546" library="Geology Library"> ged8 - Geology D-8</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_633"><input id="location_633" type="checkbox" name="locations" value="633" library="Geology Library"> ged9 - Geology D-9</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_432"><input id="location_432" type="checkbox" name="locations" value="432" library="Geology Library"> gee1 - Geology E-1</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_463"><input id="location_463" type="checkbox" name="locations" value="463" library="Geology Library"> gee10 - Geology E-10</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_505"><input id="location_505" type="checkbox" name="locations" value="505" library="Geology Library"> gee11 - Geology E-11</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_637"><input id="location_637" type="checkbox" name="locations" value="637" library="Geology Library"> gee12 - Geology E-12</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_412"><input id="location_412" type="checkbox" name="locations" value="412" library="Geology Library"> gee13 - Geology E-13</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_564"><input id="location_564" type="checkbox" name="locations" value="564" library="Geology Library"> gee14 - Geology E-14</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_551"><input id="location_551" type="checkbox" name="locations" value="551" library="Geology Library"> gee15 - Geology E-15</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_585"><input id="location_585" type="checkbox" name="locations" value="585" library="Geology Library"> gee16 - Geology E-16</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_627"><input id="location_627" type="checkbox" name="locations" value="627" library="Geology Library"> gee17 - Geology E-17</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_586"><input id="location_586" type="checkbox" name="locations" value="586" library="Geology Library"> gee18 - Geology E-18</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_621"><input id="location_621" type="checkbox" name="locations" value="621" library="Geology Library"> gee19 - Geology E-19</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_508"><input id="location_508" type="checkbox" name="locations" value="508" library="Geology Library"> gee2 - Geology E-2</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_569"><input id="location_569" type="checkbox" name="locations" value="569" library="Geology Library"> gee20 - Geology E-20</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_437"><input id="location_437" type="checkbox" name="locations" value="437" library="Geology Library"> gee21 - Geology E-21</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_536"><input id="location_536" type="checkbox" name="locations" value="536" library="Geology Library"> gee22 - Geology E-22</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_537"><input id="location_537" type="checkbox" name="locations" value="537" library="Geology Library"> gee23 - Geology E-23</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_668"><input id="location_668" type="checkbox" name="locations" value="668" library="Geology Library"> gee24 - Geology E-24</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_636"><input id="location_636" type="checkbox" name="locations" value="636" library="Geology Library"> gee25 - Geology E-25</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_648"><input id="location_648" type="checkbox" name="locations" value="648" library="Geology Library"> gee26 - Geology E-26</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_630"><input id="location_630" type="checkbox" name="locations" value="630" library="Geology Library"> gee28 - Geology E-28</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_638"><input id="location_638" type="checkbox" name="locations" value="638" library="Geology Library"> gee29 - Geology E-29</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_615"><input id="location_615" type="checkbox" name="locations" value="615" library="Geology Library"> gee3 - Geology E-3</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_558"><input id="location_558" type="checkbox" name="locations" value="558" library="Geology Library"> gee4 - Geology E-4</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_618"><input id="location_618" type="checkbox" name="locations" value="618" library="Geology Library"> gee5 - Geology E-5</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_560"><input id="location_560" type="checkbox" name="locations" value="560" library="Geology Library"> gee6 - Geology E-6</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_465"><input id="location_465" type="checkbox" name="locations" value="465" library="Geology Library"> gee7 - Geology E-7</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_413"><input id="location_413" type="checkbox" name="locations" value="413" library="Geology Library"> gee8 - Geology E-8</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_498"><input id="location_498" type="checkbox" name="locations" value="498" library="Geology Library"> gee9 - Geology E-9</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_354"><input id="location_354" type="checkbox" name="locations" value="354" library="Geology Library"> gef - Geology Folio</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_368"><input id="location_368" type="checkbox" name="locations" value="368" library="Geology Library"> gef+ - Geology Folio+</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_363"><input id="location_363" type="checkbox" name="locations" value="363" library="Geology Library"> gef++ - Geology Folio++</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_485"><input id="location_485" type="checkbox" name="locations" value="485" library="Geology Library"> gef1 - Geology F-1</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_632"><input id="location_632" type="checkbox" name="locations" value="632" library="Geology Library"> gef10 - Geology F-10</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_487"><input id="location_487" type="checkbox" name="locations" value="487" library="Geology Library"> gef11 - Geology F-11</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_474"><input id="location_474" type="checkbox" name="locations" value="474" library="Geology Library"> gef12 - Geology F-12</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_523"><input id="location_523" type="checkbox" name="locations" value="523" library="Geology Library"> gef13 - Geology F-13</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_489"><input id="location_489" type="checkbox" name="locations" value="489" library="Geology Library"> gef14 - Geology F-14</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_595"><input id="location_595" type="checkbox" name="locations" value="595" library="Geology Library"> gef15 - Geology F-15</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_566"><input id="location_566" type="checkbox" name="locations" value="566" library="Geology Library"> gef16 - Geology F-16</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_511"><input id="location_511" type="checkbox" name="locations" value="511" library="Geology Library"> gef17 - Geology F-17</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_544"><input id="location_544" type="checkbox" name="locations" value="544" library="Geology Library"> gef18 - Geology F-18</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_496"><input id="location_496" type="checkbox" name="locations" value="496" library="Geology Library"> gef19 - Geology F-19</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_469"><input id="location_469" type="checkbox" name="locations" value="469" library="Geology Library"> gef2 - Geology F-2</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_521"><input id="location_521" type="checkbox" name="locations" value="521" library="Geology Library"> gef20 - Geology F-20</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_384"><input id="location_384" type="checkbox" name="locations" value="384" library="Geology Library"> gef21 - Geology F-21</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_488"><input id="location_488" type="checkbox" name="locations" value="488" library="Geology Library"> gef22 - Geology F-22</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_341"><input id="location_341" type="checkbox" name="locations" value="341" library="Geology Library"> gef23 - Geology F-23</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_647"><input id="location_647" type="checkbox" name="locations" value="647" library="Geology Library"> gef24 - Geology F-24</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_506"><input id="location_506" type="checkbox" name="locations" value="506" library="Geology Library"> gef25 - Geology F-25</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_447"><input id="location_447" type="checkbox" name="locations" value="447" library="Geology Library"> gef3 - Geology F-3</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_415"><input id="location_415" type="checkbox" name="locations" value="415" library="Geology Library"> gef4 - Geology F-4</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_416"><input id="location_416" type="checkbox" name="locations" value="416" library="Geology Library"> gef5 - Geology F-5</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_509"><input id="location_509" type="checkbox" name="locations" value="509" library="Geology Library"> gef5a - Geology F-5a</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_562"><input id="location_562" type="checkbox" name="locations" value="562" library="Geology Library"> gef5b - Geology F-5b</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_477"><input id="location_477" type="checkbox" name="locations" value="477" library="Geology Library"> gef6 - Geology F-6</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_492"><input id="location_492" type="checkbox" name="locations" value="492" library="Geology Library"> gef7 - Geology F-7</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_466"><input id="location_466" type="checkbox" name="locations" value="466" library="Geology Library"> gef8 - Geology F-8</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_392"><input id="location_392" type="checkbox" name="locations" value="392" library="Geology Library"> gef9 - Geology F-9</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_570"><input id="location_570" type="checkbox" name="locations" value="570" library="Geology Library"> geg1 - Geology Library office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_500"><input id="location_500" type="checkbox" name="locations" value="500" library="Geology Library"> geg10 - Geology G-10</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_578"><input id="location_578" type="checkbox" name="locations" value="578" library="Geology Library"> geg11 - Geology G-11</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_538"><input id="location_538" type="checkbox" name="locations" value="538" library="Geology Library"> geg12 - Geology G-12</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_387"><input id="location_387" type="checkbox" name="locations" value="387" library="Geology Library"> geg13 - Geology G-13</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_439"><input id="location_439" type="checkbox" name="locations" value="439" library="Geology Library"> geg14 - Geology G-14</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_462"><input id="location_462" type="checkbox" name="locations" value="462" library="Geology Library"> geg15 - Geology G-15</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_467"><input id="location_467" type="checkbox" name="locations" value="467" library="Geology Library"> geg16 - Geology G-16</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_461"><input id="location_461" type="checkbox" name="locations" value="461" library="Geology Library"> geg17 - Geology G-17</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_405"><input id="location_405" type="checkbox" name="locations" value="405" library="Geology Library"> geg18 - Geology G-18</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_541"><input id="location_541" type="checkbox" name="locations" value="541" library="Geology Library"> geg20 - Geology G-20</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_464"><input id="location_464" type="checkbox" name="locations" value="464" library="Geology Library"> geg21 - Geology G-21</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_446"><input id="location_446" type="checkbox" name="locations" value="446" library="Geology Library"> geg22 - Geology G-22</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_410"><input id="location_410" type="checkbox" name="locations" value="410" library="Geology Library"> geg23 - Geology G-23</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_606"><input id="location_606" type="checkbox" name="locations" value="606" library="Geology Library"> geg24 - Geology G-24</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_434"><input id="location_434" type="checkbox" name="locations" value="434" library="Geology Library"> geg25 - Geology G-25</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_456"><input id="location_456" type="checkbox" name="locations" value="456" library="Geology Library"> geg26 - Geology G-26</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_393"><input id="location_393" type="checkbox" name="locations" value="393" library="Geology Library"> geg27 - Geology G-27</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_529"><input id="location_529" type="checkbox" name="locations" value="529" library="Geology Library"> geg28 - Geology G-28</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_382"><input id="location_382" type="checkbox" name="locations" value="382" library="Geology Library"> geg29 - Geology G-29</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_478"><input id="location_478" type="checkbox" name="locations" value="478" library="Geology Library"> geg30 - Geology G-30</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_520"><input id="location_520" type="checkbox" name="locations" value="520" library="Geology Library"> geg31 - Geology G-31</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_426"><input id="location_426" type="checkbox" name="locations" value="426" library="Geology Library"> geg32 - Geology G-32</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_472"><input id="location_472" type="checkbox" name="locations" value="472" library="Geology Library"> geg33 - Geology G-33</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_484"><input id="location_484" type="checkbox" name="locations" value="484" library="Geology Library"> geg34 - Geology G-34</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_491"><input id="location_491" type="checkbox" name="locations" value="491" library="Geology Library"> geg35 - Geology G-35</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_386"><input id="location_386" type="checkbox" name="locations" value="386" library="Geology Library"> geg36 - Geology G-36</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_665"><input id="location_665" type="checkbox" name="locations" value="665" library="Geology Library"> geg9 - Geology Library office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_692"><input id="location_692" type="checkbox" name="locations" value="692" library="Geology Library"> geh1 - Geology H-1</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_450"><input id="location_450" type="checkbox" name="locations" value="450" library="Geology Library"> geh2 - Geology H-2</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_452"><input id="location_452" type="checkbox" name="locations" value="452" library="Geology Library"> geh4 - Geology H-4</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_565"><input id="location_565" type="checkbox" name="locations" value="565" library="Geology Library"> geh5 - Geology H-5</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_533"><input id="location_533" type="checkbox" name="locations" value="533" library="Geology Library"> geh6 - Geology hall</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_540"><input id="location_540" type="checkbox" name="locations" value="540" library="Geology Library"> gem - Geology map room</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_654"><input id="location_654" type="checkbox" name="locations" value="654" library="Geology Library"> gema - Geology map room case A</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_490"><input id="location_490" type="checkbox" name="locations" value="490" library="Geology Library"> gemat - Geology map room atlases</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_493"><input id="location_493" type="checkbox" name="locations" value="493" library="Geology Library"> gemfo - Geology map room folded maps</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_350"><input id="location_350" type="checkbox" name="locations" value="350" library="Geology Library"> gemi - Geology microform</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_391"><input id="location_391" type="checkbox" name="locations" value="391" library="Geology Library"> gemin - Geology map room index</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_625"><input id="location_625" type="checkbox" name="locations" value="625" library="Geology Library"> gemro - Geology map room rolled maps</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_689"><input id="location_689" type="checkbox" name="locations" value="689" library="Geology Library"> gen - Geology new books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_423"><input id="location_423" type="checkbox" name="locations" value="423" library="Geology Library"> geo - Geology Library office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_612"><input id="location_612" type="checkbox" name="locations" value="612" library="Geology Library"> geob - Geology Library office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_613"><input id="location_613" type="checkbox" name="locations" value="613" library="Geology Library"> geom - Geology Library office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_598"><input id="location_598" type="checkbox" name="locations" value="598" library="Geology Library"> geop - Geology Library office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_359"><input id="location_359" type="checkbox" name="locations" value="359" library="Geology Library"> ger - Geology reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_619"><input id="location_619" type="checkbox" name="locations" value="619" library="Geology Library"> gev - Geology reserves</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_337"><input id="location_337" type="checkbox" name="locations" value="337" library="Millikan Library"> gex - Millikan basement geology books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_576"><input id="location_576" type="checkbox" name="locations" value="576" library="Geology Library"> gex+ - Geology Library office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_695"><input id="location_695" type="checkbox" name="locations" value="695" library="Geology Library"> gres - Geology reserves</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_342"><input id="location_342" type="checkbox" name="locations" value="342" library="Offsite Storage"> im - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_723"><input id="location_723" type="checkbox" name="locations" value="723" library="Offsite Storage"> imj - Offsite storage journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_724"><input id="location_724" type="checkbox" name="locations" value="724" library="Offsite Storage"> imt - Offsite storage theses</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_443"><input id="location_443" type="checkbox" name="locations" value="443" library="Kerckhoff"> ke - Kerckhoff</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_681"><input id="location_681" type="checkbox" name="locations" value="681" library="Sherman Fairchild Library"> kndl - SFL Kindle e-reader</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_420"><input id="location_420" type="checkbox" name="locations" value="420" library="Dabney Humanities Library"> mbdar - Dabney reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_678"><input id="location_678" type="checkbox" name="locations" value="678" library="Sherman Fairchild Library"> mform - Microfilm storage room</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_651"><input id="location_651" type="checkbox" name="locations" value="651" library="Millikan Library"> mi - Millikan</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_349"><input id="location_349" type="checkbox" name="locations" value="349" library="Millikan Library"> mi2 - Millikan 2</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_731"><input id="location_731" type="checkbox" name="locations" value="731" library="Millikan Library"> mi2del - Millikan 2 tech services offices</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_398"><input id="location_398" type="checkbox" name="locations" value="398" library="Millikan Library"> mi2j - Millikan 2 journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_584"><input id="location_584" type="checkbox" name="locations" value="584" library="Millikan Library"> mi2ri - Millikan 2 ILL reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_622"><input id="location_622" type="checkbox" name="locations" value="622" library="Millikan Library"> mi3cd - Millikan 3 CD-ROM case</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_325"><input id="location_325" type="checkbox" name="locations" value="325" library="Millikan Library"> mi3dj - Millikan 3 docs journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_575"><input id="location_575" type="checkbox" name="locations" value="575" library="Millikan Library"> mi3dq - Millikan 3 docs quick reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_409"><input id="location_409" type="checkbox" name="locations" value="409" library="Millikan Library"> mi3tp - Millikan 3 tape cabinet</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_650"><input id="location_650" type="checkbox" name="locations" value="650" library="Millikan Library"> mi8 - Millikan 8</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_534"><input id="location_534" type="checkbox" name="locations" value="534" library="Millikan Library"> mi9 - Millikan 9 leisure collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_711"><input id="location_711" type="checkbox" name="locations" value="711" library="Millikan Library"> mi9al - Millikan 9 Alpine Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_712"><input id="location_712" type="checkbox" name="locations" value="712" library="Millikan Library"> mi9cc - Millikan 9 Consulting Club Coll.</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_718"><input id="location_718" type="checkbox" name="locations" value="718" library="Millikan Library"> mi9gsc - Millikan 9 GSC Movie Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_713"><input id="location_713" type="checkbox" name="locations" value="713" library="Millikan Library"> mi9h - Millikan 9 Hillel Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_714"><input id="location_714" type="checkbox" name="locations" value="714" library="Millikan Library"> mi9ot - Millikan 9 OTT Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_715"><input id="location_715" type="checkbox" name="locations" value="715" library="Millikan Library"> mi9p - Millikan 9 SEPAC Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_710"><input id="location_710" type="checkbox" name="locations" value="710" library="Millikan Library"> mi9pet - Millikan 9 CPET Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_716"><input id="location_716" type="checkbox" name="locations" value="716" library="Millikan Library"> mi9sc - Millikan 9 Success Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_732"><input id="location_732" type="checkbox" name="locations" value="732" library="Millikan Library"> mi9so - Millikan 9 Socialists Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_717"><input id="location_717" type="checkbox" name="locations" value="717" library="Millikan Library"> mi9su - Millikan 9 Sustainability Coll.</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_553"><input id="location_553" type="checkbox" name="locations" value="553" library="Millikan Library"> mibaf - Millikan basement astro folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_378"><input id="location_378" type="checkbox" name="locations" value="378" library="Millikan Library"> mibaj - Millikan basement astro journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_346"><input id="location_346" type="checkbox" name="locations" value="346" library="Millikan Library"> mibam - Millikan basement astro books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_671"><input id="location_671" type="checkbox" name="locations" value="671" library="Millikan Library"> mibao - Millikan basement astro oversize</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_519"><input id="location_519" type="checkbox" name="locations" value="519" library="Millikan Library"> mibc - Millikan basement Chinese books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_593"><input id="location_593" type="checkbox" name="locations" value="593" library="Millikan Library"> mibcf - Millikan basement Chinese folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_581"><input id="location_581" type="checkbox" name="locations" value="581" library="Millikan Library"> mibd - Millikan basement docs</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_592"><input id="location_592" type="checkbox" name="locations" value="592" library="Millikan Library"> mibdj - Millikan basement docs journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_497"><input id="location_497" type="checkbox" name="locations" value="497" library="Millikan Library"> mibdr - Millikan basement docs reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_336"><input id="location_336" type="checkbox" name="locations" value="336" library="Millikan Library"> mibf - Millikan basement HSS folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_381"><input id="location_381" type="checkbox" name="locations" value="381" library="Millikan Library"> mibff - Millikan basement oversize</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_433"><input id="location_433" type="checkbox" name="locations" value="433" library="Millikan Library"> mibin - Millikan basement ref index</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_344"><input id="location_344" type="checkbox" name="locations" value="344" library="Millikan Library"> mibj - Millikan basement journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_594"><input id="location_594" type="checkbox" name="locations" value="594" library="Millikan Library"> mibja - Millikan basement Japanese books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_663"><input id="location_663" type="checkbox" name="locations" value="663" library="Dabney Humanities Library"> mibjd - HSS-Dabney journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_514"><input id="location_514" type="checkbox" name="locations" value="514" library="Millikan Library"> mibjf - Millikan basement journal folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_449"><input id="location_449" type="checkbox" name="locations" value="449" library="Millikan Library"> mibjo - Millikan basement oversize journ</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_704"><input id="location_704" type="checkbox" name="locations" value="704" library="Millikan Library"> mibjw - Millikan basement journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_329"><input id="location_329" type="checkbox" name="locations" value="329" library="Millikan Library"> mibm - Millikan basement books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_707"><input id="location_707" type="checkbox" name="locations" value="707" library="Millikan Library"> mibmj - Millikan basement math journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_709"><input id="location_709" type="checkbox" name="locations" value="709" library="Millikan Library"> mibof - Millikan basement oversize folio</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_371"><input id="location_371" type="checkbox" name="locations" value="371" library="Millikan Library"> mibr - Millikan basement reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_369"><input id="location_369" type="checkbox" name="locations" value="369" library="Millikan Library"> mibrf - Millikan basement ref folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_728"><input id="location_728" type="checkbox" name="locations" value="728" library="Millikan Library"> mibsg - Available by request</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_719"><input id="location_719" type="checkbox" name="locations" value="719" library="Millikan Library"> mibsj - Millikan basement science journa</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_431"><input id="location_431" type="checkbox" name="locations" value="431" library="Millikan Library"> mim - Millikan microform</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_609"><input id="location_609" type="checkbox" name="locations" value="609" library="Millikan Library"> mim1 - Millikan 1 microform</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_380"><input id="location_380" type="checkbox" name="locations" value="380" library="Millikan Library"> mim3 - Millikan 3 microform</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_686"><input id="location_686" type="checkbox" name="locations" value="686" library="Millikan Library"> mimc - Millikan mobile computer</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_561"><input id="location_561" type="checkbox" name="locations" value="561" library="Millikan Library"> mimi1 - Millikan 1 microform index</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_597"><input id="location_597" type="checkbox" name="locations" value="597" library="Millikan Library"> miq1 - Millikan 1 quick reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_556"><input id="location_556" type="checkbox" name="locations" value="556" library="Millikan Library"> miq8 - Millikan 8 quick reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_333"><input id="location_333" type="checkbox" name="locations" value="333" library="Millikan Library"> mit - Millikan 2 tech services office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_579"><input id="location_579" type="checkbox" name="locations" value="579" library="Millikan Library"> miv - Millikan 1 reserves</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_641"><input id="location_641" type="checkbox" name="locations" value="641" library="Millikan Library"> miv24 - Millikan 1 reserves</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_660"><input id="location_660" type="checkbox" name="locations" value="660" library="Millikan Library"> miv8 - Millikan 8 reserves</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_617"><input id="location_617" type="checkbox" name="locations" value="617" library="Millikan Library"> mivov - Millikan 1 reserves</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_640"><input id="location_640" type="checkbox" name="locations" value="640" library="none "> none - none </label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_727"><input id="location_727" type="checkbox" name="locations" value="727" library="Dabney Humanities Library"> ohssl - Office of HSS Librarian</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_343"><input id="location_343" type="checkbox" name="locations" value="343" library="Owens Valley"> ov - Owens Valley</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_656"><input id="location_656" type="checkbox" name="locations" value="656" library="Sherman Fairchild Library"> sem - SFL tech reports microfiche</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_504"><input id="location_504" type="checkbox" name="locations" value="504" library="Sherman Fairchild Library"> sf3 - SFL 3</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_486"><input id="location_486" type="checkbox" name="locations" value="486" library="Millikan Library"> sf3al - Millikan 9 Alpine Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_669"><input id="location_669" type="checkbox" name="locations" value="669" library="Sherman Fairchild Library"> sf3av - SFL3 ASCIT DVD</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_674"><input id="location_674" type="checkbox" name="locations" value="674" library="Millikan Library"> sf3cc - Millikan 9 Consulting Club Colle</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_644"><input id="location_644" type="checkbox" name="locations" value="644" library="Offsite Storage"> sf3cm - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_687"><input id="location_687" type="checkbox" name="locations" value="687" library="Millikan Library"> sf3h - Millikan 9 Hillel Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_335"><input id="location_335" type="checkbox" name="locations" value="335" library="Offsite Storage"> sf3m - Offsite storage</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_563"><input id="location_563" type="checkbox" name="locations" value="563" library="Millikan Library"> sf3ot - Millikan 9 OTT Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_691"><input id="location_691" type="checkbox" name="locations" value="691" library="Millikan Library"> sf3p - Millikan 9 SEPAC Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_676"><input id="location_676" type="checkbox" name="locations" value="676" library="Millikan Library"> sf3sc - Millikan 9 Success Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_559"><input id="location_559" type="checkbox" name="locations" value="559" library="Millikan Library"> sf3su - Millikan 9 Sustainability Collec</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_645"><input id="location_645" type="checkbox" name="locations" value="645" library="Sherman Fairchild Library"> sfc - SFL circ reserve</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_653"><input id="location_653" type="checkbox" name="locations" value="653" library="Millikan Library"> sfcn - CLS NT network</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_703"><input id="location_703" type="checkbox" name="locations" value="703" library="Sherman Fairchild Library"> sfcsa - SKIES iPads</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_599"><input id="location_599" type="checkbox" name="locations" value="599" library="Sherman Fairchild Library"> sfd - Request paging</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_682"><input id="location_682" type="checkbox" name="locations" value="682" library="Sherman Fairchild Library"> sfdd - SFL 1 digital devices</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_679"><input id="location_679" type="checkbox" name="locations" value="679" library="Sherman Fairchild Library"> sfea - SFL 1 e-accessories</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_680"><input id="location_680" type="checkbox" name="locations" value="680" library="Sherman Fairchild Library"> sfer - SFL 1 e-readers</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_574"><input id="location_574" type="checkbox" name="locations" value="574" library="Sherman Fairchild Library"> sfff - SFL flat folios</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_401"><input id="location_401" type="checkbox" name="locations" value="401" library="Sherman Fairchild Library"> sffo - SFL 3 oversize</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_338"><input id="location_338" type="checkbox" name="locations" value="338" library="Sherman Fairchild Library"> sffu - SFL basement folio books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_684"><input id="location_684" type="checkbox" name="locations" value="684" library="Millikan Library"> sfgsc - Millikan 9 GSC movie collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_722"><input id="location_722" type="checkbox" name="locations" value="722" library="Sherman Fairchild Library"> sfj1 - SFL 1 journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_375"><input id="location_375" type="checkbox" name="locations" value="375" library="Sherman Fairchild Library"> sfj2 - SFL 2 journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_418"><input id="location_418" type="checkbox" name="locations" value="418" library="Sherman Fairchild Library"> sfj3 - SFL 3 journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_408"><input id="location_408" type="checkbox" name="locations" value="408" library="Sherman Fairchild Library"> sfjb - SFL basement journals</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_554"><input id="location_554" type="checkbox" name="locations" value="554" library="Sherman Fairchild Library"> sfl - SFL</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_708"><input id="location_708" type="checkbox" name="locations" value="708" library="Sherman Fairchild Library"> sfl1cd - SFL1 Circulation Desk</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_700"><input id="location_700" type="checkbox" name="locations" value="700" library="Sherman Fairchild Library"> sfl1cr03 - SFL1 Closed Reserve (3-hr)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_729"><input id="location_729" type="checkbox" name="locations" value="729" library="Sherman Fairchild Library"> sfl1cr1wk - SFL1 Closed Reserve (1-wk)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_720"><input id="location_720" type="checkbox" name="locations" value="720" library="Sherman Fairchild Library"> sfl1cr24 - SFL1 Closed Reserve (24-hr)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_736"><input id="location_736" type="checkbox" name="locations" value="736" library="Sherman Fairchild Library"> sfl1cr72 - SFL1 Closed Reserve (72-hr)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_699"><input id="location_699" type="checkbox" name="locations" value="699" library="Sherman Fairchild Library"> sfl1or03 - SFL1 Open Reserve (3-hr)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_725"><input id="location_725" type="checkbox" name="locations" value="725" library="Sherman Fairchild Library"> sfl1or24 - SFL1 Open Reserve (24-hr)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_734"><input id="location_734" type="checkbox" name="locations" value="734" library="Sherman Fairchild Library"> sfl1or72 - SFL1 Open Reserve (72-hr)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_738"><input id="location_738" type="checkbox" name="locations" value="738" library="Sherman Fairchild Library"> sfl1pr - SFL1 Permanent Reserve (3-hr)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_706"><input id="location_706" type="checkbox" name="locations" value="706" library="Sherman Fairchild Library"> sfld - SFL 1 display</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_685"><input id="location_685" type="checkbox" name="locations" value="685" library="Sherman Fairchild Library"> sflit - Library IT staff</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_737"><input id="location_737" type="checkbox" name="locations" value="737" library="Sherman Fairchild Library"> sflo - SFL office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_326"><input id="location_326" type="checkbox" name="locations" value="326" library="Sherman Fairchild Library"> sfm - SFL basement books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_328"><input id="location_328" type="checkbox" name="locations" value="328" library="Sherman Fairchild Library"> sfm2 - SFL 2 books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_673"><input id="location_673" type="checkbox" name="locations" value="673" library="Sherman Fairchild Library"> sfmc - SFL mobile computer</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_655"><input id="location_655" type="checkbox" name="locations" value="655" library="Millikan Library"> sfmh - Millikan 9 leisure collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_690"><input id="location_690" type="checkbox" name="locations" value="690" library="Sherman Fairchild Library"> sfn - SFL new books</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_670"><input id="location_670" type="checkbox" name="locations" value="670" library="Sherman Fairchild Library"> sfp - SFL</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_494"><input id="location_494" type="checkbox" name="locations" value="494" library="Millikan Library"> sfpet - Millikan 9 CPET Collection</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_353"><input id="location_353" type="checkbox" name="locations" value="353" library="Sherman Fairchild Library"> sfr - SFL 1 reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_429"><input id="location_429" type="checkbox" name="locations" value="429" library="Sherman Fairchild Library"> sfri - SFL 1 reference indexes</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_402"><input id="location_402" type="checkbox" name="locations" value="402" library="Sherman Fairchild Library"> sfrq - SFL 1 quick reference</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_726"><input id="location_726" type="checkbox" name="locations" value="726" library="Sherman Fairchild Library"> sfsbn - SFL north sub-basement</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_589"><input id="location_589" type="checkbox" name="locations" value="589" library="Sherman Fairchild Library"> sfv - SFL CIRC-RESERVE</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_658"><input id="location_658" type="checkbox" name="locations" value="658" library="Sherman Fairchild Library"> sfv4 - SFL CIRC RESERVE</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_662"><input id="location_662" type="checkbox" name="locations" value="662" library="Sherman Fairchild Library"> sfv72 - SLF CIRC-RESERVE</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_657"><input id="location_657" type="checkbox" name="locations" value="657" library="Sherman Fairchild Library"> sfvov - SFL CIRC-RESERVE</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_351"><input id="location_351" type="checkbox" name="locations" value="351" library="Sherman Fairchild Library"> sfw - SFL micro - ask at circ desk</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_428"><input id="location_428" type="checkbox" name="locations" value="428" library="Sherman Fairchild Library"> stmim - Storage microform</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="location_525"><input id="location_525" type="checkbox" name="locations" value="525" library="World Wide Web"> www - World Wide Web</label></li>
+                </div>
+              </ul>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Patron type <span id="nof_patron_types" class="facet_nof"></span> <span class="caret"></span></button>
+              <ul class="facet dropdown-menu">
+                <li class="facet-search"><input type="text" data-search="patron_types" placeholder="Search..."></li>
+                <li role="separator" class="divider"></li>
+                <div class="clear-facet"><strong>✕</strong>&nbsp;&nbsp;Clear selection</div>
+                <div class="dropdown-elems">
+                  <li><label class="checkboxes_exp_loan" for="patrontype_99"><input id="patrontype_99" type="checkbox" name="patron_types" value="99"> Blocked patrons</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_5"><input id="patrontype_5" type="checkbox" name="patron_types" value="5"> Caltech affiliates</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_19"><input id="patrontype_19" type="checkbox" name="patron_types" value="19"> Caltech fac/admin/trustee/librs</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_2"><input id="patrontype_2" type="checkbox" name="patron_types" value="2"> Caltech graduate students</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_4"><input id="patrontype_4" type="checkbox" name="patron_types" value="4"> Caltech staff</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_1"><input id="patrontype_1" type="checkbox" name="patron_types" value="1"> Caltech temp faculty/postdocs</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_3"><input id="patrontype_3" type="checkbox" name="patron_types" value="3"> Caltech undergraduate students</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_103"><input id="patrontype_103" type="checkbox" name="patron_types" value="103"> Graduating seniors</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_104"><input id="patrontype_104" type="checkbox" name="patron_types" value="104"> JPL affiliates</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_102"><input id="patrontype_102" type="checkbox" name="patron_types" value="102"> No attempt to code</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_101"><input id="patrontype_101" type="checkbox" name="patron_types" value="101"> Non-CIT other</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_9"><input id="patrontype_9" type="checkbox" name="patron_types" value="9"> Non-CIT summer students</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_14"><input id="patrontype_14" type="checkbox" name="patron_types" value="14"> Proxy borrowers</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="patrontype_15"><input id="patrontype_15" type="checkbox" name="patron_types" value="15"> Pseudo borrowers</label></li>
+                </div>
+              </ul>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Item type <span id="nof_item_types" class="facet_nof"></span> <span class="caret"></span></button>
+              <ul class="facet dropdown-menu">
+                <li class="facet-search"><input type="text" data-search="item_types" placeholder="Search..."></li>
+                <li role="separator" class="divider"></li>
+                <div class="clear-facet"><strong>✕</strong>&nbsp;&nbsp;Clear selection</div>
+                <div class="dropdown-elems">
+                  <li><label class="checkboxes_exp_loan" for="itemtype_4"><input id="itemtype_4" type="checkbox" name="item_types" value="4"> 1-day item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_2"><input id="itemtype_2" type="checkbox" name="item_types" value="2"> 14-day item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_37"><input id="itemtype_37" type="checkbox" name="item_types" value="37"> 2-hour item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_36"><input id="itemtype_36" type="checkbox" name="item_types" value="36"> 24-hour item </label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_1"><input id="itemtype_1" type="checkbox" name="item_types" value="1"> 28-day item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_45"><input id="itemtype_45" type="checkbox" name="item_types" value="45"> 3-hour item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_3"><input id="itemtype_3" type="checkbox" name="item_types" value="3"> 7-day item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_40"><input id="itemtype_40" type="checkbox" name="item_types" value="40"> 72-hour item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_44"><input id="itemtype_44" type="checkbox" name="item_types" value="44"> Bicycles (24 hrs)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_34"><input id="itemtype_34" type="checkbox" name="item_types" value="34"> Book</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_20"><input id="itemtype_20" type="checkbox" name="item_types" value="20"> Computer software</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_42"><input id="itemtype_42" type="checkbox" name="item_types" value="42"> e-device(24 hrs)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_43"><input id="itemtype_43" type="checkbox" name="item_types" value="43"> e-device(3 hrs)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_41"><input id="itemtype_41" type="checkbox" name="item_types" value="41"> e-device(72 hrs)</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_38"><input id="itemtype_38" type="checkbox" name="item_types" value="38"> end of term</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_8"><input id="itemtype_8" type="checkbox" name="item_types" value="8"> Government document</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_26"><input id="itemtype_26" type="checkbox" name="item_types" value="26"> Guidebook</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_16"><input id="itemtype_16" type="checkbox" name="item_types" value="16"> Interlibrary loan borrowed item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_21"><input id="itemtype_21" type="checkbox" name="item_types" value="21"> Journal</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_24"><input id="itemtype_24" type="checkbox" name="item_types" value="24"> Key</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_25"><input id="itemtype_25" type="checkbox" name="item_types" value="25"> Kindle e-reader</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_23"><input id="itemtype_23" type="checkbox" name="item_types" value="23"> Laptop computer</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_14"><input id="itemtype_14" type="checkbox" name="item_types" value="14"> Map</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_7"><input id="itemtype_7" type="checkbox" name="item_types" value="7"> Microform</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_35"><input id="itemtype_35" type="checkbox" name="item_types" value="35"> No attempt to code</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_19"><input id="itemtype_19" type="checkbox" name="item_types" value="19"> Non-circulating item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_28"><input id="itemtype_28" type="checkbox" name="item_types" value="28"> Nook e-reader</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_27"><input id="itemtype_27" type="checkbox" name="item_types" value="27"> Not yet published</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_30"><input id="itemtype_30" type="checkbox" name="item_types" value="30"> OMIC computer</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_17"><input id="itemtype_17" type="checkbox" name="item_types" value="17"> Reference work</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_22"><input id="itemtype_22" type="checkbox" name="item_types" value="22"> Remote access</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_11"><input id="itemtype_11" type="checkbox" name="item_types" value="11"> Reserve 24-hour item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_12"><input id="itemtype_12" type="checkbox" name="item_types" value="12"> Reserve 3-hour item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_10"><input id="itemtype_10" type="checkbox" name="item_types" value="10"> Reserve 72-hour item</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_18"><input id="itemtype_18" type="checkbox" name="item_types" value="18"> Slide</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_15"><input id="itemtype_15" type="checkbox" name="item_types" value="15"> Sound recording</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_46"><input id="itemtype_46" type="checkbox" name="item_types" value="46"> Stats-Viet</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_31"><input id="itemtype_31" type="checkbox" name="item_types" value="31"> Tablet computer</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_9"><input id="itemtype_9" type="checkbox" name="item_types" value="9"> Technical report</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_5"><input id="itemtype_5" type="checkbox" name="item_types" value="5"> Thesis</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemtype_6"><input id="itemtype_6" type="checkbox" name="item_types" value="6"> Videorecording</label></li>
+                </div>
+              </ul>
+            </div>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Item status <span id="nof_item_statuses" class="facet_nof"></span> <span class="caret"></span></button>
+              <ul class="facet dropdown-menu">
+                <li class="facet-search"><input type="text" data-search="item_statuses" placeholder="Search..."></li>
+                <li role="separator" class="divider"></li>
+                <div class="clear-facet"><strong>✕</strong>&nbsp;&nbsp;Clear selection</div>
+                <div class="dropdown-elems">
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_0"><input id="itemstatus_0" type="checkbox" name="item_statuses" value="0"> Archival copy</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_1"><input id="itemstatus_1" type="checkbox" name="item_statuses" value="1"> Ask at office</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_2"><input id="itemstatus_2" type="checkbox" name="item_statuses" value="2"> At UMI</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_3"><input id="itemstatus_3" type="checkbox" name="item_statuses" value="3"> In Technical Services</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_4"><input id="itemstatus_4" type="checkbox" name="item_statuses" value="4"> In repair</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_5"><input id="itemstatus_5" type="checkbox" name="item_statuses" value="5"> Library use only</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_6"><input id="itemstatus_6" type="checkbox" name="item_statuses" value="6"> Limited circulation</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_7"><input id="itemstatus_7" type="checkbox" name="item_statuses" value="7"> Lost</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_8"><input id="itemstatus_8" type="checkbox" name="item_statuses" value="8"> Missing</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_9"><input id="itemstatus_9" type="checkbox" name="item_statuses" value="9"> New  Book</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_10"><input id="itemstatus_10" type="checkbox" name="item_statuses" value="10"> On holdshelf</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_11"><input id="itemstatus_11" type="checkbox" name="item_statuses" value="11"> Online</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_12"><input id="itemstatus_12" type="checkbox" name="item_statuses" value="12"> Overdue</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_13"><input id="itemstatus_13" type="checkbox" name="item_statuses" value="13"> Search 1</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_14"><input id="itemstatus_14" type="checkbox" name="item_statuses" value="14"> Search 2</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_15"><input id="itemstatus_15" type="checkbox" name="item_statuses" value="15"> Search 3</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_16"><input id="itemstatus_16" type="checkbox" name="item_statuses" value="16"> See notes</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_17"><input id="itemstatus_17" type="checkbox" name="item_statuses" value="17"> To be replaced</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_18"><input id="itemstatus_18" type="checkbox" name="item_statuses" value="18"> To delete</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_19"><input id="itemstatus_19" type="checkbox" name="item_statuses" value="19"> Withdrawn</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_20"><input id="itemstatus_20" type="checkbox" name="item_statuses" value="20"> claimed</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_21"><input id="itemstatus_21" type="checkbox" name="item_statuses" value="21"> in process</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_22"><input id="itemstatus_22" type="checkbox" name="item_statuses" value="22"> on loan</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_23"><input id="itemstatus_23" type="checkbox" name="item_statuses" value="23"> on order</label></li>
+                  
+                  <li><label class="checkboxes_exp_loan" for="itemstatus_24"><input id="itemstatus_24" type="checkbox" name="item_statuses" value="24"> on shelf</label></li>
+                </div>
+              </ul>
+            </div>
+            <div class="pull-right">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Show <span id="nof_show" class="facet_nof"></span> <span class="caret"></span></button>
+                <ul class="facet dropdown-menu">
+                  <li><label for="todays_holds"><input id="todays_holds" name="show" value="todays_holds" type="checkbox"> Todays holds</label></li>
+                  <li><label for="loc_exceptions"><input id="loc_exceptions" name="show" value="loc_exceptions" type="checkbox"> Location exceptions</label></li>
+                </ul>
+              </div>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default" id="sort-btn" dir="asc"><i class="fa fa-sort-alpha-asc"></i>&nbsp;</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort by <span class="caret"></span></button>
+                <ul class="facet dropdown-menu">
+                  <li><input id="sort_req_date" name="sort" value="request_date" type="radio"><label for="sort_req_date"> Request date</label></li>
+                  <li><input id="sort_pickup_letter_number" name="sort" value="pickup_letter_number" type="radio"><label for="sort_pickup_letter_number"> Number of notices sent</label></li>
+                  <li><input id="sort_pickup_letter_date" name="sort" value="pickup_letter_date" type="radio"><label for="sort_pickup_letter_date"> Date of last notice</label></li>
+                  <li><input id="sort_request_count" name="sort" value="request_count" type="radio"><label for="sort_request_count"> Number of holds</label></li>
+                  <li><input id="sort_location" name="sort" value="location" type="radio"><label for="sort_location"> Location</label></li>
+                  <li><input id="sort_patron" name="sort" value="requester_name" type="radio"><label for="sort_patron"> Patron</label></li>
+                  <li><input id="sort_callno" name="sort" value="call_no" type="radio"><label for="sort_callno"> Call number</label></li>
+                </ul>
+              </div>
+            </div>
+          </form>
+          
+          <br />
+          <table id="bibcirc_list" data-num-cols="8" border="0" cellpadding="0" cellspacing="1">
+            <thead>
+              <tr>
+                <th class="header">Requester</th>
+                <th class="header">Item Title</th>
+                <th class="header">Item Info</th>
+                <th class="header">Requested</th>
+                <th class="header">Notices</th>
+                <th class="header">Holds</th>
+                <th class="header">Location</th>
+                <th class="header">Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+          </form>
+          
+        </div>
+
+      </div>
+      
+      
+    </div>
+    </div>
+    </div>
+    <footer class="pagefooter row">
+      
+
+      
+
+      
+      <div id="tindfooter" class="col-sm-2 col-sm-offset-10">
+        <a class="tindfooterlink" href="http://tind.io/" target="_blank">Powered by <strong>TIND</strong></a>
+      </div>
+      
+
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/combine/npm/lightgallery,npm/lg-autoplay,npm/lg-fullscreen,npm/lg-hash,npm/lg-pager,npm/lg-share,npm/lg-thumbnail,npm/lg-video,npm/lg-zoom"></script>
+      <!-- A jQuery plugin that adds cross-browser mouse wheel support. (Optional) -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+
+      
+
+      
+      <!-- Piwik -->
+      <script type='text/javascript'>
+       var _paq = _paq || [];
+       _paq.push(['trackPageView']);
+       _paq.push(['enableLinkTracking']);
+       (function () {
+         var u = '//piwik.tind.io/';
+         _paq.push(['setTrackerUrl', u + 'piwik.php']);
+         _paq.push(['setSiteId', 1097]);
+         var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+         g.type = 'text/javascript';
+         g.async = true;
+         g.defer = true;
+         g.src = u + 'piwik.js';
+         s.parentNode.insertBefore(g, s);
+       })();
+      </script>
+      <noscript><p><img src='//piwik.tind.io/piwik.php?idsite=1097' style='border:0;' alt=''/></p>
+      </noscript>
+      <!-- End Piwik Code -->
+      
+
+      
+      <script type="text/x-mathjax-config">
+       MathJax.Hub.Config({
+         tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] }
+       });
+      </script>
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+      
+    </footer>
+    <input type="hidden" name="csrf_token" value="('79e5805ec9abeae35620442c99706799df17cd68fd4819502709ad7d47d795ee', 1532995156.430467)">
+  </body>
+</html>
+
+
+
