@@ -30,12 +30,16 @@ class LostRecord(object):
 
     def __init__(self):
         self.requester_name = ''               # String
+        self.requester_email = ''              # String -- note: not used
         self.requester_type = ''               # String
         self.requester_url = ''                # String
 
         self.item_title = ''                   # String
+        self.item_author = ''                  # String
+        self.item_type = ''                    # String
         self.item_details_url = ''             # String
         self.item_record_url = ''              # String
+        self.item_tind_id = ''                 # String
         self.item_call_number = ''
         self.item_barcode = ''
         self.item_location_name = ''           # String
@@ -43,12 +47,10 @@ class LostRecord(object):
         self.item_loan_status = ''             # String
         self.item_loan_url = ''                # String
 
+        self.date_modified = ''                # String (date)
         self.date_requested = ''               # String (date)
         self.date_due = ''                     # String (date)
         self.date_last_notice_sent = ''        # String (date)
-        self.overdue_notices_count = ''        # String
-
-        self.holds_count = ''                  # String
 
 
 # Utility functions.
@@ -56,19 +58,17 @@ class LostRecord(object):
 
 def records_diff(known_records, new_records):
     '''Returns the records from 'new_records' missing from 'known_records'.
-    The comparison is done on the basis of bar codes and request dates.'''
-    if __debug__: log('Diffing known records with new records')
+    The comparison is done on the basis of bar codes.'''
+    if __debug__: log('diffing known records with new records')
+    # This assumes that no two lost items will ever have the same barcode,
+    # because lost items are replaced with items that have a different barcode.
     diffs = []
     for candidate in new_records:
         matched = [record for record in known_records
                    if record.item_barcode == candidate.item_barcode]
         if not matched:
             diffs.append(candidate)
-        else:
-            for record in matched:
-                if candidate.date_requested != record.date_requested:
-                    diffs.append(candidate)
-    if __debug__: log('Found {} different records', len(diffs))
+    if __debug__: log('found {} different records', len(diffs))
     return diffs
 
 
