@@ -35,7 +35,7 @@ elif sys.platform.startswith('win'):
 
 import lostit
 from lostit.exceptions import *
-from lostit.records import HoldRecord
+from lostit.records import LostRecord
 from lostit.files import open_url, datadir_path
 from lostit.debug import log
 
@@ -61,7 +61,7 @@ _GS_BASE_URL = 'https://docs.google.com/spreadsheets/d/'
 # Class definitions.
 # .............................................................................
 
-class GoogleHoldRecord(HoldRecord):
+class GoogleLostRecord(LostRecord):
     '''Class to represent a hold request as it appears in the spreadsheet.'''
 
     def __init__(self, record = None):
@@ -73,11 +73,12 @@ class GoogleHoldRecord(HoldRecord):
         self.caltech_lostit_user = ''
         if record:
             self.requester_name        = record.requester_name
-            self.requester_type        = record.requester_type
             self.requester_url         = record.requester_url
             self.item_title            = record.item_title
+            self.item_author           = record.item_author
             self.item_details_url      = record.item_details_url
             self.item_record_url       = record.item_record_url
+            self.item_tind_id          = record.item_tind_id
             self.item_call_number      = record.item_call_number
             self.item_barcode          = record.item_barcode
             self.item_location_name    = record.item_location_name
@@ -98,77 +99,58 @@ class GoogleHoldRecord(HoldRecord):
 # found at https://developers.google.com/sheets/api/quickstart/python
 
 def records_from_google(gs_id, user, message_handler):
-    if __debug__: log('Getting entries from Google spreadsheet')
+    if __debug__: log('getting entries from Google spreadsheet')
     spreadsheet_rows = spreadsheet_content(gs_id, user, message_handler)
     if spreadsheet_rows == []:
         return []
-    # First row is the title row.
     results = []
-    if __debug__: log('Building records from {} rows', len(spreadsheet_rows) - 1)
+    if __debug__: log('building records from {} rows', len(spreadsheet_rows) - 1)
+    # First row is the title row, so we skip it
     for index, row in enumerate(spreadsheet_rows[1:], start = 1):
-        if not row or len(row) < 8:     # Empty or junk row.
+        if not row or len(row) < 16 or row[0] == '':
             continue
-
-        record = GoogleHoldRecord()
+        record = GoogleLostRecord()
 
         cell = row[0]
-        end = cell.find('\n')
-        if end:
-            record.requester_name = cell[:end].strip()
-            record.requester_type = cell[end + 1:].strip()
-        else:
-            record.requester_name = cell.strip()
-
-        cell = row[1]
-        end = cell.find('\n')
-        if end:
-            record.item_title = cell[:end].strip()
-            record.item_loan_status = cell[end + 1:].strip()
-        else:
-            record.item_title = cell.strip()
-
-        cell = row[2]
-        end = cell.find('\n')
-        if end:
-            record.item_barcode = cell[:end]
-            record.item_call_number = cell[end + 1:].strip()
-        else:
-            record.item_title = cell.strip()
-
-        cell = row[3]
         record.date_requested = cell.strip()
 
+        cell = row[1]
+        record.requester_name = cell.strip()
+
+        cell = row[2]
+        record.requester_email = cell.strip()
+
+        cell = row[3]
+        record.item_title = cell.strip()
+
         cell = row[4]
-        record.overdue_notices_count = cell.strip()
+        record.item_author = cell.strip()
+
+        cell = row[4]
+        record.item_author = cell.strip()
 
         cell = row[5]
-        record.holds_count = cell.strip()
+        record.item_tind_id = cell.strip()
 
         cell = row[6]
-        record.item_location_code = cell.strip()
+        record.item_call_number = cell.strip()
 
-        if len(row) > 7:
-            cell = row[7]
-            record.caltech_lostit_user = cell.strip()
+        cell = row[7]
+        record.item_barcode = cell.strip()
 
-        if len(row) > 8:
-            cell = row[8]
-            record.caltech_status = cell.strip()
-
-        if len(row) > 9:
-            cell = row[9]
-            record.caltech_staff_initials = cell.strip()
+        cell = row[8]
+        record.item_location_code = cell.strip().lower()
 
         results.append(record)
     return results
 
 
 def spreadsheet_credentials(user, message_handler):
-    if __debug__: log('Getting token for Google API')
+    if __debug__: log('getting token for Google API')
     store = token_storage('Lost It!', user)
     creds = store.get()
     if not creds or creds.invalid:
-        if __debug__: log('Using secrets file for Google API')
+        if __debug__: log('using secrets file for Google API')
         secrets_file = path.join(datadir_path(), _SECRETS_FILE)
         flow = google_flow(secrets_file, _OAUTH_SCOPE)
         # On Windows, run_flow calls argparse and ends up getting the args
@@ -185,7 +167,7 @@ def spreadsheet_credentials(user, message_handler):
 
 def spreadsheet_content(gs_id, user, message_handler):
     creds = spreadsheet_credentials(user, message_handler)
-    if __debug__: log('Building Google sheets service object')
+    if __debug__: log('building Google sheets service object')
     service = build('sheets', 'v4', http = creds.authorize(Http()), cache_discovery = False)
     sheets_service = service.spreadsheets().values()
     try:
@@ -203,18 +185,18 @@ def spreadsheet_content(gs_id, user, message_handler):
 def update_google(gs_id, records, user, message_handler):
     data = []
     for record in records:
-        record = GoogleHoldRecord(record)
+        record = GoogleLostRecord(record)
         setattr(record, 'caltech_lostit_user', user)
         data.append(google_row_for_record(record))
     if not data:
         return
     creds = spreadsheet_credentials(user, message_handler)
-    if __debug__: log('Building Google sheets service object')
+    if __debug__: log('building Google sheets service object')
     service = build('sheets', 'v4', http = creds.authorize(Http()), cache_discovery = False)
     sheets_service = service.spreadsheets().values()
     body = {'values': data}
     try:
-        if __debug__: log('Calling Google API for updating data')
+        if __debug__: log('calling Google API for updating data')
         result = sheets_service.append(spreadsheetId = gs_id,
                                        range = 'A:Z', body = body,
                                        valueInputOption = 'USER_ENTERED').execute()
@@ -227,31 +209,27 @@ def update_google(gs_id, records, user, message_handler):
 
 
 def open_google(gs_id):
-    if __debug__: log('Opening Google spreadsheet')
+    if __debug__: log('opening Google spreadsheet')
     open_url(_GS_BASE_URL + gs_id)
 
 
 def google_row_for_record(record):
-    def requester_cell(r):
-        return link(r.requester_name + '\n' + r.requester_type, r.requester_url)
+    def linked_requester_name(r):
+        return link(r.requester_name, r.requester_url)
 
-    def item_cell(r):
-        return link(r.item_title + '\n' + r.item_loan_status, r.item_details_url)
+    def linked_item_barcode(r):
+        return link(r.item_barcode, r.item_record_url)
 
-    def info_cell(r):
-        return link(r.item_barcode + '\n' + r.item_call_number, r.item_record_url)
-
-    a = requester_cell(record)
-    b = item_cell(record)
-    c = info_cell(record)
-    d = record.date_requested
-    e = record.overdue_notices_count
-    f = record.holds_count
-    g = record.item_location_code
-    h = record.caltech_lostit_user
-    i = record.caltech_status
-    j = record.caltech_staff_initials
-    return [a, b, c, d, e, f, g, h, i, j]
+    a = record.date_requested
+    b = linked_requester_name(record)
+    c = record.requester_email
+    d = record.item_title
+    e = record.item_author
+    f = record.item_tind_id
+    g = record.item_call_number
+    h = linked_item_barcode(record)
+    i = record.item_location_code
+    return [a, b, c, d, e, f, g, h, i]
 
 
 def google_flow(secrets_file, scope):
