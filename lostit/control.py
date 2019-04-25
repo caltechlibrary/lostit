@@ -151,7 +151,7 @@ class LostItMainFrame(wx.Frame):
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
         wx.Frame.__init__(self, *args, **kwds)
         self.panel = wx.Panel(self)
-        headline = lostit.__name__ + " — generate a list of lost items"
+        headline = lostit.__name__ + " — update spreadsheet of lost items"
         self.headline = wx.StaticText(self.panel, wx.ID_ANY, headline, style = wx.ALIGN_CENTER)
         self.headline.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC,
                                       wx.FONTWEIGHT_BOLD, 0, "Arial"))
@@ -232,14 +232,14 @@ class LostItMainFrame(wx.Frame):
 
 
     def on_cancel_or_quit(self, event):
-        if __debug__: log('LostItControlGUI got Exit/Cancel')
+        if __debug__: log('got Exit/Cancel')
         self._cancel = True
         self.Destroy()
         return True
 
 
     def on_escape(self, event):
-        if __debug__: log('LostItControlGUI got Escape')
+        if __debug__: log('got Escape')
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_ESCAPE:
             self.on_cancel_or_quit(event)
@@ -249,7 +249,7 @@ class LostItMainFrame(wx.Frame):
 
 
     def on_about(self, event):
-        if __debug__: log('LostItControlGUI opening About window')
+        if __debug__: log('opening About window')
         dlg = wx.adv.AboutDialogInfo()
         dlg.SetName(lostit.__name__)
         dlg.SetVersion(lostit.__version__)
@@ -262,7 +262,7 @@ class LostItMainFrame(wx.Frame):
 
 
     def on_help(self, event):
-        if __debug__: log('LostItControlGUI opening Help window')
+        if __debug__: log('opening Help window')
         wx.BeginBusyCursor()
         help_file = path.join(datadir_path(), "help.html")
         if readable(help_file):
@@ -276,7 +276,7 @@ class LostItMainFrame(wx.Frame):
 
 
     def login_dialog(self, results, user, password):
-        if __debug__: log('LostItControlGUI creating and showing login dialog')
+        if __debug__: log('creating and showing login dialog')
         dialog = LoginDialog(self)
         dialog.initialize_values(results, user, password)
         dialog.ShowWindowModal()
@@ -410,7 +410,7 @@ class LoginDialog(wx.Dialog):
     def on_ok(self, event):
         '''Stores the current values and destroys the dialog.'''
 
-        if __debug__: log('LoginDialog got OK')
+        if __debug__: log('got OK')
         if self.inputs_nonempty():
             self._cancel = False
             self._user = self.login.GetValue()
@@ -420,12 +420,12 @@ class LoginDialog(wx.Dialog):
             self.return_values()
             self.EndModal(event.EventObject.Id)
         else:
-            if __debug__: log('LoginDialog has incomplete inputs')
+            if __debug__: log('has incomplete inputs')
             self.complain_incomplete_values(event)
 
 
     def on_cancel_or_quit(self, event):
-        if __debug__: log('LoginDialog got Cancel')
+        if __debug__: log('got Cancel')
         self._cancel = True
         self.return_values()
         # self.Destroy()
@@ -443,7 +443,7 @@ class LoginDialog(wx.Dialog):
     def on_escape(self, event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_ESCAPE:
-            if __debug__: log('LoginDialog got Escape')
+            if __debug__: log('got Escape')
             self.on_cancel_or_quit(event)
         else:
             event.Skip()

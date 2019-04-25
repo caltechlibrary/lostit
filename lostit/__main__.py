@@ -99,7 +99,7 @@ def main(user = 'U', pswd = 'P',
         tracer     = ProgressIndicatorCLI(use_color)
 
     # Start the worker thread.
-    if __debug__: log('Starting main body thread')
+    if __debug__: log('starting main body thread')
     controller.start(MainBody(view_sheet, debug, controller, tracer, accesser, notifier))
 
 

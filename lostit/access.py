@@ -85,21 +85,21 @@ class AccessHandlerCLI(AccessHandlerBase):
         tmp_pswd = self._pswd
         if not all([tmp_user, tmp_pswd]) or self._reset or not self._use_keyring:
             if self._use_keyring and not self._reset:
-                if __debug__: log('Getting credentials from keyring')
+                if __debug__: log('getting credentials from keyring')
                 tmp_user, tmp_pswd, _, _ = credentials(_KEYRING, "Caltech access login",
                                                        tmp_user, tmp_pswd)
             else:
                 if not self._use_keyring:
-                    if __debug__: log('Keyring disabled')
+                    if __debug__: log('keyring disabled')
                 if self._reset:
-                    if __debug__: log('Reset invoked')
+                    if __debug__: log('reset invoked')
                 tmp_user = input('Caltech access login: ')
                 tmp_pswd = password('Password for "{}": '.format(tmp_user))
             if self._use_keyring:
                 # Save the credentials if they're different.
                 s_user, s_pswd, _, _ = keyring_credentials(_KEYRING)
                 if s_user != tmp_user or s_pswd != tmp_pswd:
-                    if __debug__: log('Saving credentials to keyring')
+                    if __debug__: log('saving credentials to keyring')
                     save_keyring_credentials(_KEYRING, tmp_user, tmp_pswd)
         self._user = tmp_user
         self._pswd = tmp_pswd
