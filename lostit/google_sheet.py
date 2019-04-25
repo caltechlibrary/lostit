@@ -72,24 +72,21 @@ class GoogleLostRecord(LostRecord):
         self.caltech_staff_initials = ''
         self.caltech_lostit_user = ''
         if record:
-            self.requester_name        = record.requester_name
-            self.requester_url         = record.requester_url
-            self.item_title            = record.item_title
-            self.item_author           = record.item_author
-            self.item_details_url      = record.item_details_url
-            self.item_record_url       = record.item_record_url
-            self.item_tind_id          = record.item_tind_id
-            self.item_call_number      = record.item_call_number
-            self.item_barcode          = record.item_barcode
-            self.item_location_name    = record.item_location_name
-            self.item_location_code    = record.item_location_code
-            self.item_loan_status      = record.item_loan_status
-            self.item_loan_url         = record.item_loan_url
-            self.date_requested        = record.date_requested
-            self.date_due              = record.date_due
-            self.date_last_notice_sent = record.date_last_notice_sent
-            self.overdue_notices_count = record.overdue_notices_count
-            self.holds_count           = record.holds_count
+            self.item_title         = record.item_title
+            self.item_call_number   = record.item_call_number
+            self.item_location_name = record.item_location_name
+            self.item_location_code = record.item_location_code
+            self.item_loan_status   = record.item_loan_status
+            self.item_tind_id       = record.item_tind_id
+            self.date_modified      = record.date_modified
+            self.item_barcode       = record.item_barcode
+            self.item_type          = record.item_type
+            self.holds_count        = record.holds_count
+            self.item_record_url    = record.item_record_url
+            self.item_details_url   = record.item_details_url
+
+        # FIXME: get the requester name by scraping the record pages
+
 
 
 # Main code.
@@ -187,7 +184,9 @@ def update_google(gs_id, records, user, message_handler):
     for record in records:
         record = GoogleLostRecord(record)
         setattr(record, 'caltech_lostit_user', user)
+        if __debug__: log('will add {}'.format(record.item_barcode))
         data.append(google_row_for_record(record))
+    import pdb; pdb.set_trace()
     if not data:
         return
     creds = spreadsheet_credentials(user, message_handler)
