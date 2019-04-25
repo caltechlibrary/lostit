@@ -14,12 +14,22 @@ open-source software released under a 3-clause BSD license.  Please see the
 file "LICENSE" for more information.
 '''
 
-import requests
+import urllib
+
+from .debug import log
+
+
+# Main functions.
+# .............................................................................
 
 def network_available():
     '''Return True if it appears we have a network connection, False if not.'''
+    r = None
     try:
-        r = requests.get("https://www.google.com")
+        r = urllib.request.urlopen("http://www.google.com")
         return True
-    except requests.ConnectionError:
+    except Exception:
+        if __debug__: log('could not connect to https://www.google.com')
         return False
+    if r:
+        r.close()
