@@ -73,20 +73,21 @@ class GoogleLostRecord(LostRecord):
         self.caltech_lostit_user = ''
         if record:
             self.item_title         = record.item_title
+            self.item_author        = record.item_author
             self.item_call_number   = record.item_call_number
             self.item_location_name = record.item_location_name
             self.item_location_code = record.item_location_code
             self.item_loan_status   = record.item_loan_status
             self.item_tind_id       = record.item_tind_id
-            self.date_modified      = record.date_modified
             self.item_barcode       = record.item_barcode
             self.item_type          = record.item_type
-            self.holds_count        = record.holds_count
             self.item_record_url    = record.item_record_url
             self.item_details_url   = record.item_details_url
-
-        # FIXME: get the requester name by scraping the record pages
-
+            self.holds_count        = record.holds_count
+            self.requester_name     = record.requester_name
+            self.requester_url      = record.requester_url
+            self.date_modified      = record.date_modified
+            self.date_requested     = record.date_requested
 
 
 # Main code.
@@ -104,7 +105,7 @@ def records_from_google(gs_id, user, message_handler):
     if __debug__: log('building records from {} rows', len(spreadsheet_rows) - 1)
     # First row is the title row, so we skip it
     for index, row in enumerate(spreadsheet_rows[1:], start = 1):
-        if not row or len(row) < 16 or row[0] == '':
+        if not row or len(row) < 8 or row[7] == '':
             continue
         record = GoogleLostRecord()
 
@@ -186,7 +187,6 @@ def update_google(gs_id, records, user, message_handler):
         setattr(record, 'caltech_lostit_user', user)
         if __debug__: log('will add {}'.format(record.item_barcode))
         data.append(google_row_for_record(record))
-    import pdb; pdb.set_trace()
     if not data:
         return
     creds = spreadsheet_credentials(user, message_handler)
@@ -249,4 +249,7 @@ def google_flow(secrets_file, scope):
 
 
 def link(value, url):
-    return '=HYPERLINK("{}","{}")'.format(url, value)
+    if value and url:
+        return '=HYPERLINK("{}","{}")'.format(url, value)
+    else:
+        return ''

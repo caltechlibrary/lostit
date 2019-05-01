@@ -142,16 +142,14 @@ class MainBody(Thread):
 
             # Get the data.
             spreadsheet_id = config.get('lostit', 'spreadsheet_id')
-            tracer.update('Connecting to TIND')
             tind_records = records_from_tind(accesser, notifier, tracer)
-            tracer.update('Connecting to Google')
             google_records = records_from_google(spreadsheet_id, accesser.user, notifier)
-            missing_records = records_diff(google_records, tind_records)
-            new_records = list(filter(records_filter('all'), missing_records))
-            if __debug__: log('diff + filter => {} records'.format(len(new_records)))
+            new_records = records_diff(google_records, tind_records)
+            new_records = sorted(new_records, key = lambda r: r.date_requested)
+            if __debug__: log('diff => {} records'.format(len(new_records)))
 
+            # Update the spreadsheet with new records.
             if len(new_records) > 0:
-                # Update the spreadsheet with new records.
                 tracer.update('Updating Google spreadsheet')
                 update_google(spreadsheet_id, new_records, accesser.user, notifier)
 

@@ -20,9 +20,11 @@ from lxml import html
 from bs4 import BeautifulSoup
 
 import lostit
-from lostit.exceptions import *
-from lostit.records import LostRecord
 from lostit.debug import log
+from lostit.exceptions import *
+from lostit.network import net
+from lostit.records import LostRecord
+
 
 
 # Global constants.
@@ -39,6 +41,11 @@ _SHIBBED_LOST_URL = 'https://caltech.tind.io/youraccount/shibboleth?referer=http
 URL to start the Shibboleth authentication process for the Caltech TIND page.
 '''
 
+_NUM_RECORDS_TO_GET = 10
+'''
+How many records to get from Tind.io.
+'''
+
 
 # Class definitions.
 # .............................................................................
@@ -46,15 +53,28 @@ URL to start the Shibboleth authentication process for the Caltech TIND page.
 class TindRecord(LostRecord):
     '''Class to store structured representations of a TIND request.'''
 
-    def __init__(self, json_dict, session):
+    def __init__(self, json_dict, session, notifier = None, tracer = None):
         '''json_record = single 'data' record from the raw json returned by
         the TIND.io ajax call.
         '''
         super().__init__()
         self._orig_data = json_dict
+        self._loan_data = ''
         self._session   = session
+        self._notifier  = notifier
+        self._tracer    = tracer
 
-        self.item_title         = json_dict['title']
+        title_text = json_dict['title']
+        # 'Title' field actually contains author too, so pull it out.
+        if title_text.find(' / '):
+            start = title_text.find(' / ')
+            self.item_title = title_text[:start].strip()
+            self.item_author = title_text[start + 3:].strip()
+        elif title_text.find('[by]') > 0:
+            start = title_text.find('[by]')
+            self.item_title = title_text[:start].strip()
+            self.item_author = title_text[start + 5:].strip()
+
         self.item_call_number   = json_dict['call_no']
         self.item_location_name = json_dict['location_name']
         self.item_location_code = json_dict['location_code']
@@ -69,21 +89,105 @@ class TindRecord(LostRecord):
         self.item_record_url    = 'https://caltech.tind.io' + links['title']
         self.item_details_url   = 'https://caltech.tind.io' + links['barcode']
 
-        # Get these on demand if we need them:
-        # self.requester_name
-        # self.requester_url
+        # These are set on demand below when they're needed, because they
+        # require getting another page from TIND and parsing it.
+        self._requester_name    = ''
+        self._requester_url     = ''
+        self._date_requested    = ''
+        self._date_due          = ''
+
+        # The following need another lookup, but they're not needed, so skip.
         # self.requester_email       = ''
         # self.requester_type        = ''
-        # self.item_author           = ''
-        # self.date_requested        = ''
-        # self.date_due              = ''
+
 
     @property
-    def item_requester_name(self):
-        if not self.item_requester_name:
-            import pdb; pdb.set_trace()
+    def requester_name(self):
+        # Note: the stored value has to be in a property with a different name
+        # (here, with a leading underscore) to avoid infinite cursion.
+        if not self._requester_name:
+            self._fill_requester_info()
+        return self._requester_name
 
-        return self.item_requester_name
+
+    @requester_name.setter
+    def requester_name(self, value):
+        # Note: the stored value has to be in a property with a different name
+        # (here, with a leading underscore) to avoid infinite cursion.
+        self._requester_name = value
+
+
+    @property
+    def requester_url(self):
+        # Note: the stored value has to be in a property with a different name
+        # (here, with a leading underscore) to avoid infinite cursion.
+        if not self._requester_url:
+            self._fill_requester_info()
+        return self._requester_url
+
+
+    @requester_url.setter
+    def requester_url(self, value):
+        # Note: the stored value has to be in a property with a different name
+        # (here, with a leading underscore) to avoid infinite cursion.
+        self._requester_url = value
+
+
+    @property
+    def date_requested(self):
+        # Note: the stored value has to be in a property with a different name
+        # (here, with a leading underscore) to avoid infinite cursion.
+        if not self._date_requested:
+            self._fill_requester_info()
+        return self._date_requested
+
+
+    @date_requested.setter
+    def date_requested(self, value):
+        # Note: the stored value has to be in a property with a different name
+        # (here, with a leading underscore) to avoid infinite cursion.
+        self._date_requested = value
+
+
+    @property
+    def date_due(self):
+        # Note: the stored value has to be in a property with a different name
+        # (here, with a leading underscore) to avoid infinite cursion.
+        if not self._date_due:
+            self._fill_requester_info()
+        return self._date_due
+
+
+    @date_due.setter
+    def date_due(self, value):
+        # Note: the stored value has to be in a property with a different name
+        # (here, with a leading underscore) to avoid infinite cursion.
+        self._date_due = value
+
+
+    def _fill_requester_info(self):
+        loans = tind_loan_details(self.item_tind_id, self._session,
+                                  self._notifier, self._tracer)
+        if not loans:
+            self._requester_name = ''
+            self._requester_url = ''
+            self._date_requested = ''
+            self._date_due = ''
+            return
+
+        # Save the loans page in case we need it later, and start parsing.
+        self._loan_data = loans
+        soup = BeautifulSoup(loans, features='lxml')
+
+        # Get the last borrower found in the table.
+        tables = soup.body.find_all('table')
+        borrower_table = tables[1]
+        last_row = borrower_table.find_all('tr')[-1]
+        cells = last_row.find_all('td')
+        self._requester_name = cells[0].get_text()
+        self._requester_url = cells[0].a['href']
+        self._date_requested = cells[2].get_text()
+        self._date_due = cells[3].get_text()
 
 
 # Login code.
@@ -101,7 +205,7 @@ def records_from_tind(access_handler, notifier, tracer):
         if __debug__: log('record list from tind is empty')
         return []
     if __debug__: log('got {} records from tind.io', num_records)
-    return [TindRecord(r, session) for r in json_data['data']]
+    return [TindRecord(r, session, notifier, tracer) for r in json_data['data']]
 
 
 def tind_session(access_handler, notifier, tracer):
@@ -125,7 +229,10 @@ def tind_session(access_handler, notifier, tracer):
             raise ServiceFailure(details)
 
         # Now do the login step.
-        user, pswd, cancelled = access_handler.name_and_password()
+        #user, pswd, cancelled = access_handler.name_and_password()
+        user = 'mhucka'
+        pswd = '(@cit4me2day)'
+        cancelled = False
         if cancelled:
             if __debug__: log('user cancelled out of login dialog')
             raise UserCancelled
@@ -222,7 +329,7 @@ def tind_json(session, notifier, tracer):
             'draw': 2,
             # Arbitrary number; assumption is Lost It will be run frequently
             # enought that 100 is sure to encompass changes since last run.
-            'length': 100,
+            'length': _NUM_RECORDS_TO_GET,
             'start': 1,
             'table_name': 'crcITEM'}
 
@@ -250,6 +357,22 @@ def sso_login_data(user, pswd):
     }
 
 
-def tind_loan_details():
-    #https://caltech.tind.io/admin2/bibcirculation/get_item_loans_details?ln=en&recid=738231
-    pass
+def tind_loan_details(tind_id, session, notifier, tracer):
+    url = 'https://caltech.tind.io/admin2/bibcirculation/get_item_loans_details?ln=en&recid=' + str(tind_id)
+    try:
+        tracer.update('Getting details from Tind for {}'.format(tind_id))
+        (resp, error) = net('get', url, session = session, allow_redirects = True)
+        if isinstance(error, NoContent):
+            if __debug__: log('server returned a "no content" code')
+            return ''
+        elif error:
+            raise error
+        elif resp == None:
+            raise InternalError('Unexpected network return value')
+        else:
+            content = str(resp.content)
+            return content if content.find('There are no loans') < 0 else ''
+    except Exception as err:
+        details = 'exception connecting to tind.io: {}'.format(err)
+        notifier.fatal('Failed to connect to tind.io -- try again later', details)
+        raise ServiceFailure(details)
