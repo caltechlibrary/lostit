@@ -15,6 +15,8 @@ file "LICENSE" for more information.
 '''
 
 import json
+from   nameparser import HumanName
+import re
 import requests
 from lxml import html
 from bs4 import BeautifulSoup
@@ -41,7 +43,7 @@ _SHIBBED_LOST_URL = 'https://caltech.tind.io/youraccount/shibboleth?referer=http
 URL to start the Shibboleth authentication process for the Caltech TIND page.
 '''
 
-_NUM_RECORDS_TO_GET = 10
+_NUM_RECORDS_TO_GET = 4
 '''
 How many records to get from Tind.io.
 '''
@@ -65,15 +67,20 @@ class TindRecord(LostRecord):
         self._tracer    = tracer
 
         title_text = json_dict['title']
+        author_text = ''
         # 'Title' field actually contains author too, so pull it out.
-        if title_text.find(' / '):
+        if title_text.find(' / ') > 0:
             start = title_text.find(' / ')
             self.item_title = title_text[:start].strip()
-            self.item_author = title_text[start + 3:].strip()
+            author_text = title_text[start + 3:].strip()
         elif title_text.find('[by]') > 0:
             start = title_text.find('[by]')
             self.item_title = title_text[:start].strip()
-            self.item_author = title_text[start + 5:].strip()
+            author_text = title_text[start + 5:].strip()
+        else:
+            self.item_title = title_text
+        if author_text:
+            self.item_author = extract_first_author(author_text)
 
         self.item_call_number   = json_dict['call_no']
         self.item_location_name = json_dict['location_name']
@@ -376,3 +383,32 @@ def tind_loan_details(tind_id, session, notifier, tracer):
         details = 'exception connecting to tind.io: {}'.format(err)
         notifier.fatal('Failed to connect to tind.io -- try again later', details)
         raise ServiceFailure(details)
+
+
+def extract_first_author(author_text):
+    # Preprocessing for some inconsistent cases.
+    if author_text.endswith('.'):
+        author_text = author_text[:-1]
+    if author_text.startswith('by'):
+        author_text = author_text[3:]
+
+    # Find the first author or editor.
+    if author_text.startswith('edited by'):
+        fragment = author_text[10:]
+        if fragment.find('and') > 0:
+            start = fragment.find('and')
+            first_author = fragment[:start].strip()
+        elif fragment.find('...') > 0:
+            start = fragment.find('...')
+            first_author = fragment[:start].strip()
+        else:
+            first_author = fragment
+    else:
+        author_list = re.split('\s\[?and\]?\s|,|\.\.\.|;', author_text)
+        first_author = author_list[0].strip()
+
+    # Extract the last name if possible and return it.
+    try:
+        return HumanName(first_author).last
+    except:
+        return first_author
