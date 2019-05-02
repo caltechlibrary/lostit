@@ -15,6 +15,7 @@ file "LICENSE" for more information.
 '''
 
 from apiclient.discovery import build
+from datetime import datetime
 from httplib2 import Http
 from oauth2client import client, tools
 from oauth2client.client import OAuth2WebServerFlow
@@ -217,18 +218,19 @@ def google_row_for_record(record):
         return link(r.requester_name, r.requester_url)
 
     def linked_item_barcode(r):
-        return link(r.item_barcode, r.item_record_url)
+        return link(r.item_barcode, r.item_details_url)
 
-    a = record.date_requested
-    b = linked_requester_name(record)
-    c = record.requester_email
+    a = datetime.today().strftime('%Y-%m-%d')
+    b = record.date_requested
+    c = linked_requester_name(record)
     d = record.item_title
     e = record.item_author
     f = record.item_tind_id
     g = record.item_call_number
     h = linked_item_barcode(record)
     i = record.item_location_code
-    return [a, b, c, d, e, f, g, h, i]
+    j = record.item_location_name
+    return [a, b, c, d, e, f, g, h, i, j]
 
 
 def google_flow(secrets_file, scope):
