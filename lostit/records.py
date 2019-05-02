@@ -14,9 +14,10 @@ open-source software released under a 3-clause BSD license.  Please see the
 file "LICENSE" for more information.
 '''
 
+from datetime import datetime
+
 import lostit
 from lostit.debug import log
-
 
 
 # Class definitions.
@@ -51,6 +52,7 @@ class LostRecord(object):
         self.date_requested = ''               # String (date)
         self.date_due = ''                     # String (date)
         self.date_last_notice_sent = ''        # String (date)
+        self.date_lostit_recorded = ''         # String (date)
 
 
 # Utility functions.
@@ -63,10 +65,11 @@ def records_diff(known_records, new_records):
     # This assumes that no two lost items will ever have the same barcode,
     # because lost items are replaced with items that have a different barcode.
     diffs = []
+    today = datetime.today().strftime('%Y-%m-%d')
     for candidate in new_records:
         matched = [record for record in known_records
                    if (record.item_barcode == candidate.item_barcode
-                       and record.date_requested == candidate.date_requested)]
+                       and record.date_lostit_recorded >= today)]
         if not matched:
             diffs.append(candidate)
     if __debug__: log('found {} different records', len(diffs))
