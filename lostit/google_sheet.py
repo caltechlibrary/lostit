@@ -111,19 +111,16 @@ def records_from_google(gs_id, user, message_handler):
         record = GoogleLostRecord()
 
         cell = row[0]
-        record.date_requested = cell.strip()
+        record.date_lostit_recorded = cell.strip()
 
         cell = row[1]
-        record.requester_name = cell.strip()
+        record.date_requested = cell.strip()
 
         cell = row[2]
-        record.requester_email = cell.strip()
+        record.requester_name = cell.strip()
 
         cell = row[3]
         record.item_title = cell.strip()
-
-        cell = row[4]
-        record.item_author = cell.strip()
 
         cell = row[4]
         record.item_author = cell.strip()
@@ -139,6 +136,9 @@ def records_from_google(gs_id, user, message_handler):
 
         cell = row[8]
         record.item_location_code = cell.strip().lower()
+
+        cell = row[9]
+        record.item_location_name = cell.strip()
 
         results.append(record)
     return results
