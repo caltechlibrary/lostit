@@ -96,17 +96,6 @@ class TindRecord(LostRecord):
         self.item_record_url    = 'https://caltech.tind.io' + links['title']
         self.item_details_url   = 'https://caltech.tind.io' + links['barcode']
 
-        # These are set on demand below when they're needed, because they
-        # require getting another page from TIND and parsing it.
-        self._requester_name    = ''
-        self._requester_url     = ''
-        self._date_requested    = ''
-        self._date_due          = ''
-
-        # The following need another lookup, but they're not needed, so skip.
-        # self.requester_email       = ''
-        # self.requester_type        = ''
-
 
     @property
     def requester_name(self):
@@ -327,7 +316,7 @@ def tind_json(session, notifier, tracer):
     # to order the output by a given column, the column needs to be identified.
 
     data = {'columns': [{'data': 'modification_date',
-                         'name': 'modification_date',
+                         'name': 'title',
                          'orderable': True,
                          'search': {'regex': False, 'value': ''},
                          'searchable': True}],
@@ -340,6 +329,7 @@ def tind_json(session, notifier, tracer):
             'start': 1,
             'table_name': 'crcITEM'}
 
+    tracer.update('Getting records from TIND')
     try:
         if __debug__: log('issuing ajax call to tind.io')
         res = session.post(ajax_url, headers = ajax_headers, json = data)
