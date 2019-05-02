@@ -272,7 +272,9 @@ class LostItMainFrame(wx.Frame):
 
 
     def progress_message(self, message):
+        self.text_area.SetInsertionPointEnd()
         self.text_area.AppendText(message + ' ...\n')
+        self.text_area.ShowPosition(self.text_area.GetLastPosition())
 
 
     def login_dialog(self, results, user, password):
