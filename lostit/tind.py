@@ -43,7 +43,7 @@ _SHIBBED_LOST_URL = 'https://caltech.tind.io/youraccount/shibboleth?referer=http
 URL to start the Shibboleth authentication process for the Caltech TIND page.
 '''
 
-_NUM_RECORDS_TO_GET = 4
+_NUM_RECORDS_TO_GET = 100
 '''
 How many records to get from Tind.io.
 '''
@@ -80,7 +80,7 @@ class TindRecord(LostRecord):
         else:
             self.item_title = title_text
         if author_text:
-            self.item_author = extract_first_author(author_text)
+            self.item_author = first_author(author_text)
 
         self.item_call_number   = json_dict['call_no']
         self.item_location_name = json_dict['location_name']
@@ -100,7 +100,7 @@ class TindRecord(LostRecord):
     @property
     def requester_name(self):
         # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite cursion.
+        # (here, with a leading underscore) to avoid infinite recursion.
         if not self._requester_name:
             self._fill_requester_info()
         return self._requester_name
@@ -109,14 +109,14 @@ class TindRecord(LostRecord):
     @requester_name.setter
     def requester_name(self, value):
         # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite cursion.
+        # (here, with a leading underscore) to avoid infinite recursion.
         self._requester_name = value
 
 
     @property
     def requester_url(self):
         # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite cursion.
+        # (here, with a leading underscore) to avoid infinite recursion.
         if not self._requester_url:
             self._fill_requester_info()
         return self._requester_url
@@ -125,14 +125,14 @@ class TindRecord(LostRecord):
     @requester_url.setter
     def requester_url(self, value):
         # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite cursion.
+        # (here, with a leading underscore) to avoid infinite recursion.
         self._requester_url = value
 
 
     @property
     def date_requested(self):
         # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite cursion.
+        # (here, with a leading underscore) to avoid infinite recursion.
         if not self._date_requested:
             self._fill_requester_info()
         return self._date_requested
@@ -141,14 +141,14 @@ class TindRecord(LostRecord):
     @date_requested.setter
     def date_requested(self, value):
         # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite cursion.
+        # (here, with a leading underscore) to avoid infinite recursion.
         self._date_requested = value
 
 
     @property
     def date_due(self):
         # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite cursion.
+        # (here, with a leading underscore) to avoid infinite recursion.
         if not self._date_due:
             self._fill_requester_info()
         return self._date_due
@@ -157,7 +157,7 @@ class TindRecord(LostRecord):
     @date_due.setter
     def date_due(self, value):
         # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite cursion.
+        # (here, with a leading underscore) to avoid infinite recursion.
         self._date_due = value
 
 
@@ -225,10 +225,7 @@ def tind_session(access_handler, notifier, tracer):
             raise ServiceFailure(details)
 
         # Now do the login step.
-        #user, pswd, cancelled = access_handler.name_and_password()
-        user = 'mhucka'
-        pswd = '(@cit4me2day)'
-        cancelled = False
+        user, pswd, cancelled = access_handler.name_and_password()
         if cancelled:
             if __debug__: log('user cancelled out of login dialog')
             raise UserCancelled
@@ -357,7 +354,8 @@ def sso_login_data(user, pswd):
 def tind_loan_details(tind_id, session, notifier, tracer):
     url = 'https://caltech.tind.io/admin2/bibcirculation/get_item_loans_details?ln=en&recid=' + str(tind_id)
     try:
-        tracer.update('Getting details from Tind for {}'.format(tind_id))
+        if tracer:
+            tracer.update('Getting details from Tind for {}'.format(tind_id))
         (resp, error) = net('get', url, session = session, allow_redirects = True)
         if isinstance(error, NoContent):
             if __debug__: log('server returned a "no content" code')
@@ -371,11 +369,12 @@ def tind_loan_details(tind_id, session, notifier, tracer):
             return content if content.find('There are no loans') < 0 else ''
     except Exception as err:
         details = 'exception connecting to tind.io: {}'.format(err)
-        notifier.fatal('Failed to connect to tind.io -- try again later', details)
+        if notifier:
+            notifier.fatal('Failed to connect to tind.io -- try again later', details)
         raise ServiceFailure(details)
 
 
-def extract_first_author(author_text):
+def first_author(author_text):
     # Preprocessing for some inconsistent cases.
     if author_text.endswith('.'):
         author_text = author_text[:-1]
