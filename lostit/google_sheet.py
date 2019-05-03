@@ -116,7 +116,7 @@ def records_from_google(gs_id, user, message_handler):
     results = []
     if __debug__: log('building records from {} rows', len(spreadsheet_rows) - 1)
     # First row is the title row, so we skip it
-    for index, row in enumerate(spreadsheet_rows[1:], start = 1):
+    for row in spreadsheet_rows[1:]:
         if not row or row[7] == '':
             continue
         results.append(GoogleLostRecord(row = row))
