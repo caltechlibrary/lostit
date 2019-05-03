@@ -84,23 +84,3 @@ def records_filter(method = 'all'):
     # FIXME. It seemed like it might be useful to provide filtering features
     # in the future, but this is currently a no-op.
     return (lambda x: True)
-
-
-# Debugging aids.
-
-def print_records(records_list, specific = None):
-    for record in records_list:
-        print('title: {}\nbarcode: {}\nlocation: {}\ndate requested: {}\nrequester name: {}\nstatus in TIND: {}\n\n'
-              .format(record.item_title,
-                      record.item_barcode,
-                      record.item_location_code,
-                      record.date_requested,
-                      record.requester_name,
-                      record.item_loan_status))
-
-
-def find_record(barcode, records_list):
-    for record in records_list:
-        if record.item_barcode == barcode:
-            return record
-    return None
