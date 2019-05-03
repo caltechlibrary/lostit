@@ -31,8 +31,6 @@ class LostRecord(object):
 
     def __init__(self):
         self.requester_name = ''               # String
-        self.requester_email = ''              # String -- note: not used
-        self.requester_type = ''               # String
         self.requester_url = ''                # String
 
         self.item_title = ''                   # String
@@ -46,12 +44,9 @@ class LostRecord(object):
         self.item_location_name = ''           # String
         self.item_location_code = ''           # String
         self.item_loan_status = ''             # String
-        self.item_loan_url = ''                # String
 
         self.date_modified = ''                # String (date)
         self.date_requested = ''               # String (date)
-        self.date_due = ''                     # String (date)
-        self.date_last_notice_sent = ''        # String (date)
         self.date_lostit_recorded = ''         # String (date)
 
 
