@@ -61,6 +61,8 @@ def records_diff(known_records, new_records):
     # because lost items are replaced with items that have a different barcode.
     diffs = []
     today = datetime.today().strftime('%Y-%m-%d')
+    if __debug__: log('comparing {} known against {} new records',
+                      len(known_records), len(new_records))
     for candidate in new_records:
         matched = [record for record in known_records
                    if (record.item_barcode == candidate.item_barcode
