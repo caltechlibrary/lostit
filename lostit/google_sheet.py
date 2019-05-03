@@ -65,7 +65,7 @@ _GS_BASE_URL = 'https://docs.google.com/spreadsheets/d/'
 class GoogleLostRecord(LostRecord):
     '''Class to represent a hold request as it appears in the spreadsheet.'''
 
-    def __init__(self, record = None):
+    def __init__(self, record = None, row = None):
         '''Initialize using a TindRecord.'''
 
         super().__init__()
@@ -89,6 +89,17 @@ class GoogleLostRecord(LostRecord):
             self.date_modified        = record.date_modified
             self.date_requested       = record.date_requested
             self.date_lostit_recorded = record.date_lostit_recorded
+        if row:
+            self.date_lostit_recorded = row[0].strip()
+            self.date_requested       = row[1].strip()
+            self.requester_name       = row[2].strip()
+            self.item_title           = row[3].strip()
+            self.item_author          = row[4].strip()
+            self.item_tind_id         = row[5].strip()
+            self.item_call_number     = row[6].strip()
+            self.item_barcode         = row[7].strip()
+            self.item_location_code   = row[8].strip().lower()
+            self.item_location_name   = row[9].strip()
 
 
 # Main code.
@@ -106,41 +117,9 @@ def records_from_google(gs_id, user, message_handler):
     if __debug__: log('building records from {} rows', len(spreadsheet_rows) - 1)
     # First row is the title row, so we skip it
     for index, row in enumerate(spreadsheet_rows[1:], start = 1):
-        if not row or len(row) < 8 or row[7] == '':
+        if not row or row[7] == '':
             continue
-        record = GoogleLostRecord()
-
-        cell = row[0]
-        record.date_lostit_recorded = cell.strip()
-
-        cell = row[1]
-        record.date_requested = cell.strip()
-
-        cell = row[2]
-        record.requester_name = cell.strip()
-
-        cell = row[3]
-        record.item_title = cell.strip()
-
-        cell = row[4]
-        record.item_author = cell.strip()
-
-        cell = row[5]
-        record.item_tind_id = cell.strip()
-
-        cell = row[6]
-        record.item_call_number = cell.strip()
-
-        cell = row[7]
-        record.item_barcode = cell.strip()
-
-        cell = row[8]
-        record.item_location_code = cell.strip().lower()
-
-        cell = row[9]
-        record.item_location_name = cell.strip()
-
-        results.append(record)
+        results.append(GoogleLostRecord(row = row))
     return results
 
 
@@ -184,7 +163,7 @@ def spreadsheet_content(gs_id, user, message_handler):
 def update_google(gs_id, records, user, message_handler):
     data = []
     for record in records:
-        record = GoogleLostRecord(record)
+        record = GoogleLostRecord(record = record)
         setattr(record, 'caltech_lostit_user', user)
         if __debug__: log('will add {}'.format(record.item_barcode))
         data.append(google_row_for_record(record))
