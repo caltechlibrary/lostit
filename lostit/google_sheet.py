@@ -73,22 +73,22 @@ class GoogleLostRecord(LostRecord):
         self.caltech_staff_initials = ''
         self.caltech_lostit_user = ''
         if record:
-            self.item_title         = record.item_title
-            self.item_author        = record.item_author
-            self.item_call_number   = record.item_call_number
-            self.item_location_name = record.item_location_name
-            self.item_location_code = record.item_location_code
-            self.item_loan_status   = record.item_loan_status
-            self.item_tind_id       = record.item_tind_id
-            self.item_barcode       = record.item_barcode
-            self.item_type          = record.item_type
-            self.item_record_url    = record.item_record_url
-            self.item_details_url   = record.item_details_url
-            self.holds_count        = record.holds_count
-            self.requester_name     = record.requester_name
-            self.requester_url      = record.requester_url
-            self.date_modified      = record.date_modified
-            self.date_requested     = record.date_requested
+            self.item_title           = record.item_title
+            self.item_author          = record.item_author
+            self.item_type            = record.item_type
+            self.item_details_url     = record.item_details_url
+            self.item_record_url      = record.item_record_url
+            self.item_tind_id         = record.item_tind_id
+            self.item_call_number     = record.item_call_number
+            self.item_barcode         = record.item_barcode
+            self.item_location_name   = record.item_location_name
+            self.item_location_code   = record.item_location_code
+            self.item_loan_status     = record.item_loan_status
+            self.requester_name       = record.requester_name
+            self.requester_url        = record.requester_url
+            self.date_modified        = record.date_modified
+            self.date_requested       = record.date_requested
+            self.date_lostit_recorded = record.date_lostit_recorded
 
 
 # Main code.
