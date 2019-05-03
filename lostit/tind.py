@@ -45,7 +45,7 @@ URL to start the Shibboleth authentication process for the Caltech TIND page.
 
 _NUM_RECORDS_TO_GET = 100
 '''
-How many records to get from Tind.io.
+How many recent records to get from Tind.io.
 '''
 
 
@@ -186,7 +186,7 @@ class TindRecord(LostRecord):
         self._date_due = cells[3].get_text()
 
 
-# Login code.
+# TIND interface code.
 # .............................................................................
 
 def records_from_tind(access_handler, notifier, tracer):
@@ -235,7 +235,10 @@ def tind_session(access_handler, notifier, tracer):
         tree = html.fromstring(res.content)
         sessionid = session.cookies.get('JSESSIONID')
         next_url = 'https://idp.caltech.edu/idp/profile/SAML2/Redirect/SSO;jsessionid={}?execution=e1s1'.format(sessionid)
-        login_data = sso_login_data(user, pswd)
+        login_data = {'timezoneOffset'   : 0,
+                      'j_username'       : user,
+                      'j_password'       : pswd,
+                      '_eventId_proceed' : 'Log In'}
         try:
             if __debug__: log('issuing network post to idp.caltech.edu')
             res = session.post(next_url, data = login_data, allow_redirects = True)
@@ -276,6 +279,8 @@ def tind_session(access_handler, notifier, tracer):
 
 
 def tind_json(session, notifier, tracer):
+    '''Return the data from using AJAX to search tind.io's global lists.'''
+
     # At this point, the session object has Invenio session cookies and
     # Shibboleth IDP session data.  Now we have to invoke the Ajax call that
     # would be triggered by typing in the search box and clicking "Search" at
@@ -320,15 +325,13 @@ def tind_json(session, notifier, tracer):
             'order': [{'column': 0, 'dir': 'desc'}],
             'search': {'regex': False, 'value': 'status:lost'},
             'draw': 2,
-            # Arbitrary number; assumption is Lost It will be run frequently
-            # enought that 100 is sure to encompass changes since last run.
             'length': _NUM_RECORDS_TO_GET,
             'start': 1,
             'table_name': 'crcITEM'}
 
     tracer.update('Getting records from TIND')
     try:
-        if __debug__: log('issuing ajax call to tind.io')
+        if __debug__: log('posting ajax call to tind.io')
         res = session.post(ajax_url, headers = ajax_headers, json = data)
     except Exception as err:
         details = 'exception connecting to tind.io bibcirculation page {}'.format(err)
@@ -342,16 +345,9 @@ def tind_json(session, notifier, tracer):
     return res.json()
 
 
-def sso_login_data(user, pswd):
-    return {
-        'timezoneOffset'   : 0,
-        'j_username'       : user,
-        'j_password'       : pswd,
-        '_eventId_proceed' : 'Log In'
-    }
-
-
 def tind_loan_details(tind_id, session, notifier, tracer):
+    '''Get the HTML of a loans detail page from TIND.io.'''
+
     url = 'https://caltech.tind.io/admin2/bibcirculation/get_item_loans_details?ln=en&recid=' + str(tind_id)
     try:
         if tracer:
@@ -373,6 +369,9 @@ def tind_loan_details(tind_id, session, notifier, tracer):
             notifier.fatal('Failed to connect to tind.io -- try again later', details)
         raise ServiceFailure(details)
 
+
+# Miscellaneous utilities.
+# .............................................................................
 
 def first_author(author_text):
     # Preprocessing for some inconsistent cases.
