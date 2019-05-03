@@ -87,20 +87,22 @@ class TindRecord(LostRecord):
         self.item_location_code = json_dict['location_code']
         self.item_loan_status   = json_dict['status']
         self.item_tind_id       = json_dict['id_bibrec']
-        self.date_modified      = json_dict['modification_date']
         self.item_barcode       = json_dict['barcode']
         self.item_type          = json_dict['item_type']
         self.holds_count        = json_dict['number_of_requests']
+        self.date_modified      = json_dict['modification_date']
 
         links                   = json_dict['links']
         self.item_record_url    = 'https://caltech.tind.io' + links['title']
         self.item_details_url   = 'https://caltech.tind.io' + links['barcode']
 
 
+    # Note: in the following property handlers setters, the stored value has
+    # to be in a property with a DIFFERENT NAME (here, with a leading
+    # underscore) to avoid infinite recursion.
+
     @property
     def requester_name(self):
-        # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite recursion.
         if not self._requester_name:
             self._fill_requester_info()
         return self._requester_name
@@ -108,15 +110,11 @@ class TindRecord(LostRecord):
 
     @requester_name.setter
     def requester_name(self, value):
-        # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite recursion.
         self._requester_name = value
 
 
     @property
     def requester_url(self):
-        # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite recursion.
         if not self._requester_url:
             self._fill_requester_info()
         return self._requester_url
@@ -124,15 +122,11 @@ class TindRecord(LostRecord):
 
     @requester_url.setter
     def requester_url(self, value):
-        # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite recursion.
         self._requester_url = value
 
 
     @property
     def date_requested(self):
-        # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite recursion.
         if not self._date_requested:
             self._fill_requester_info()
         return self._date_requested
@@ -140,15 +134,11 @@ class TindRecord(LostRecord):
 
     @date_requested.setter
     def date_requested(self, value):
-        # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite recursion.
         self._date_requested = value
 
 
     @property
     def date_due(self):
-        # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite recursion.
         if not self._date_due:
             self._fill_requester_info()
         return self._date_due
@@ -156,8 +146,6 @@ class TindRecord(LostRecord):
 
     @date_due.setter
     def date_due(self, value):
-        # Note: the stored value has to be in a property with a different name
-        # (here, with a leading underscore) to avoid infinite recursion.
         self._date_due = value
 
 
