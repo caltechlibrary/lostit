@@ -71,3 +71,4 @@ README.html
 ABOUT.html
 *.~is
 dev/installers/windows/lostit_innosetup_script.iss
+lostit/data/help.html
