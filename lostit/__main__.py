@@ -99,13 +99,13 @@ def main(user = 'U', pswd = 'P',
 
     # Start the worker thread.
     if __debug__: log('starting main body thread')
-    controller.start(MainBody(view_sheet, debug, controller, tracer, accesser, notifier))
+    controller.start(MainBody(view_sheet, debug, controller, accesser, notifier, tracer))
 
 
 class MainBody(Thread):
     '''Main body of Lost It! implemented as a Python thread.'''
 
-    def __init__(self, view_sheet, debug, controller, tracer, accesser, notifier):
+    def __init__(self, view_sheet, debug, controller, accesser, notifier, tracer):
         '''Initializes main thread object but does not start the thread.'''
         Thread.__init__(self, name = "MainBody")
         self._view_sheet = view_sheet
@@ -138,29 +138,31 @@ class MainBody(Thread):
         # Let's do this thing.
         try:
             config = Config(path.join(module_path(), "lostit.ini"))
-            spreadsheet_id = config.get('lostit', 'spreadsheet_id')
+            tind   = Tind(accesser, notifier, tracer)
+            google = Google(accesser, notifier, tracer)
+            sid    = config.get('lostit', 'spreadsheet_id')
 
             # Get the data.
-            tind = Tind(accesser, notifier, tracer)
-            google = Google(accesser, notifier, tracer)
             tind_records = tind.records()
-            google_records = google.records(spreadsheet_id)
+            google_records = google.records(sid, tab = 0) + google.records(sid, tab = 1)
+
+            # Figure out what's new.
+            tracer.update('Comparing TIND records to our spreadsheet')
             new_records = records_diff(google_records, tind_records)
-            import pdb; pdb.set_trace()
-            new_records = sorted(new_records, key = lambda r: r.date_requested)
-            if __debug__: log('diff => {} records'.format(len(new_records)))
+            tracer.update('Found {} new records'.format(len(new_records)))
 
             # Update the Google spreadsheet with new records.
             if len(new_records) > 0:
+                new_records = sorted(new_records, key = lambda r: r.date_requested)
                 tracer.update('Updating Google spreadsheet')
-                Google.update(spreadsheet_id, new_records)
+                google.update(sid, new_records)
 
             # Open the spreadsheet too, if requested.
             if isinstance(notifier, MessageHandlerGUI):
                 if notifier.yes_no('Open the tracking spreadsheet?'):
-                    Google.open(spreadsheet_id)
+                    google.open(sid)
             elif view_sheet:
-                Google.open(spreadsheet_id)
+                google.open(sid)
         except (KeyboardInterrupt, UserCancelled) as err:
             tracer.stop('Quitting.')
             controller.stop()
