@@ -113,6 +113,7 @@ class Google(object):
         self._accesser = accesser
         self._notifier = notifier
         self._tracer   = tracer
+        self._creds    = None
 
 
     def open(self, gs_id):
@@ -121,10 +122,10 @@ class Google(object):
         open_url(_GS_BASE_URL + gs_id)
 
 
-    def records(self, gs_id):
+    def records(self, gs_id, tab = 0):
         '''Returns a list of GoogleLostRecord objects.'''
         if __debug__: log('getting entries from Google spreadsheet')
-        sheet_rows = self._contents(gs_id)
+        sheet_rows = self._content(gs_id, tab)
         if __debug__: log('building records from {} rows', len(sheet_rows) - 1)
         results = []
         # First row is the title row, so we skip it.
@@ -146,14 +147,23 @@ class Google(object):
             return
         creds = self._credentials()
         if __debug__: log('building Google sheets service object')
-        google_api = build('sheets', 'v4', http = creds.authorize(Http()),
-                           cache_discovery = False)
-        service = google_api.spreadsheets().values()
+        gsheets = build('sheets', 'v4', http = creds.authorize(Http()),
+                        cache_discovery = False).spreadsheets()
         body = {'values': data}
+        num_rows = len(data)
         try:
-            if __debug__: log('calling Google API for updating data')
-            result = service.append(spreadsheetId = gs_id, range = 'A:Z', body = body,
-                                    valueInputOption = 'USER_ENTERED').execute()
+            if __debug__: log('updating {} rows in Google'.format(num_rows))
+            values = gsheets.values()
+            result = values.append(spreadsheetId = gs_id, range = 'A:Z', body = body,
+                                   valueInputOption = 'USER_ENTERED').execute()
+            if 'updates' in result:
+                if result['updates']['updatedRows'] < num_rows:
+                    self._notifier.warn('Failed to write all rows in spreadsheet')
+                else:
+                    if __debug__: log('successfully wrote rows in spreadsheet')
+            else:
+                # FIXME is it worth detecting this condition?  Can it happen?
+                pass
         except Exception as err:
             text = 'attempted connection to Google resulted in {}'.format(err)
             if __debug__: log(text)
@@ -165,15 +175,27 @@ class Google(object):
     # The credentials and connection code is based on the Google examples
     # found at https://developers.google.com/sheets/api/quickstart/python
 
-    def _contents(self, gs_id):
+    def _content(self, gs_id, tab = 0):
         creds = self._credentials()
         if __debug__: log('building Google sheets service object')
-        google_api = build('sheets', 'v4', http = creds.authorize(Http()),
-                           cache_discovery = False)
-        service = google_api.spreadsheets().values()
+        gsheets = build('sheets', 'v4', http = creds.authorize(Http()),
+                        cache_discovery = False).spreadsheets()
+        sheet_name = ''
+        if tab > 0:
+            if __debug__: log('getting metadata for Google sheet {}'.format(gs_id))
+            metadata = gsheets.get(spreadsheetId = gs_id).execute().get('sheets', '')
+            if tab > len(metadata):
+                self._notifier.error('Spreadsheet structure has changed')
+                raise InternalError(text)
+            if 'properties' not in metadata[tab]:
+                self._notifier.error('Google sheet data not in expected format')
+                raise InternalError(text)
+            sheet_name = metadata[tab]['properties']['title']
         try:
             # If you don't supply sheet name in the range arg, you get 1st sheet
-            data = service.get(spreadsheetId = gs_id, range = 'A:Z').execute()
+            values = gsheets.values()
+            range = '{}!A:Z'.format(sheet_name) if sheet_name else 'A:Z'
+            data = values.get(spreadsheetId = gs_id, range = range).execute()
         except Exception as err:
             text = 'attempted connection to Google resulted in {}'.format(err)
             if __debug__: log(text)
@@ -184,6 +206,9 @@ class Google(object):
 
 
     def _credentials(self):
+        if self._creds:
+            if __debug__: log('returning stored creds for Google API')
+            return self._creds
         if __debug__: log('getting token for Google API')
         store = token_storage('Lost It!', self._accesser.user)
         creds = store.get()
@@ -200,6 +225,7 @@ class Google(object):
         if not creds:
             self._notifier.error('Failed to get Google API token')
             raise InternalError('Failed to get Google API token')
+        self._creds = creds
         return creds
 
 
