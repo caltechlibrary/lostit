@@ -15,7 +15,6 @@ import sys
 # The list must contain tuples: ('file', 'destination directory').
 data_files = [ ('lostit\lostit.ini', 'lostit'),
                ('lostit\data\client_secrets.json', 'lostit\data'),
-               ('lostit\data\default_template.docx', 'lostit\data'),
                ('lostit\data\help.html', 'lostit\data') ]
 
 configuration = Analysis([r'lostit\__main__.py'],
@@ -44,7 +43,7 @@ executable         = EXE(application_pyz,
                          configuration.zipfiles,
                          configuration.datas,
                          name = 'Lostit',
-                         icon = r'dev\icons\generated-icons\lostit-icon-256px.ico',
+                         icon = r'dev\icons\generated-icons\lostit-icon-512px.ico',
                          debug = False,
                          strip = False,
                          upx = True,
@@ -54,7 +53,7 @@ executable         = EXE(application_pyz,
 
 app             = BUNDLE(executable,
                          name = 'Lostit.exe',
-                         icon = r'dev\icons\generated-icons\lostit-icon-256px.ico',
+                         icon = r'dev\icons\generated-icons\lostit-icon-512px.ico',
                          bundle_identifier = None,
                          info_plist = {'NSHighResolutionCapable': 'True'},
                         )
