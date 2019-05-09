@@ -49,6 +49,41 @@ class LostRecord(object):
         self.date_requested = ''               # String (date)
         self.date_lostit_recorded = ''         # String (date)
 
+
+    def __repr__(self):
+        r = (' requested ' + self.date_requested) if self.date_requested else ''
+        return '<Lost {}{}>'.format(self.item_barcode, r)
+
+
+    def __hash__(self):
+        return hash(self.item_barcode + self.requester_name + self.date_requested)
+
+
+    def __eq__(self, other):
+        return (self.item_barcode == other.item_barcode
+                and self.requester_name == other.requester_name
+                and self.date_requested == other.date_requested)
+
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
+    def __gt__(self, other):
+        return not __le__(self, other)
+
+
+    def __le__(self, other):
+        return repr(self) <= repr(other)
+
+
+    def __ge__(self, other):
+        return not __lt__(self, other)
+
+
+    def __lt__(self, other):
+        return repr(self) < repr(other)
+
 
 # Utility functions.
 # .............................................................................

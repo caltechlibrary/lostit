@@ -24,19 +24,18 @@ from   threading import Thread
 import traceback
 
 import lostit
-from lostit.control import LostItControlGUI, LostItControlCLI
 from lostit.access import AccessHandlerGUI, AccessHandlerCLI
-from lostit.progress import ProgressIndicatorGUI, ProgressIndicatorCLI
-from lostit.messages import MessageHandlerGUI, MessageHandlerCLI
 from lostit.config import Config
-from lostit.records import records_diff, records_filter
-from lostit.tind import records_from_tind
-from lostit.google_sheet import records_from_google, update_google, open_google
-from lostit.network import network_available
-from lostit.files import readable, writable, open_file, rename_existing
-from lostit.files import desktop_path, module_path, lostit_path
-from lostit.exceptions import *
+from lostit.control import LostItControlGUI, LostItControlCLI
 from lostit.debug import set_debug, log
+from lostit.exceptions import *
+from lostit.files import module_path
+from lostit.google_sheet import Google
+from lostit.messages import MessageHandlerGUI, MessageHandlerCLI
+from lostit.network import network_available
+from lostit.progress import ProgressIndicatorGUI, ProgressIndicatorCLI
+from lostit.records import records_diff, records_filter
+from lostit.tind import Tind
 
 
 # Main program.
@@ -94,7 +93,7 @@ def main(user = 'U', pswd = 'P',
         tracer     = ProgressIndicatorGUI()
     else:
         controller = LostItControlCLI()
-        accesser   = AccessHandlerCLI(user, pswd, use_keyring, reset)
+        accesser   = AccessHandlerCLI(user, pswd, use_keyring, reset_keys)
         notifier   = MessageHandlerCLI(use_color)
         tracer     = ProgressIndicatorCLI(use_color)
 
@@ -139,26 +138,29 @@ class MainBody(Thread):
         # Let's do this thing.
         try:
             config = Config(path.join(module_path(), "lostit.ini"))
+            spreadsheet_id = config.get('lostit', 'spreadsheet_id')
 
             # Get the data.
-            spreadsheet_id = config.get('lostit', 'spreadsheet_id')
-            tind_records = records_from_tind(accesser, notifier, tracer)
-            google_records = records_from_google(spreadsheet_id, accesser.user, notifier)
+            tind = Tind(accesser, notifier, tracer)
+            google = Google(accesser, notifier, tracer)
+            tind_records = tind.records()
+            google_records = google.records(spreadsheet_id)
             new_records = records_diff(google_records, tind_records)
+            import pdb; pdb.set_trace()
             new_records = sorted(new_records, key = lambda r: r.date_requested)
             if __debug__: log('diff => {} records'.format(len(new_records)))
 
-            # Update the spreadsheet with new records.
+            # Update the Google spreadsheet with new records.
             if len(new_records) > 0:
                 tracer.update('Updating Google spreadsheet')
-                update_google(spreadsheet_id, new_records, accesser.user, notifier)
+                Google.update(spreadsheet_id, new_records)
 
             # Open the spreadsheet too, if requested.
             if isinstance(notifier, MessageHandlerGUI):
                 if notifier.yes_no('Open the tracking spreadsheet?'):
-                    open_google(spreadsheet_id)
+                    Google.open(spreadsheet_id)
             elif view_sheet:
-                open_google(spreadsheet_id)
+                Google.open(spreadsheet_id)
         except (KeyboardInterrupt, UserCancelled) as err:
             tracer.stop('Quitting.')
             controller.stop()

@@ -45,7 +45,7 @@ logging.getLogger('googleapiclient').setLevel(logging.CRITICAL)
 logging.getLogger('oauth2client').setLevel(logging.CRITICAL)
 
 
-# Global constants.
+# Constants.
 # .............................................................................
 
 # If you change this scope, delete the token file and let it be recreated.
@@ -58,6 +58,10 @@ _SECRETS_FILE = 'client_secrets.json'
 # actual spreadsheet when moving to production.
 _GS_BASE_URL = 'https://docs.google.com/spreadsheets/d/'
 
+# If the column containing the barcode in our spreadsheet ever changes, this
+# needs to be updated
+_GS_BARCODE_COLUMN = 7
+
 
 # Class definitions.
 # .............................................................................
@@ -66,7 +70,7 @@ class GoogleLostRecord(LostRecord):
     '''Class to represent a hold request as it appears in the spreadsheet.'''
 
     def __init__(self, record = None, row = None):
-        '''Initialize using a TindRecord.'''
+        '''Initialize using a TindLostRecord.'''
 
         super().__init__()
         self.caltech_status = ''
@@ -101,136 +105,143 @@ class GoogleLostRecord(LostRecord):
             self.item_location_code   = row[8].strip().lower()
             self.item_location_name   = row[9].strip()
 
-
-# Main code.
-# .............................................................................
 
-# The following credentials and connection code is based on the Google examples
-# found at https://developers.google.com/sheets/api/quickstart/python
+class Google(object):
+    '''Class to interface Lost It! to Google spreadsheets.'''
 
-def records_from_google(gs_id, user, message_handler):
-    if __debug__: log('getting entries from Google spreadsheet')
-    spreadsheet_rows = spreadsheet_content(gs_id, user, message_handler)
-    if spreadsheet_rows == []:
-        return []
-    results = []
-    if __debug__: log('building records from {} rows', len(spreadsheet_rows) - 1)
-    # First row is the title row, so we skip it
-    for row in spreadsheet_rows[1:]:
-        if not row or row[7] == '':
-            continue
-        results.append(GoogleLostRecord(row = row))
-    return results
+    def __init__(self, accesser, notifier, tracer):
+        self._accesser = accesser
+        self._notifier = notifier
+        self._tracer   = tracer
 
 
-def spreadsheet_credentials(user, message_handler):
-    if __debug__: log('getting token for Google API')
-    store = token_storage('Lost It!', user)
-    creds = store.get()
-    if not creds or creds.invalid:
-        if __debug__: log('using secrets file for Google API')
-        secrets_file = path.join(datadir_path(), _SECRETS_FILE)
-        flow = google_flow(secrets_file, _OAUTH_SCOPE)
-        # On Windows, run_flow calls argparse and ends up getting the args
-        # we pass to our Hold It __main__.py.  I have no idea how that's
-        # happening, but hacked around it this way:
-        sys.argv = sys.argv[:1]
-        creds = tools.run_flow(flow, store)
-
-    if not creds:
-        message_handler.error('Failed to get Google API token')
-        raise InternalError('Failed to get Google API token')
-    return creds
+    def open(self, gs_id):
+        '''Opens in the user's browser the spreadsheet identified by 'gs_id'.'''
+        if __debug__: log('opening Google spreadsheet')
+        open_url(_GS_BASE_URL + gs_id)
 
 
-def spreadsheet_content(gs_id, user, message_handler):
-    creds = spreadsheet_credentials(user, message_handler)
-    if __debug__: log('building Google sheets service object')
-    service = build('sheets', 'v4', http = creds.authorize(Http()), cache_discovery = False)
-    sheets_service = service.spreadsheets().values()
-    try:
-        # If you don't supply a sheet name in the range arg, you get 1st sheet.
-        data = sheets_service.get(spreadsheetId = gs_id, range = 'A:Z').execute()
-    except Exception as err:
-        text = 'attempted connection to Google resulted in {}'.format(err)
-        if __debug__: log(text)
-        message_handler.error('Unable to read Google spreadsheet', text)
-        raise InternalError('Failed to get Google API token')
-    if __debug__: log('Google call successful')
-    return data.get('values', [])
+    def records(self, gs_id):
+        '''Returns a list of GoogleLostRecord objects.'''
+        if __debug__: log('getting entries from Google spreadsheet')
+        sheet_rows = self._contents(gs_id)
+        if __debug__: log('building records from {} rows', len(sheet_rows) - 1)
+        results = []
+        # First row is the title row, so we skip it.
+        for row in sheet_rows[1:]:
+            if not row or row[_GS_BARCODE_COLUMN] == '':
+                continue
+            results.append(GoogleLostRecord(row = row))
+        return results
 
 
-def update_google(gs_id, records, user, message_handler):
-    data = []
-    for record in records:
-        record = GoogleLostRecord(record = record)
-        setattr(record, 'caltech_lostit_user', user)
-        if __debug__: log('will add {}'.format(record.item_barcode))
-        data.append(google_row_for_record(record))
-    if not data:
-        return
-    creds = spreadsheet_credentials(user, message_handler)
-    if __debug__: log('building Google sheets service object')
-    service = build('sheets', 'v4', http = creds.authorize(Http()), cache_discovery = False)
-    sheets_service = service.spreadsheets().values()
-    body = {'values': data}
-    try:
-        if __debug__: log('calling Google API for updating data')
-        result = sheets_service.append(spreadsheetId = gs_id,
-                                       range = 'A:Z', body = body,
-                                       valueInputOption = 'USER_ENTERED').execute()
-    except Exception as err:
-        text = 'attempted connection to Google resulted in {}'.format(err)
-        if __debug__: log(text)
-        message_handler.error('Unable to update Google spreadsheet', text)
-        raise InternalError(text)
-    if __debug__: log('Google call successful')
+    def update(self, gs_id, new_records):
+        data = []
+        for record in new_records:
+            r = GoogleLostRecord(record = record)
+            setattr(r, 'caltech_lostit_user', self._accesser.user)
+            if __debug__: log('will add {}'.format(r.item_barcode))
+            data.append(self._row_for_record(r))
+        if not data:
+            return
+        creds = self._credentials()
+        if __debug__: log('building Google sheets service object')
+        google_api = build('sheets', 'v4', http = creds.authorize(Http()),
+                           cache_discovery = False)
+        service = google_api.spreadsheets().values()
+        body = {'values': data}
+        try:
+            if __debug__: log('calling Google API for updating data')
+            result = service.append(spreadsheetId = gs_id, range = 'A:Z', body = body,
+                                    valueInputOption = 'USER_ENTERED').execute()
+        except Exception as err:
+            text = 'attempted connection to Google resulted in {}'.format(err)
+            if __debug__: log(text)
+            self._notifier.error('Unable to update Google spreadsheet', text)
+            raise InternalError(text)
+        if __debug__: log('Google call successful')
 
 
-def open_google(gs_id):
-    if __debug__: log('opening Google spreadsheet')
-    open_url(_GS_BASE_URL + gs_id)
+    # The credentials and connection code is based on the Google examples
+    # found at https://developers.google.com/sheets/api/quickstart/python
+
+    def _contents(self, gs_id):
+        creds = self._credentials()
+        if __debug__: log('building Google sheets service object')
+        google_api = build('sheets', 'v4', http = creds.authorize(Http()),
+                           cache_discovery = False)
+        service = google_api.spreadsheets().values()
+        try:
+            # If you don't supply sheet name in the range arg, you get 1st sheet
+            data = service.get(spreadsheetId = gs_id, range = 'A:Z').execute()
+        except Exception as err:
+            text = 'attempted connection to Google resulted in {}'.format(err)
+            if __debug__: log(text)
+            self._notifier.error('Unable to read Google spreadsheet', text)
+            raise InternalError('Failed to get Google API token')
+        if __debug__: log('Google call successful')
+        return data.get('values', [])
 
 
-def google_row_for_record(record):
-    def linked_requester_name(r):
-        return link(r.requester_name, r.requester_url)
+    def _credentials(self):
+        if __debug__: log('getting token for Google API')
+        store = token_storage('Lost It!', self._accesser.user)
+        creds = store.get()
+        if not creds or creds.invalid:
+            if __debug__: log('using secrets file for Google API')
+            secrets_file = path.join(datadir_path(), _SECRETS_FILE)
+            flow = self._google_flow(secrets_file, _OAUTH_SCOPE)
+            # On Windows, run_flow calls argparse and ends up getting the args
+            # we pass to our Hold It __main__.py.  I have no idea how that's
+            # happening, but hacked around it this way:
+            sys.argv = sys.argv[:1]
+            creds = tools.run_flow(flow, store)
 
-    def linked_item_barcode(r):
-        return link(r.item_barcode, r.item_details_url)
-
-    a = datetime.today().strftime('%Y-%m-%d')
-    b = record.date_requested
-    c = linked_requester_name(record)
-    d = record.item_title
-    e = record.item_author
-    f = record.item_tind_id
-    g = record.item_call_number
-    h = linked_item_barcode(record)
-    i = record.item_location_code
-    j = record.item_location_name
-    return [a, b, c, d, e, f, g, h, i, j]
-
-
-def google_flow(secrets_file, scope):
-    # Code based on https://stackoverflow.com/a/28890297/743730
-    with open(secrets_file, 'r') as fp:
-        obj = jsonlib.load(fp)
-
-    secrets = obj['installed']
-
-    # Return a Flow that requests a refresh_token
-    return OAuth2WebServerFlow(
-        client_id = secrets['client_id'],
-        client_secret = secrets['client_secret'],
-        redirect_uri = secrets['redirect_uris'][0],
-        scope = scope,
-        access_type = 'offline',
-        approval_prompt = 'force')
+        if not creds:
+            self._notifier.error('Failed to get Google API token')
+            raise InternalError('Failed to get Google API token')
+        return creds
 
 
-def link(value, url):
-    if value and url:
-        return '=HYPERLINK("{}","{}")'.format(url, value)
-    else:
-        return ''
+    def _google_flow(self, secrets_file, scope):
+        # Code based on https://stackoverflow.com/a/28890297/743730
+        with open(secrets_file, 'r') as file:
+            obj = jsonlib.load(file)
+
+        secrets = obj['installed']
+
+        # Return a Flow that requests a refresh_token
+        return OAuth2WebServerFlow(
+            client_id = secrets['client_id'],
+            client_secret = secrets['client_secret'],
+            redirect_uri = secrets['redirect_uris'][0],
+            scope = scope,
+            access_type = 'offline',
+            approval_prompt = 'force')
+
+
+    def _row_for_record(self, record):
+        def linked_requester_name(r):
+            return self._linked_value(r.requester_name, r.requester_url)
+
+        def linked_item_barcode(r):
+            return self._linked_value(r.item_barcode, r.item_details_url)
+
+        a = datetime.today().strftime('%Y-%m-%d')
+        b = record.date_requested
+        c = linked_requester_name(record)
+        d = record.item_title
+        e = record.item_author
+        f = record.item_tind_id
+        g = record.item_call_number
+        h = linked_item_barcode(record)
+        i = record.item_location_code
+        j = record.item_location_name
+        return [a, b, c, d, e, f, g, h, i, j]
+
+
+    def _linked_value(self, value, url):
+        if value and url:
+            return '=HYPERLINK("{}","{}")'.format(url, value)
+        else:
+            return ''
