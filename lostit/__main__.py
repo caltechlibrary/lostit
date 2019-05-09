@@ -14,7 +14,6 @@ open-source software released under a 3-clause BSD license.  Please see the
 file "LICENSE" for more information.
 '''
 
-from   docxtpl import DocxTemplate
 import os
 import os.path as path
 import plac
