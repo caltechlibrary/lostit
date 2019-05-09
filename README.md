@@ -1,4 +1,4 @@
-Lost It!<img width="15%" align="right" src=".graphics/missing-book.svg">
+Lost It!<img width="10%" align="right" src=".graphics/missing-book.svg">
 ========
 
 When an item is discovered missing from the shelves of the Caltech Library stacks, the information needs to be recorded in the Caltech TIND server as well as a tracking spreadsheet kept by the Library circulation staff. _Lost It!_ is a program to simplify the process of doing this.
