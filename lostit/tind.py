@@ -43,11 +43,6 @@ _SHIBBED_LOST_URL = 'https://caltech.tind.io/youraccount/shibboleth?referer=http
 URL to start the Shibboleth authentication process for the Caltech TIND page.
 '''
 
-_NUM_RECORDS_TO_GET = 100
-'''
-How many recent records to get from Tind.io.
-'''
-
 
 # Class definitions.
 # .............................................................................
@@ -296,28 +291,32 @@ class Tind(object):
                         "Content-Type"     : "application/json",
                         'User-Agent'       : _USER_AGENT_STRING}
 
-        # I found the value of the payload data by the following procedure:
+        # Note: this initial value of the data payload is changed further below.
+        #
+        # About the fields in 'data': I found the value of the payload data
+        # by the following procedure:
         #
         #  1. Run Google Chrome
         #  2. Visit https://caltech.tind.io/lists/
         #  3. Turn on dev tools in Chrome
         #  4. Go to the "Network" tab in dev tools
         #  5. Click on the XHR subpanel
-        #  6. On the Tind page, type item_status:lost in the search box & hit return
-        #  7. Look in the XHR output, in the "Request Payload" portion at the bottom
+        #  6. On the Tind page, type status:lost in the search box & hit return
+        #  7. Look in the XHR output, in the "Request Payload" portion
         #  8. Copy that whole payload string to your computer's clipboard
         #  9. Start a python3 console
         #  10. import json as jsonlib
         #  11. jsonlib.loads('... paste the clipboard ...')
         #
-        # Be sure to use single quotes to surround the request payload
-        # value when pasting it into jsonlib.loads().
+        # Be sure to use single quotes to surround the request payload value
+        # when pasting it into jsonlib.loads().
         #
-        # The value you get back will have a field named 'columns' with a very
-        # long list of items in it.  By trial and error, I discovered you don't
-        # need to leave all of them in the list: you only need as many as you use
-        # in the 'order' directive -- which makes sense, since if you're telling it
-        # to order the output by a given column, the column needs to be identified.
+        # The value you get back will have a field named 'columns' with a
+        # very long list of items in it.  By trial and error, I discovered
+        # you don't need to leave all of them in the list: you only need as
+        # many as you use in the 'order' directive -- which makes sense,
+        # since if you're telling it to order the output by a given column,
+        # the column needs to be identified.
 
         data = {'columns': [{'data': 'modification_date',
                              'name': 'title',
@@ -326,25 +325,49 @@ class Tind(object):
                              'searchable': True}],
                 'order': [{'column': 0, 'dir': 'desc'}],
                 'search': {'regex': False, 'value': 'status:lost'},
+                # 'length' -- see below
                 'draw': 2,
-                'length': _NUM_RECORDS_TO_GET,
                 'start': 1,
                 'table_name': 'crcITEM'}
 
-        self._tracer.update('Getting records from TIND')
+        # We first need to figure out how many items we need to get.
+        self._tracer.update('Asking TIND how many "lost" items there are')
+        data['length'] = 1
+        results = self._tind_ajax(session, ajax_url, ajax_headers, data)
+        total_records = results['recordsTotal']
+        if __debug__: log('TIND says there are {} records', total_records)
+
+        # Now get all the lost item records.
+        self._tracer.update('Getting {} records from TIND'.format(total_records))
+        data['length'] = total_records
+        results = self._tind_ajax(session, ajax_url, ajax_headers, data)
+        if results['recordsTotal'] != total_records:
+            details = 'Expected {} records but received {}'.format(
+                total_records, results['recordsTotal'])
+            self._notifier.fatal('TIND returned unexpected number of items', details)
+            raise ServiceFailure('TIND returned unexpected number of items')
+        if __debug__: log('received all {} records via AJAX', total_records)
+        return results
+
+
+    def _tind_ajax(self, session, ajax_url, ajax_headers, data):
         try:
             if __debug__: log('posting ajax call to tind.io')
-            res = session.post(ajax_url, headers = ajax_headers, json = data)
+            resp = session.post(ajax_url, headers = ajax_headers, json = data)
         except Exception as err:
-            details = 'exception connecting to bibcirculation page {}'.format(err)
-            self._notifier.fatal('Unable to get data from TIND circulation page', details)
+            details = 'exception doing AJAX call {}'.format(err)
+            self._notifier.fatal('Unable to get data from TIND', details)
             raise ServiceFailure(details)
-        if res.status_code != 200:
-            details = 'tind.io ajax returned status {}'.format(res.status_code)
-            self._notifier.fatal('TIND failed to return hold data', details)
+        if resp.status_code != 200:
+            details = 'tind.io AJAX returned status {}'.format(resp.status_code)
+            self._notifier.fatal('TIND failed to return data', details)
             raise ServiceFailure(details)
+        results = resp.json()
+        if 'recordsTotal' not in results:
+            self._notifier.fatal('Unexpected result from TIND AJAX call')
+            raise InternalError('Unexpected result from TIND AJAX call')
         if __debug__: log('succeeded in getting data via ajax')
-        return res.json()
+        return results
 
 
     def loan_details(self, tind_id, session):
