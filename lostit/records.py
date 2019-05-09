@@ -101,7 +101,7 @@ def records_diff(known_records, new_records):
     for candidate in new_records:
         matched = [record for record in known_records
                    if (record.item_barcode == candidate.item_barcode
-                       and record.date_lostit_recorded >= today)]
+                       and record.date_lostit_recorded <= today)]
         if not matched:
             diffs.append(candidate)
     if __debug__: log('found {} different records', len(diffs))
