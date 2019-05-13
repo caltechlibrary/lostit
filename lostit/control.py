@@ -145,7 +145,7 @@ class LostItMainFrame(wx.Frame):
 
     def __init__(self, *args, **kwds):
         self._cancel = False
-        self._height = 275 if sys.platform.startswith('win') else 250
+        self._height = 320 if sys.platform.startswith('win') else 300
         self._width  = 450
 
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
@@ -161,12 +161,18 @@ class LostItMainFrame(wx.Frame):
         # our purposes (IMHO) than the default (which would be white), but then
         # we need a divider to separate the headline from the text area.
         if not sys.platform.startswith('win'):
-            self.divider = wx.StaticLine(self.panel, wx.ID_ANY)
-            self.divider.SetMinSize((self._width, 2))
+            self.divider1 = wx.StaticLine(self.panel, wx.ID_ANY)
+            self.divider1.SetMinSize((self._width, 2))
 
         self.text_area = wx.richtext.RichTextCtrl(self.panel, wx.ID_ANY,
                                                   size = (self._width, 200),
                                                   style = wx.TE_MULTILINE | wx.TE_READONLY)
+
+        # Quit button on the bottom.
+        self.divider2 = wx.StaticLine(self.panel, wx.ID_ANY)
+        self.quit_button = wx.Button(self.panel, label = "Quit")
+        self.quit_button.Bind(wx.EVT_KEY_DOWN, self.on_cancel_or_quit)
+
         # On macos, the color of the text background is set to the same as the
         # rest of the UI panel.  I haven't figured out how to do it on Windows.
         if not sys.platform.startswith('win'):
@@ -204,6 +210,7 @@ class LostItMainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.on_help, id = self.helpItem.GetId())
         self.Bind(wx.EVT_MENU, self.on_about, id = self.aboutItem.GetId())
         self.Bind(wx.EVT_CLOSE, self.on_cancel_or_quit)
+        self.Bind(wx.EVT_BUTTON, self.on_cancel_or_quit, self.quit_button)
 
         close_id = wx.NewId()
         self.Bind(wx.EVT_MENU, self.on_cancel_or_quit, id = close_id)
@@ -214,14 +221,18 @@ class LostItMainFrame(wx.Frame):
         self.SetSize((self._width, self._height))
         self.SetTitle(lostit.__name__)
         self.outermost_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.outermost_sizer.Add((360, 5), 0, wx.ALIGN_CENTER, 0)
+        self.outermost_sizer.AddSpacer(5)
         self.outermost_sizer.Add(self.headline, 0, wx.ALIGN_CENTER, 0)
-        self.outermost_sizer.Add((360, 5), 0, wx.ALIGN_CENTER, 0)
+        self.outermost_sizer.AddSpacer(5)
         if not sys.platform.startswith('win'):
-            self.outermost_sizer.Add(self.divider, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 0)
-            self.outermost_sizer.Add((360, 5), 0, wx.ALIGN_CENTER, 0)
+            self.outermost_sizer.Add(self.divider1, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 0)
+            self.outermost_sizer.AddSpacer(5)
         self.outermost_sizer.Add(self.text_area, 0, wx.EXPAND, 0)
-        self.outermost_sizer.Add((360, 5), 0, wx.ALIGN_CENTER, 0)
+        self.outermost_sizer.AddSpacer(5)
+        self.outermost_sizer.Add(self.divider2, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 0)
+        self.outermost_sizer.AddSpacer(5)
+        self.outermost_sizer.Add(self.quit_button, 0, wx.BOTTOM | wx.CENTER, 0)
+        self.outermost_sizer.AddSpacer(5)
         self.SetSizer(self.outermost_sizer)
         self.Layout()
         self.Centre()
@@ -377,7 +388,7 @@ class LoginDialog(wx.Dialog):
         '''Initializes values used to populate the dialog and communicate
         with calling code.
 
-        'wait_queue' must be a Python queue.Queue() object.  Callers must
+        'wait_queue' must be a Pytho queue.Queue() object.  Callers must
         create the queue object and pass it to this function.  After creating
         and displaying the dialog, callers can use .get() on the queue object
         to wait until the user has either clicked OK or Cancel in the dialog.
