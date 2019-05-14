@@ -145,7 +145,7 @@ class LostItMainFrame(wx.Frame):
 
     def __init__(self, *args, **kwds):
         self._cancel = False
-        self._height = 320 if sys.platform.startswith('win') else 300
+        self._height = 330 if sys.platform.startswith('win') else 300
         self._width  = 450
 
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
@@ -169,7 +169,8 @@ class LostItMainFrame(wx.Frame):
                                                   style = wx.TE_MULTILINE | wx.TE_READONLY)
 
         # Quit button on the bottom.
-        self.divider2 = wx.StaticLine(self.panel, wx.ID_ANY)
+        if not sys.platform.startswith('win'):
+            self.divider2 = wx.StaticLine(self.panel, wx.ID_ANY)
         self.quit_button = wx.Button(self.panel, label = "Quit")
         self.quit_button.Bind(wx.EVT_KEY_DOWN, self.on_cancel_or_quit)
 
@@ -229,8 +230,9 @@ class LostItMainFrame(wx.Frame):
             self.outermost_sizer.AddSpacer(5)
         self.outermost_sizer.Add(self.text_area, 0, wx.EXPAND, 0)
         self.outermost_sizer.AddSpacer(5)
-        self.outermost_sizer.Add(self.divider2, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 0)
-        self.outermost_sizer.AddSpacer(5)
+        if not sys.platform.startswith('win'):
+            self.outermost_sizer.Add(self.divider2, 0, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 0)
+            self.outermost_sizer.AddSpacer(5)
         self.outermost_sizer.Add(self.quit_button, 0, wx.BOTTOM | wx.CENTER, 0)
         self.outermost_sizer.AddSpacer(5)
         self.SetSizer(self.outermost_sizer)
