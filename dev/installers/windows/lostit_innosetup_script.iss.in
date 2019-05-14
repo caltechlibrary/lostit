@@ -52,7 +52,6 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 ;
 Source: "\\Mac\Home\project-files\library\repos\lostit\dist\LostIt.exe"; DestDir: "{app}"; Flags:
 Source: "\\Mac\Home\project-files\library\repos\lostit\ABOUT.html"; DestDir: "{app}"; Flags: isreadme
-Source: "\\Mac\Home\project-files\library\repos\lostit\lostit\data\default_template.docx"; DestDir: "{app}"; DestName: "template.docx"; Flags: ignoreversion
 
 
 [Icons]
