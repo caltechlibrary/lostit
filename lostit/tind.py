@@ -38,10 +38,16 @@ Using a user-agent string that identifies a browser seems to be important
 in order to make Shibboleth or TIND return results.
 '''
 
-_SHIBBED_LOST_URL = 'https://caltech.tind.io/youraccount/shibboleth?referer=https%3A//caltech.tind.io/lists'
+_SHIBBED_LOST_URL = 'https://caltech.tind.io/youraccount/shibboleth?referer=https%3A//caltech.tind.io/%3F'
 '''
 URL to start the Shibboleth authentication process for the Caltech TIND page.
 '''
+
+_SSO_URL = 'https://idp.caltech.edu/idp/profile/SAML2/Redirect/SSO'
+'''
+Root URL for the Caltech SAML steps.
+'''
+
 
 
 # Class definitions.
@@ -209,19 +215,13 @@ class Tind(object):
             # Create a blank session and hack the user agent string.
             session = requests.Session()
             session.headers.update( { 'user-agent': _USER_AGENT_STRING } )
-            try:
-                if __debug__: log('issuing network get to tind shibboleth')
-                res = session.get(_SHIBBED_LOST_URL, allow_redirects = True)
-            except Exception as err:
-                details = 'exception connecting to TIND: {}'.format(err)
-                fatal('Unable to connect to TIND -- try later', details)
-                raise ServiceFailure(details)
-            if res.status_code >= 300:
-                details = 'TIND Shibboleth returned status {}'.format(res.status_code)
-                fatal('Service failure -- please inform developers', details)
-                raise ServiceFailure(details)
 
-            # Now do the login step.
+            # Access the first page to get the session data, and do it before
+            # asking the user for credentials in case this fails.
+            self._tind_request(session, 'get', _SHIBBED_LOST_URL, None, 'Shib login page')
+            sessionid = session.cookies.get('JSESSIONID')
+
+            # Now get the credentials.
             user, pswd, cancelled = self._accesser.name_and_password()
             if cancelled:
                 if __debug__: log('user cancelled out of login dialog')
@@ -229,21 +229,20 @@ class Tind(object):
             if not user or not pswd:
                 if __debug__: log('empty values returned from login dialog')
                 return None
-            tree = html.fromstring(res.content)
-            sessionid = session.cookies.get('JSESSIONID')
-            next_url = 'https://idp.caltech.edu/idp/profile/SAML2/Redirect/SSO;jsessionid={}?execution=e1s1'.format(sessionid)
-            login = {'timezoneOffset'   : 0,
-                     'j_username'       : user,
+            login = {'j_username'       : user,
                      'j_password'       : pswd,
-                     '_eventId_proceed' : 'Log In'}
-            try:
-                if __debug__: log('issuing network post to idp.caltech.edu')
-                res = session.post(next_url, data = login, allow_redirects = True)
-            except Exception as err:
-                details = 'exception connecting to idp.caltech.edu: {}'.format(err)
-                fatal('Failed to connect to TIND', details)
-                raise ServiceFailure(details)
-            logged_in = bool(str(res.content).find('Forgot your password') <= 0)
+                     '_eventId_proceed' : ''}
+
+            # SAML step 1
+            next_url = '{};jsessionid={}?execution=e1s1'.format(_SSO_URL, sessionid)
+            self._tind_request(session, 'post', next_url, login, 'e1s1')
+
+            # SAML step 2.  Store the content for use later below.
+            next_url = '{};jsessionid={}?execution=e1s2'.format(_SSO_URL, sessionid)
+            content = self._tind_request(session, 'post', next_url, login, 'e1s2')
+
+            # Did we succeed?
+            logged_in = bool(str(content).find('Forgot your password') <= 0)
             if not logged_in and not yes_no('Incorrect login. Try again?'):
                 if __debug__: log('user cancelled access login')
                 raise UserCancelled
@@ -251,7 +250,7 @@ class Tind(object):
         # Extract the SAML data and follow through with the action url.
         # This is needed to get the necessary cookies into the session object.
         if __debug__: log('data received from idp.caltech.edu')
-        tree = html.fromstring(res.content)
+        tree = html.fromstring(content)
         if tree is None or tree.xpath('//form[@action]') is None:
             details = 'Caltech Shib access result does not have expected form'
             fatal('Unexpected TIND result -- please inform developers', details)
@@ -273,6 +272,22 @@ class Tind(object):
             raise ServiceFailure(details)
         if __debug__: log('successfully created session with caltech.tind.io')
         return session
+
+
+    def _tind_request(self, session, get_or_post, url, data, purpose):
+        access = session.get if get_or_post == 'get' else session.post
+        try:
+            if __debug__: log('issuing network {} for {}', get_or_post, purpose)
+            req = access(url, data = data, allow_redirects = True)
+        except Exception as err:
+            details = 'exception connecting to TIND: {}'.format(err)
+            fatal('Unable to connect to TIND -- try later', details)
+            raise ServiceFailure(details)
+        if req.status_code >= 300:
+            details = 'Shibboleth returned status {}'.format(req.status_code)
+            fatal('Service failure -- please inform developers', details)
+            raise ServiceFailure(details)
+        return req.content
 
 
     def _tind_json(self, session):
