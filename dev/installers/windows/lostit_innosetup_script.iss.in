@@ -17,11 +17,11 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
+; Also, the AppId setting must start with two "{" characters.
 
-AppId={{70159B80-2224-4213-B793-6156073E95E3}
+AppId={{0F911487-945E-4CC2-A5D8-30BDEEE0E570}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -30,19 +30,29 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=Z:\project-files\library\repos\lostit\dist
-OutputBaseFilename=LostIt_win10_x64_@@VERSION@@
+OutputBaseFilename=LostIt_{#MyAppVersion}_win10
 SetupIconFile=Z:\project-files\library\repos\lostit\dev\icons\generated-icons\lostit-icon-512px.ico
 Compression=lzma
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
 ChangesEnvironment=true
 PrivilegesRequired=admin
+UninstallFilesDir=Uninstall\exe\{#MyAppName}
 
 
 [Languages]
 ; .............................................................................
 
 Name: "english"; MessagesFile: "compiler:Default.isl"
+
+
+[Dirs]
+; .............................................................................
+; This is part of the steps to give the uninstaller a more obvious name.
+; From https://stackoverflow.com/a/46853530/743730
+
+Name: Uninstall\exe; Attribs: hidden;
+Name: "Uninstall\exe\{#MyAppName}"; Attribs: hidden;
 
 
 [Files]
@@ -58,6 +68,7 @@ Source: "\\Mac\Home\project-files\library\repos\lostit\ABOUT.html"; DestDir: "{a
 ; .............................................................................
 
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "Uninstall\Uninstall {#MyAppName}"; Filename: "Uninstall\exe\{#MyAppName}\unins000.exe"
 
 
 [Tasks]
