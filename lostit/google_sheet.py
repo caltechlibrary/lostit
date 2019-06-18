@@ -116,10 +116,15 @@ class Google(object):
         self._creds    = None
 
 
+    def spreadsheet_url(self, gs_id):
+        '''Returns the URL of the Google spreadsheet.'''
+        return _GS_BASE_URL + gs_id
+
+
     def open(self, gs_id):
         '''Opens in the user's browser the spreadsheet identified by 'gs_id'.'''
         if __debug__: log('opening Google spreadsheet')
-        open_url(_GS_BASE_URL + gs_id)
+        open_url(self.spreadsheet_url(gs_id))
 
 
     def records(self, gs_id, tab = 0):
