@@ -15,17 +15,12 @@ file "LICENSE" for more information.
 '''
 
 from   email.message import EmailMessage
-import os
-import re
 from   smtplib import SMTP
 import ssl
-import sys
 
 import lostit
 from lostit.debug import log
 from lostit.exceptions import *
-from lostit.network import net
-from lostit.records import LostRecord
 
 
 # Exported classes.
@@ -56,4 +51,4 @@ class Mailer():
                 smtp.login(sender, password)
                 smtp.sendmail(sender, recipients, msg.as_string())
         except Exception as ex:
-            import pdb; pdb.set_trace()
+            raise ServiceFailure(str(ex))
