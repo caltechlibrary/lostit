@@ -92,8 +92,14 @@ def rename_existing(file):
         # If we fail, we just give up instead of throwing an exception.
         try:
             os.rename(f, backup)
+            if __debug__: log('renamed {} to {}', file, backup)
         except:
-            return
+            try:
+                delete_existing(backup)
+                os.rename(f, backup)
+            except:
+                if __debug__: log('failed to delete {}', backup)
+                if __debug__: log('failed to rename {} to {}', file, backup)
 
     if path.exists(file):
         rename(file)
@@ -107,6 +113,7 @@ def rename_existing(file):
 def open_file(file):
     '''Open document with default application in Python.'''
     # Code originally from https://stackoverflow.com/a/435669/743730
+    if __debug__: log('opening file {}', file)
     if sys.platform.startswith('darwin'):
         subprocess.call(('open', file))
     elif os.name == 'nt':
@@ -118,4 +125,5 @@ def open_file(file):
 def open_url(url):
     '''Open the given 'url' in a web browser using the current platform's
     default approach.'''
+    if __debug__: log('opening url {}', url)
     webbrowser.open(url)
