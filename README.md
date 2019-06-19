@@ -28,7 +28,7 @@ Table of Contents
 
 The Caltech Library's Circulation Desk handles, among other things, tracking holdings that have gone missing.  They do this by marking the corresponding record's status in the information management system used by Caltech (TIND) as well as putting the information into a Google spreadsheet.  However, copy-pasting the information into the spreadsheet is tedious and error-prone.
 
-_Lost It!_ is aimed at automating more of this procedure to reduce frustration and possible errors.  It uses Shibboleth to log in to the Caltech Library system, scrapes TIND to get the necessary information, and updates the Google spreadsheet used to track lost items.
+_Lost It!_ is aimed at automating more of this procedure to reduce frustration and possible errors.  It uses Shibboleth to log in to the Caltech Library system, scrapes TIND to get the necessary information, and updates the Google spreadsheet used to track lost items.  Once done, if lost items were found, it also sends email to a library mailing list to alert humans about new loses.
 
 
 ✺ Installation instructions
@@ -52,15 +52,18 @@ _Lost It!_ has both a GUI interface and a command-line interface.  The GUI inter
 4. Compares the two data sources to determine if the TIND search returned new lost items
 5. Adds any new lost items to the Google spreadsheet
 7. (Optionally) opens the spreadsheet in a browser so the user can see it
+8. If there were new lost items, sends an email message to a library mailing list to alert librarians
 
 Items in the spreadsheet are assumed to be never deleted.  "New lost items" are determined in the following way: _Lost It!_ searches the Caltech.tind.io global list for items with `status:lost`, compares their bar codes to the bar codes requested in the Google spreadsheet as well as the dates that they were added to the spreadsheet, and writes out records with never-before lost barcodes or (if a barcode has been seen before) barcodes that were added on a previous date.  (The latter catches the situation where an item has been reported lost in the past, then found again in the past, then lost again at some later date.  Without tracking the date it was added to the spreadsheet, _Lost It!_ would simply assume it was already know to be lost, whereas in reality it might have been found for a time and recently re-lost.)
 
 <p align="center"><img width="800px" src=".graphics/tind-lost-items.png"></p>
 
-Unless an error occurs, _Lost It!_ presents only one other dialog: to ask the user whether the Google spreadsheet should be opened in a browser window.  If the user clicks the **Yes** button, it's opened.  Either way, _Lost It!_ exits after the user answers the dialog.
+Unless an error occurs, _Lost It!_ presents only one other dialog: to ask the user whether the Google spreadsheet should be opened in a browser window.  If the user clicks the **Yes** button, it's opened.
 
 <p align="center"><img width="900px" src=".graphics/google-spreadsheet.png"></p>
 
+
+Finally, _Lost It!_ will by default send mail to a library mailing list to alert people if newly lost items have been found. _Lost It!_ exits after that.
 
 ✎ Configuration
 --------------
