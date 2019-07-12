@@ -21,11 +21,11 @@ help-file  := lostit/data/help.html
 
 # Main build targets.
 
-build: | dependencies build-$(platform)
+build: | dependencies data-files build-$(platform)
 
 # Platform-specific instructions.
 
-build-darwin: dist/Lostit.app $(about-file) $(help-file) # NEWS.html
+build-darwin: $(about-file) $(help-file) dist/Lostit.app # NEWS.html
 #	packagesbuild dev/installer-builders/macos/packages-config/Lostit.pkgproj
 #	mv dist/Lostit-mac.pkg dist/Lostit-$(release)-macos-$(macos_vers).pkg 
 
@@ -43,6 +43,8 @@ dist/lostit dist/Lostit.exe:
 
 dependencies:;
 	pip3 install -r requirements.txt
+
+data-files: $(about-file) $(help-file)
 
 # Component files placed in the installers.
 
@@ -69,6 +71,6 @@ clean-dist:;
 	-rm -fr dist/Lostit.app dist/lostit dist/lostit.exe build
 
 clean-html:;
-	-rm -fr ABOUT.html NEWS.html
+	-rm -fr ABOUT.html NEWS.html lostit/data/help.html
 
 .PHONY: html clean clean-dist clean-html
