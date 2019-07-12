@@ -181,7 +181,7 @@ class MainBody(Thread):
             if send_mail and num_new > 0:
                 tracer.update('Sending mail')
                 subject  = 'Lost It! found {} lost items'.format(num_new)
-                body     = email_body(num_new, google.spreadsheet_url(sid))
+                body     = email_body(new_records, google.spreadsheet_url(sid))
                 sender   = accesser.user + '@caltech.edu'
                 password = accesser.password
                 mailer   = Mailer(mail_server, mail_port)
@@ -208,13 +208,25 @@ class MainBody(Thread):
 # Miscellaneous utilities.
 # .............................................................................
 
-def email_body(num_new, sheet_url):
-    return '''
+def email_body(records, sheet_url):
+    summary = ''
+    for rec in records:
+        summary += '''
+        Title: {}
+       Author: {}
+       Call #: {}
+      Barcode: {}
+Location code: {}
+Location name: {}
 
-Lost It! was just run and it found {} new lost items.
+'''.format(rec.item_title, rec.item_author, rec.item_call_number,
+           rec.item_barcode, rec.item_location_code, rec.item_location_name)
+    return '''
+Lost It! was just run and it found {} new lost items:
+{}
 Here is the URL for the spreadsheet of lost items:
 {}
-    '''.format(num_new, sheet_url)
+'''.format(len(records), summary, sheet_url)
 
 
 # Main entry point.
