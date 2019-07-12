@@ -12,7 +12,8 @@ _Lost It!_ has both a GUI interface and a command-line interface.  The GUI inter
 3. Downloads the Google spreadsheet used by the Circulation staff
 4. Compares the two data sources to determine if the TIND search returned new lost items
 5. Adds any new lost items to the Google spreadsheet
-7. (Optionally) opens the spreadsheet in a browser so the user can see it
+6. (Optionally) opens the spreadsheet in a browser so the user can see it
+7. If there were new lost items, sends an email message to a library mailing list to alert librarians
 
 Items in the spreadsheet are assumed to be never deleted.
 
