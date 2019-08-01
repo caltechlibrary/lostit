@@ -1,5 +1,5 @@
-Change log for microarchiver
-============================
+Change log for Lost It!
+=======================
 
 Version 1.2.1
 -------------
