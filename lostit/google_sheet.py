@@ -58,9 +58,23 @@ _SECRETS_FILE = 'client_secrets.json'
 # actual spreadsheet when moving to production.
 _GS_BASE_URL = 'https://docs.google.com/spreadsheets/d/'
 
-# If the column containing the barcode in our spreadsheet ever changes, this
-# needs to be updated
-_GS_BARCODE_COLUMN = 7
+# This is where the column order of the Google sheet is hardwired into the
+# code.  Lost It finds the columns in the Google spreadsheet by position.
+# Changing the column order requires corresponding changes to the column
+# indexes below.
+
+_COL_INDEX = {
+    'date_lostit_recorded' : 0,
+    'date_requested'       : 1,
+    'requester_name'       : 2,
+    'item_title'           : 3,
+    'item_author'          : 4,
+    'item_tind_id'         : 5,
+    'item_call_number'     : 6,
+    'item_barcode'         : 7,
+    'item_location_code'   : 8,
+    'item_location_name'   : 9,
+}
 
 
 # Class definitions.
@@ -94,16 +108,16 @@ class GoogleLostRecord(LostRecord):
             self.date_requested       = record.date_requested
             self.date_lostit_recorded = record.date_lostit_recorded
         if row:
-            self.date_lostit_recorded = row[0].strip()
-            self.date_requested       = row[1].strip()
-            self.requester_name       = row[2].strip()
-            self.item_title           = row[3].strip()
-            self.item_author          = row[4].strip()
-            self.item_tind_id         = row[5].strip()
-            self.item_call_number     = row[6].strip()
-            self.item_barcode         = row[7].strip()
-            self.item_location_code   = row[8].strip().lower()
-            self.item_location_name   = row[9].strip()
+            self.item_title           = row[_COL_INDEX['item_title']].strip()
+            self.item_author          = row[_COL_INDEX['item_author']].strip()
+            self.item_tind_id         = row[_COL_INDEX['item_tind_id']].strip()
+            self.item_call_number     = row[_COL_INDEX['item_call_number']].strip()
+            self.item_barcode         = row[_COL_INDEX['item_barcode']].strip()
+            self.item_location_code   = row[_COL_INDEX['item_location_code']].strip().lower()
+            self.item_location_name   = row[_COL_INDEX['item_location_name']].strip()
+            self.requester_name       = row[_COL_INDEX['requester_name']].strip()
+            self.date_requested       = row[_COL_INDEX['date_requested']].strip()
+            self.date_lostit_recorded = row[_COL_INDEX['date_lostit_recorded']].strip()
 
 
 class Google(object):
@@ -135,7 +149,7 @@ class Google(object):
         results = []
         # First row is the title row, so we skip it.
         for row in sheet_rows[1:]:
-            if not row or row[_GS_BARCODE_COLUMN] == '':
+            if not row or row[_COL_INDEX['item_barcode']] == '':
                 continue
             results.append(GoogleLostRecord(row = row))
         return results
@@ -258,17 +272,18 @@ class Google(object):
         def linked_item_barcode(r):
             return self._linked_value(r.item_barcode, r.item_details_url)
 
-        a = datetime.today().strftime('%Y-%m-%d')
-        b = record.date_requested
-        c = linked_requester_name(record)
-        d = record.item_title
-        e = record.item_author
-        f = record.item_tind_id
-        g = record.item_call_number
-        h = linked_item_barcode(record)
-        i = record.item_location_code
-        j = record.item_location_name
-        return [a, b, c, d, e, f, g, h, i, j]
+        row = ['']*len(_COL_INDEX)
+        row[_COL_INDEX['date_lostit_recorded']] = datetime.today().strftime('%Y-%m-%d')
+        row[_COL_INDEX['date_requested']]       = record.date_requested
+        row[_COL_INDEX['requester_name']]       = linked_requester_name(record)
+        row[_COL_INDEX['item_title']]           = record.item_title
+        row[_COL_INDEX['item_author']]          = record.item_author
+        row[_COL_INDEX['item_tind_id']]         = record.item_tind_id
+        row[_COL_INDEX['item_call_number']]     = record.item_call_number
+        row[_COL_INDEX['item_barcode']]         = linked_item_barcode(record)
+        row[_COL_INDEX['item_location_code']]   = record.item_location_code
+        row[_COL_INDEX['item_location_name']]   = record.item_location_name
+        return row
 
 
     def _linked_value(self, value, url):
