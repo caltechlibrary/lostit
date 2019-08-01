@@ -61,12 +61,21 @@ class TindLostRecord(LostRecord):
         the TIND.io ajax call.
         '''
         super().__init__()
+
+        # We get certain attributes on demand.  Setting them initially to None
+        # (as opposed to '') is the marker it hasn't been set.
+        self.requester_name = None
+        self.requester_url  = None
+        self.date_requested = None
+
+        # The following are additional attributes for Tind records.
         self._orig_data = json_dict
         self._tind      = tind_interface
         self._session   = session
         self._loan_data = ''
         self._filled    = False
 
+        # The rest is initialization of values for a record.
         title_text = json_dict['title']
         author_text = ''
         # 'Title' field actually contains author too, so pull it out.
@@ -104,7 +113,7 @@ class TindLostRecord(LostRecord):
 
     @property
     def requester_name(self):
-        if not self._requester_name:
+        if self._requester_name == None:
             self._fill_requester_info()
         return self._requester_name
 
@@ -116,7 +125,7 @@ class TindLostRecord(LostRecord):
 
     @property
     def requester_url(self):
-        if not self._requester_url:
+        if self._requester_url == None:
             self._fill_requester_info()
         return self._requester_url
 
@@ -128,7 +137,7 @@ class TindLostRecord(LostRecord):
 
     @property
     def date_requested(self):
-        if not self._date_requested:
+        if self._date_requested == None:
             self._fill_requester_info()
         return self._date_requested
 
@@ -136,18 +145,6 @@ class TindLostRecord(LostRecord):
     @date_requested.setter
     def date_requested(self, value):
         self._date_requested = value
-
-
-    @property
-    def date_due(self):
-        if not self._date_due:
-            self._fill_requester_info()
-        return self._date_due
-
-
-    @date_due.setter
-    def date_due(self, value):
-        self._date_due = value
 
 
     def _fill_requester_info(self):
@@ -159,7 +156,6 @@ class TindLostRecord(LostRecord):
             self._requester_name = ''
             self._requester_url = ''
             self._date_requested = ''
-            self._date_due = ''
             return
 
         # Save the loans page in case we need it later, and start parsing.
@@ -173,8 +169,10 @@ class TindLostRecord(LostRecord):
         cells = last_row.find_all('td')
         self._requester_name = cells[0].get_text()
         self._requester_url = cells[0].a['href']
-        self._date_requested = cells[2].get_text()
-        self._date_due = cells[3].get_text()
+        self._date_requested = cells[9].get_text()
+        # Date is actually date + time, so strip the time part
+        end = self._date_requested.find(' ')
+        self._date_requested = self._date_requested[:end]
 
 
 class Tind(object):
@@ -388,7 +386,7 @@ class Tind(object):
     def loan_details(self, tind_id, session):
         '''Get the HTML of a loans detail page from TIND.io.'''
 
-        url = 'https://caltech.tind.io/admin2/bibcirculation/get_item_loans_details?ln=en&recid=' + str(tind_id)
+        url = 'https://caltech.tind.io/admin2/bibcirculation/get_item_requests_details?ln=en&recid=' + str(tind_id)
         try:
             if self._tracer:
                 self._tracer.update('Getting details from TIND for {}'.format(tind_id))
