@@ -152,7 +152,13 @@ class MainBody(Thread):
             mail_port   = config.get('lostit', 'mail_port')
             recipients  = config.get('lostit', 'mail_recipients')
 
-            # Get the data.
+            # Get the data from TIND and the Google spreadsheet of lost
+            # items, we look at the two first tabs.  The tab lookup is done
+            # by position, NOT by name; the names of the tabs make no
+            # difference.  Lost It! assumes that the first tab is the current
+            # NOS list and the second tab is a list of historical records,
+            # but it doesn't care what the cut-off is between the tabs.  It
+            # merely gathers the records from both tabs.
             tind_records = tind.records()
             google_records = google.records(sid, tab = 0) + google.records(sid, tab = 1)
 
