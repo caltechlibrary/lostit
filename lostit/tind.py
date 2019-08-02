@@ -64,16 +64,19 @@ class TindLostRecord(LostRecord):
 
         # We get certain attributes on demand.  Setting them initially to None
         # (as opposed to '') is the marker it hasn't been set.
-        self.requester_name = None
-        self.requester_url  = None
-        self.date_requested = None
+        self.requester_name  = None
+        self.requester_email = None
+        self.requester_type  = None
+        self.requester_url   = None
+        self.date_requested  = None
 
         # The following are additional attributes for Tind records.
-        self._orig_data = json_dict
-        self._tind      = tind_interface
-        self._session   = session
-        self._loan_data = ''
-        self._filled    = False
+        self._orig_data   = json_dict
+        self._tind        = tind_interface
+        self._session     = session
+        self._loan_data   = ''
+        self._patron_data = ''
+        self._filled      = False
 
         # The rest is initialization of values for a record.
         title_text = json_dict['title']
@@ -124,6 +127,18 @@ class TindLostRecord(LostRecord):
 
 
     @property
+    def requester_email(self):
+        if self._requester_email == None:
+            self._fill_requester_info()
+        return self._requester_email
+
+
+    @requester_email.setter
+    def requester_email(self, value):
+        self._requester_email = value
+
+
+    @property
     def requester_url(self):
         if self._requester_url == None:
             self._fill_requester_info()
@@ -133,6 +148,18 @@ class TindLostRecord(LostRecord):
     @requester_url.setter
     def requester_url(self, value):
         self._requester_url = value
+
+
+    @property
+    def requester_type(self):
+        if self._requester_type == None:
+            self._fill_requester_info()
+        return self._requester_type
+
+
+    @requester_type.setter
+    def requester_type(self, value):
+        self._requester_type = value
 
 
     @property
@@ -150,29 +177,61 @@ class TindLostRecord(LostRecord):
     def _fill_requester_info(self):
         if self._filled:
             return
+        # Though we haven't done anything yet, we have to prevent loops due
+        # to incomplete data, so we don't wait until the end to set this.
         self._filled = True
+
+        # Get what we can from the loan details page.
         loans = self._tind.loan_details(self.item_tind_id, self._session)
-        if not loans:
+        if loans:
+            # Save the loans page in case we need it later.
+            self._loan_data = loans
+            # Parse it and pull out what we can.
+            soup = BeautifulSoup(loans, features='lxml')
+            tables = soup.body.find_all('table')
+            if len(tables) < 2:
+                if __debug__: log('loan details missing expected table')
+                return
+            borrower_table = tables[1]
+            # Get the *last* borrower found in the table.
+            last_row = borrower_table.find_all('tr')[-1]
+            cells = last_row.find_all('td')
+            if len(cells) < 10:
+                if __debug__: log('loan details missing expected table cells')
+                return
+            self._requester_name = cells[0].get_text()
+            self._requester_url = cells[0].a['href']
+            self._date_requested = cells[9].get_text()
+            # Date is actually date + time, so strip the time part.
+            end = self._date_requested.find(' ')
+            self._date_requested = self._date_requested[:end]
+        else:
             self._requester_name = ''
+            self._requester_email = ''
             self._requester_url = ''
+            self._requester_type = ''
             self._date_requested = ''
-            return
 
-        # Save the loans page in case we need it later, and start parsing.
-        self._loan_data = loans
-        soup = BeautifulSoup(loans, features='lxml')
-
-        # Get the last borrower found in the table.
-        tables = soup.body.find_all('table')
-        borrower_table = tables[1]
-        last_row = borrower_table.find_all('tr')[-1]
-        cells = last_row.find_all('td')
-        self._requester_name = cells[0].get_text()
-        self._requester_url = cells[0].a['href']
-        self._date_requested = cells[9].get_text()
-        # Date is actually date + time, so strip the time part
-        end = self._date_requested.find(' ')
-        self._date_requested = self._date_requested[:end]
+        # Get what we can from the loan details page.
+        patron = self._tind.patron_details(self._requester_name,
+                                           self._requester_url, self._session)
+        if patron:
+            # Save the patron page in case we need it later.
+            self._patron_data = patron
+            soup = BeautifulSoup(patron, features='lxml')
+            tables = soup.body.find_all('table')
+            if len(tables) < 2:
+                if __debug__: log('patron data missing expected table')
+                return
+            personal_table_rows = tables[1].find_all('tr')
+            if len(personal_table_rows) < 9:
+                if __debug__: log('patron data missing expected table cells')
+                return
+            self._requester_email = personal_table_rows[6].find('td').get_text()
+            self._requester_type = personal_table_rows[8].find('td').get_text()
+        else:
+            self._requester_email = ''
+            self._requester_type = ''
 
 
 class Tind(object):
@@ -401,6 +460,29 @@ class Tind(object):
             else:
                 content = str(resp.content)
                 return content if content.find('There are no loans') < 0 else ''
+        except Exception as err:
+            details = 'exception connecting to tind.io: {}'.format(err)
+            if self._notifier:
+                self._notifier.fatal('Failed to connect -- try again later', details)
+            raise ServiceFailure(details)
+
+
+    def patron_details(self, patron_name, patron_url, session):
+        '''Get the HTML of a loans detail page from TIND.io.'''
+
+        try:
+            if self._tracer:
+                self._tracer.update('Getting patron details for {}'.format(patron_name))
+            (resp, error) = net('get', patron_url, session = session, allow_redirects = True)
+            if isinstance(error, NoContent):
+                if __debug__: log('server returned a "no content" code')
+                return ''
+            elif error:
+                raise error
+            elif resp == None:
+                raise InternalError('Unexpected network return value')
+            else:
+                return str(resp.content)
         except Exception as err:
             details = 'exception connecting to tind.io: {}'.format(err)
             if self._notifier:
