@@ -1,10 +1,13 @@
 Change log for Lost It!
 =======================
 
-Version 1.2.1
+Version 1.3.0
 -------------
 
-This is a bugfix release to fix the problem that the requester name and date were not being filled in in the NOS spreadsheet.  The bug was due to getting the information from the wrong place in TIND.
+* Fix the problem that the requester name and date were not being filled in in the NOS spreadsheet.
+* Support new NOS spreadsheet format, with new columns
+* Get requester/patron details like email address and patron type
+* Other misc. bug fixes
 
 
 Version 1.2.0
