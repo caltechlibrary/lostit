@@ -64,16 +64,21 @@ _GS_BASE_URL = 'https://docs.google.com/spreadsheets/d/'
 # indexes below.
 
 _COL_INDEX = {
-    'date_lostit_recorded' : 0,
-    'date_requested'       : 1,
-    'requester_name'       : 2,
-    'item_title'           : 3,
-    'item_author'          : 4,
-    'item_tind_id'         : 5,
-    'item_call_number'     : 6,
-    'item_barcode'         : 7,
-    'item_location_code'   : 8,
-    'item_location_name'   : 9,
+    'nos_status'           : 0,         # Not read by us, but need placeholder
+    'nos_notes'            : 1,         # Not read by us, but need placeholder
+    'date_lostit_recorded' : 2,
+    'date_requested'       : 3,
+    'requester_name'       : 4,
+    'requester_email'      : 5,
+    'requester_type'       : 6,
+    'item_title'           : 7,
+    'item_author'          : 8,
+    'item_tind_id'         : 9,
+    'item_call_number'     : 10,
+    'item_barcode'         : 11,
+    'item_location_code'   : 12,
+    'item_location_name'   : 13,
+    'nos_replacement_cost' : 14,        # Not read by us, but need placeholder
 }
 
 
@@ -103,11 +108,17 @@ class GoogleLostRecord(LostRecord):
             self.item_location_code   = record.item_location_code
             self.item_loan_status     = record.item_loan_status
             self.requester_name       = record.requester_name
+            self.requester_email      = record.requester_email
+            self.requester_type       = record.requester_type
             self.requester_url        = record.requester_url
             self.date_modified        = record.date_modified
             self.date_requested       = record.date_requested
             self.date_lostit_recorded = record.date_lostit_recorded
         if row:
+            # When a row from a Google spreadsheet has empty cells at the tail
+            # end, the list of values we get back is not the full length; it's
+            # only as long as the last column that has a value.
+            row = padded(row, len(_COL_INDEX))
             self.item_title           = row[_COL_INDEX['item_title']].strip()
             self.item_author          = row[_COL_INDEX['item_author']].strip()
             self.item_tind_id         = row[_COL_INDEX['item_tind_id']].strip()
@@ -116,6 +127,8 @@ class GoogleLostRecord(LostRecord):
             self.item_location_code   = row[_COL_INDEX['item_location_code']].strip().lower()
             self.item_location_name   = row[_COL_INDEX['item_location_name']].strip()
             self.requester_name       = row[_COL_INDEX['requester_name']].strip()
+            self.requester_email      = row[_COL_INDEX['requester_email']].strip()
+            self.requester_type       = row[_COL_INDEX['requester_type']].strip()
             self.date_requested       = row[_COL_INDEX['date_requested']].strip()
             self.date_lostit_recorded = row[_COL_INDEX['date_lostit_recorded']].strip()
 
@@ -276,6 +289,8 @@ class Google(object):
         row[_COL_INDEX['date_lostit_recorded']] = datetime.today().strftime('%Y-%m-%d')
         row[_COL_INDEX['date_requested']]       = record.date_requested
         row[_COL_INDEX['requester_name']]       = linked_requester_name(record)
+        row[_COL_INDEX['requester_email']]      = record.requester_email
+        row[_COL_INDEX['requester_type']]       = record.requester_type
         row[_COL_INDEX['item_title']]           = record.item_title
         row[_COL_INDEX['item_author']]          = record.item_author
         row[_COL_INDEX['item_tind_id']]         = record.item_tind_id
@@ -291,3 +306,13 @@ class Google(object):
             return '=HYPERLINK("{}","{}")'.format(url, value)
         else:
             return ''
+
+
+# Miscellaneous utilities.
+# .............................................................................
+
+def padded(the_list, columns):
+    length = len(the_list)
+    if length >= columns:
+        return the_list
+    return the_list + ['']*(columns - length)
