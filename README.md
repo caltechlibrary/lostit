@@ -9,7 +9,7 @@ When an item is discovered missing from the shelves of the Caltech Library stack
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square)](https://choosealicense.com/licenses/bsd-3-clause)
 [![Python](https://img.shields.io/badge/Python-3.4+-brightgreen.svg?style=flat-square)](http://shields.io)
-[![Latest release](https://img.shields.io/badge/Latest_release-1.2.1-b44e88.svg?style=flat-square)](http://shields.io)
+[![Latest release](https://img.shields.io/badge/Latest_release-1.3.0-b44e88.svg?style=flat-square)](http://shields.io)
 
 Table of Contents
 -----------------
@@ -64,6 +64,14 @@ Unless an error occurs, _Lost It!_ presents only one other dialog: to ask the us
 
 
 Finally, _Lost It!_ will by default send mail to a library mailing list to alert people if newly lost items have been found. _Lost It!_ exits after that.
+
+### _Additional details and assumptions_
+
+The following are some additional details about how _Lost It!_ works and the assumptions built into it:
+
+* When looking up records in the Google spreadsheet of lost items, it looks at the two first tabs.  The tab lookup is done by position, _not_ by name, and the names of the tabs make no difference.  _Lost It!_ assumes that the first tab is the current NOS list and the second tab is a list of historical records, but it doesn't care what the cut-off is between the tabs.  It merely gathers the records from both tabs and treats the union of the records as the set of all known lost items.
+* _Lost It!_ finds the columns in the Google spreadsheet by position; in other words, the column ordering is hardwired into the program.  Changing the column order requires corresponding changes to the code.  On the other hand, the column headings can be changed at will, since _Lost It!_ ignores the column headings.  (This is a situation where _something_ must be hardwired _somewhere_ in order for _Lost It!_ to be able to read the spreadsheet.  Either it makes assumptions about the column positions, or it looks for specific column headings.  Using the latter approach would mean that changing the column titles would require changing the code too, to account for the new names.  There's no free lunch, and it was easier to hardwire the column order, so that's what I did.  The relevant code is in [lostit/google_sheet.py](lostit/google_sheet.py).)
+
 
 ✎ Configuration
 --------------
