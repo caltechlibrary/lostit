@@ -186,7 +186,8 @@ class MainBody(Thread):
             # Send mail, if requested.
             if send_mail and num_new > 0:
                 tracer.update('Sending mail')
-                subject  = 'Lost It! found {} lost items'.format(num_new)
+                subject  = 'Lost It! reports {} lost item{}'.format(
+                    num_new, 's' if num_new > 1 else '')
                 body     = email_body(new_records, google.spreadsheet_url(sid))
                 sender   = accesser.user + '@caltech.edu'
                 password = accesser.password
@@ -216,23 +217,28 @@ class MainBody(Thread):
 
 def email_body(records, sheet_url):
     summary = ''
+    num_records = len(records)
     for rec in records:
         summary += '''
-        Title: {}
-       Author: {}
-       Call #: {}
-      Barcode: {}
-Location code: {}
-Location name: {}
+          Title: {}
+         Author: {}
+         Call #: {}
+        Barcode: {}
+  Location code: {}
+  Location name: {}
+ Requester name: {}
+Requester email: {}
+    Patron type: {}
 
 '''.format(rec.item_title, rec.item_author, rec.item_call_number,
-           rec.item_barcode, rec.item_location_code, rec.item_location_name)
+           rec.item_barcode, rec.item_location_code, rec.item_location_name,
+           rec.requester_name, rec.requester_email, rec.requester_type)
     return '''
-Lost It! was just run and it found {} new lost items:
+Lost It! was just run and it discovered {} new lost item{} recorded in TIND:
 {}
 Here is the URL for the spreadsheet of lost items:
 {}
-'''.format(len(records), summary, sheet_url)
+'''.format(num_records, 's' if num_records > 1 else '', summary, sheet_url)
 
 
 # Main entry point.
