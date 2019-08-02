@@ -31,6 +31,8 @@ class LostRecord(object):
 
     def __init__(self):
         self.requester_name = ''               # String
+        self.requester_email = ''              # String
+        self.requester_type = ''               # String
         self.requester_url = ''                # String
 
         self.item_title = ''                   # String
