@@ -118,7 +118,7 @@ _Lost It!_ makes use of numerous open-source packages, without which it would ha
 ☮︎ Copyright and license
 ---------------------
 
-Copyright (C) 2018, Caltech.  This software is freely distributed under a BSD/MIT type license.  Please see the [LICENSE](LICENSE) file for more information.
+Copyright (C) 2018-2019, Caltech.  This software is freely distributed under a BSD/MIT type license.  Please see the [LICENSE](LICENSE) file for more information.
     
 <div align="center">
   <a href="https://www.caltech.edu">
