@@ -20,7 +20,6 @@ import plac
 import sys
 import time
 from   threading import Thread
-import traceback
 
 import lostit
 from lostit.access import AccessHandlerGUI, AccessHandlerCLI
@@ -201,12 +200,15 @@ class MainBody(Thread):
             tracer.stop('Stopping due to a problem connecting to services')
             controller.stop()
         except Exception as err:
+            import traceback
             if debug:
+                tracer.stop('{}\n{}'.format(str(ex), traceback.format_exc()))
                 import pdb; pdb.set_trace()
-            tracer.stop('Stopping due to error')
-            notifier.fatal(lostit.__title__ + ' encountered an error',
-                           str(err) + '\n' + traceback.format_exc())
-            controller.stop()
+            else:
+                notifier.fatal(lostit.__title__ + ' encountered an error',
+                               str(err) + '\n' + traceback.format_exc())
+                tracer.stop('Stopping due to error')
+                controller.stop()
         else:
             tracer.stop('Done')
             controller.stop()
