@@ -183,6 +183,20 @@ class TindLostRecord(LostRecord):
 
         # Get what we can from the loan details page.
         loans = self._tind.loan_details(self.item_tind_id, self._session)
+        self._fill_loan_details(loans)
+
+        # Get what we can from the loan details page.
+        patron = self._tind.patron_details(self._requester_name,
+                                           self._requester_url, self._session)
+        self._fill_patron_details(patron)
+
+
+    def _fill_loan_details(self, loans):
+        # If we can't find values, then we leave the following.
+        self._requester_name = ''
+        self._requester_url = ''
+        self._date_requested = ''
+
         if loans:
             # Save the loans page in case we need it later.
             self._loan_data = loans
@@ -190,7 +204,7 @@ class TindLostRecord(LostRecord):
             soup = BeautifulSoup(loans, features='lxml')
             tables = soup.body.find_all('table')
             if len(tables) < 2:
-                if __debug__: log('loan details missing expected table')
+                if __debug__: log('no loan details => no requests')
                 return
             borrower_table = tables[1]
             # Get the *last* borrower found in the table.
@@ -205,16 +219,13 @@ class TindLostRecord(LostRecord):
             # Date is actually date + time, so strip the time part.
             end = self._date_requested.find(' ')
             self._date_requested = self._date_requested[:end]
-        else:
-            self._requester_name = ''
-            self._requester_email = ''
-            self._requester_url = ''
-            self._requester_type = ''
-            self._date_requested = ''
 
-        # Get what we can from the loan details page.
-        patron = self._tind.patron_details(self._requester_name,
-                                           self._requester_url, self._session)
+
+    def _fill_patron_details(self, patron):
+        # If we can't find values, then we leave the following.
+        self._requester_email = ''
+        self._requester_type = ''
+
         if patron:
             # Save the patron page in case we need it later.
             self._patron_data = patron
@@ -229,9 +240,6 @@ class TindLostRecord(LostRecord):
                 return
             self._requester_email = personal_table_rows[6].find('td').get_text()
             self._requester_type = personal_table_rows[8].find('td').get_text()
-        else:
-            self._requester_email = ''
-            self._requester_type = ''
 
 
 class Tind(object):
@@ -470,6 +478,9 @@ class Tind(object):
     def patron_details(self, patron_name, patron_url, session):
         '''Get the HTML of a loans detail page from TIND.io.'''
 
+        if not patron_name or not patron_url:
+            if __debug__: log('no patron => no patron details to get')
+            return
         try:
             if self._tracer:
                 self._tracer.update('Getting patron details for {}'.format(patron_name))
