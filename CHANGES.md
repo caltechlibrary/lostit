@@ -1,12 +1,17 @@
 Change log for Lost It!
 =======================
 
+Version 1.4.0
+-------------
+
+* Link the TIND id to the Caltech tind.io page.
+
+
 Version 1.3.2
 -------------
 
 * Fix bug preventing mail to multiple recipients from reaching anyone but the first recipient.
 * Handle changed spreadsheet layout.
-* Link the TIND id to the Caltech tind.io page.
 
 
 Version 1.3.1

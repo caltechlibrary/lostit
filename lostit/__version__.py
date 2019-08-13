@@ -6,7 +6,7 @@
 # @website https://github.com/caltechlibrary/lostit
 # =============================================================================
 
-__version__     = '1.3.2'
+__version__     = '1.4.0'
 __title__       = 'lostit'
 __name__        = 'Lost It!'
 __description__ = '''A program for Caltech Library's Circulation team to easily report lost items.'''
