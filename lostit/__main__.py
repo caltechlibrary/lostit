@@ -32,7 +32,7 @@ from lostit.exceptions import *
 from lostit.files import module_path
 from lostit.google_sheet import Google
 from lostit.messages import MessageHandlerGUI, MessageHandlerCLI
-from lostit.network import network_available
+from lostit.network import network_available, net
 from lostit.progress import ProgressIndicatorGUI, ProgressIndicatorCLI
 from lostit.records import records_diff, records_filter
 from lostit.tind import Tind
@@ -220,8 +220,10 @@ def email_body(records, sheet_url):
     def value(field):
         return '-- none --' if field == '' else field
 
+    if __debug__: log('formatting email body')
     summary = ''
     num_records = len(records)
+    joke = random_pun()
     for rec in records:
         summary += '''
           Title: {}
@@ -244,7 +246,17 @@ Lost It! was just run and it discovered {} new lost item{} recorded in TIND:
 {}
 Here is the URL for the spreadsheet of lost items:
 {}
-'''.format(num_records, 's' if num_records > 1 else '', summary, sheet_url)
+
+{}
+'''.format(num_records, 's' if num_records > 1 else '', summary, sheet_url,
+           "---\nAnd here is a random pun:\n" + joke if joke else '')
+
+
+def random_pun():
+    if __debug__: log('getting a random joke from https://icanhazdadjoke.com')
+    (resp, error) = net('get', 'https://icanhazdadjoke.com/',
+                        timeout = 10, headers = {'Accept': 'text/plain'})
+    return resp.text if not error else None
 
 
 # Main entry point.
