@@ -106,7 +106,7 @@ class TindLostRecord(LostRecord):
         self.date_modified      = json_dict['modification_date']
 
         links                   = json_dict['links']
-        self.item_record_url    = 'https://caltech.tind.io' + links['title']
+        self.item_record_url    = 'https://caltech.tind.io/record/' + str(self.item_tind_id)
         self.item_details_url   = 'https://caltech.tind.io' + links['barcode']
 
 
