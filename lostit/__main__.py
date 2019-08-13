@@ -51,7 +51,7 @@ from lostit.tind import Tind
     reset_keys = ('reset user and password used',                   'flag',   'R'),
     no_sheet   = ('do not open the spreadsheet (default: open it)', 'flag',   'S'),
     version    = ('print version info and exit',                    'flag',   'V'),
-    debug      = ('turn on debugging',                              'flag',   'Z'),
+    debug      = ('turn on debugging',                              'flag',   '@'),
 )
 
 def main(user = 'U', pswd = 'P',
@@ -216,6 +216,10 @@ class MainBody(Thread):
 # .............................................................................
 
 def email_body(records, sheet_url):
+    # Helper function
+    def value(field):
+        return '-- none --' if field == '' else field
+
     summary = ''
     num_records = len(records)
     for rec in records:
@@ -230,9 +234,11 @@ def email_body(records, sheet_url):
 Requester email: {}
     Patron type: {}
 
-'''.format(rec.item_title, rec.item_author, rec.item_call_number,
-           rec.item_barcode, rec.item_location_code, rec.item_location_name,
-           rec.requester_name, rec.requester_email, rec.requester_type)
+'''.format(value(rec.item_title), value(rec.item_author),
+           value(rec.item_call_number), value(rec.item_barcode),
+           value(rec.item_location_code), value(rec.item_location_name),
+           value(rec.requester_name), value(rec.requester_email),
+           value(rec.requester_type))
     return '''
 Lost It! was just run and it discovered {} new lost item{} recorded in TIND:
 {}
@@ -243,13 +249,12 @@ Here is the URL for the spreadsheet of lost items:
 
 # Main entry point.
 # ......................................................................
-# The following allows users to invoke this using "python3 -m lostit".
 
+# On windows, we want plac to use slash intead of hyphen for cmd-line options.
 if sys.platform.startswith('win'):
-    # When running on Windows, we want the command-line args to use the slash
-    # character intead of hyphen.
     main.prefix_chars = '/'
 
+# The following allows users to invoke this using "python3 -m handprint".
 if __name__ == '__main__':
     plac.call(main)
 
