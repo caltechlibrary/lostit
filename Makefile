@@ -25,7 +25,7 @@ build: | dependencies data-files build-$(platform)
 
 # Platform-specific instructions.
 
-build-darwin: $(about-file) $(help-file) dist/Lostit.app # NEWS.html
+build-darwin: $(about-file) $(help-file) dist/Lostit.app
 #	packagesbuild dev/installer-builders/macos/packages-config/Lostit.pkgproj
 #	mv dist/Lostit-mac.pkg dist/Lostit-$(release)-macos-$(macos_vers).pkg 
 
@@ -58,11 +58,6 @@ $(help-file): lostit/data/help.md
 	inliner -n < help-tmp.html > $@
 	rm -f help-tmp.html
 
-NEWS.html: NEWS.md
-	pandoc --standalone --quiet -f gfm -H $(github-css) -o NEWS.html NEWS.md
-	inliner -n < NEWS.html > NEWS-inlined.html
-	mv NEWS-inlined.html NEWS.html
-
 # Miscellaneous directives.
 
 clean: clean-dist clean-html
@@ -71,6 +66,6 @@ clean-dist:;
 	-rm -fr dist/Lostit.app dist/lostit dist/lostit.exe build
 
 clean-html:;
-	-rm -fr ABOUT.html NEWS.html lostit/data/help.html
+	-rm -fr ABOUT.html lostit/data/help.html
 
 .PHONY: html clean clean-dist clean-html
