@@ -1,6 +1,24 @@
 Change log for Lost It!
 =======================
 
+Version 1.3.2
+-------------
+
+* Fix bug preventing mail to multiple recipients from reaching anyone but the first recipient.
+* Handle changed spreadsheet layout.
+* Link the TIND id to the Caltech tind.io page.
+
+
+Version 1.3.1
+-------------
+
+* Fix crash that occurred when a lost item did not have a requester associated with it.
+* Fix slightly broken github css used to create ABOUT.html.
+* Add a random joke to the end of every email message, just for fun.  (Thank you, https://icanhazdadjoke.com/.)
+* Update copyright year in all the files. 
+* Minor internal changes and cleanup.
+
+
 Version 1.3.0
 -------------
 
