@@ -258,7 +258,8 @@ def random_pun():
     if __debug__: log('getting a random joke from https://icanhazdadjoke.com')
     (resp, error) = net('get', 'https://icanhazdadjoke.com/',
                         timeout = 10, headers = {'Accept': 'text/plain'})
-    return resp.text if not error else None
+    text = resp.text.encode('ascii', 'ignore').decode() if not error else None
+    return text
 
 
 # Main entry point.
