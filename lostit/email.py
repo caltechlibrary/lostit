@@ -38,6 +38,9 @@ class Mailer():
     def send(self, sender, password, recipients, subject, body):
         '''Send a message with the given subject and body.'''
 
+        # Docs for smtplib in Python 3.7 say it has to be a list.
+        recipients = recipients.split(',')
+
         msg = EmailMessage()
         msg['From'] = sender
         msg['To'] = recipients
