@@ -66,19 +66,19 @@ _GS_BASE_URL = 'https://docs.google.com/spreadsheets/d/'
 _COL_INDEX = {
     'nos_status'           : 0,         # Not read by us, but need placeholder
     'nos_notes'            : 1,         # Not read by us, but need placeholder
-    'date_lostit_recorded' : 2,
-    'date_requested'       : 3,
-    'requester_name'       : 4,
-    'requester_email'      : 5,
-    'requester_type'       : 6,
-    'item_title'           : 7,
-    'item_author'          : 8,
-    'item_tind_id'         : 9,
-    'item_call_number'     : 10,
-    'item_barcode'         : 11,
-    'item_location_code'   : 12,
-    'item_location_name'   : 13,
-    'nos_replacement_cost' : 14,        # Not read by us, but need placeholder
+    'nos_replacement_cost' : 2,        # Not read by us, but need placeholder
+    'date_lostit_recorded' : 3,
+    'date_requested'       : 4,
+    'requester_name'       : 5,
+    'requester_email'      : 6,
+    'requester_type'       : 7,
+    'item_title'           : 8,
+    'item_author'          : 9,
+    'item_tind_id'         : 10,
+    'item_call_number'     : 11,
+    'item_barcode'         : 12,
+    'item_location_code'   : 13,
+    'item_location_name'   : 14,
 }
 
 
@@ -285,6 +285,9 @@ class Google(object):
         def linked_item_barcode(r):
             return self._linked_value(r.item_barcode, r.item_details_url)
 
+        def linked_tind_id(r):
+            return self._linked_value(r.item_tind_id, r.item_record_url)
+
         row = ['']*len(_COL_INDEX)
         row[_COL_INDEX['date_lostit_recorded']] = datetime.today().strftime('%Y-%m-%d')
         row[_COL_INDEX['date_requested']]       = record.date_requested
@@ -293,7 +296,7 @@ class Google(object):
         row[_COL_INDEX['requester_type']]       = record.requester_type
         row[_COL_INDEX['item_title']]           = record.item_title
         row[_COL_INDEX['item_author']]          = record.item_author
-        row[_COL_INDEX['item_tind_id']]         = record.item_tind_id
+        row[_COL_INDEX['item_tind_id']]         = linked_tind_id(record)
         row[_COL_INDEX['item_call_number']]     = record.item_call_number
         row[_COL_INDEX['item_barcode']]         = linked_item_barcode(record)
         row[_COL_INDEX['item_location_code']]   = record.item_location_code
