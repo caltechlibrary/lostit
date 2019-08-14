@@ -7,7 +7,7 @@
 # @website https://github.com/caltechlibrary/lostit
 # =============================================================================
 
-# Variables.
+# Variables -------------------------------------------------------------------
 
 release	   := $(shell egrep 'version.*=' lostit/__version__.py | awk '{print $$3}' | tr -d "'")
 platform   := $(shell python3 -c 'import sys; print(sys.platform)')
@@ -19,15 +19,15 @@ github-css := dev/github-css/github-markdown-css.html
 about-file := ABOUT.html
 help-file  := lostit/data/help.html
 
-# Main build targets.
+# Main build targets ----------------------------------------------------------
 
 build: | dependencies data-files build-$(platform)
 
-# Platform-specific instructions.
+# Platform-specific instructions ----------------------------------------------
 
 build-darwin: $(about-file) $(help-file) dist/LostIt.app
-#	packagesbuild dev/installer-builders/macos/packages-config/LostIt.pkgproj
-#	mv dist/LostIt-mac.pkg dist/LostIt-$(release)-macos-$(macos_vers).pkg 
+	packagesbuild dev/installers/macos/LostIt.pkgproj
+	mv dist/LostIt.pkg dist/LostIt-$(release)-macos-$(macos_vers).pkg 
 
 build-linux: dist/lostit
 	(cd dist; tar czf LostIt-$(release)-$(distro)-$(linux_vers).tar.gz lostit)
@@ -38,34 +38,31 @@ dist/LostIt.app:
 	rm -f dist/LostIt.app/Contents/Info.plist.bak
 	rm -f dist/lostit
 
-dist/lostit dist/LostIt.exe:
-	pyinstaller --clean pyinstaller-$(platform).spec
-
 dependencies:;
 	pip3 install -r requirements.txt
 
 data-files: $(about-file) $(help-file)
 
-# Component files placed in the installers.
+# Component files placed in the installers ------------------------------------
 
 $(about-file): README.md
-	pandoc --standalone --quiet -f gfm -H $(github-css) -o README.html README.md
-	inliner -n < README.html > ABOUT.html
-	rm -f README.html
+	pandoc --standalone --quiet -f gfm -H $(github-css) -o tmp.html $<
+	inliner -n < tmp.html > $@
+	rm -f tmp.html
 
 $(help-file): lostit/data/help.md
-	pandoc --standalone --quiet -f gfm -H $(github-css) -o help-tmp.html $<
-	inliner -n < help-tmp.html > $@
-	rm -f help-tmp.html
+	pandoc --standalone --quiet -f gfm -H $(github-css) -o tmp.html $<
+	inliner -n < tmp.html > $@
+	rm -f tmp.html
 
-# Miscellaneous directives.
+# Miscellaneous directives ----------------------------------------------------
 
 clean: clean-dist clean-html
 
 clean-dist:;
-	-rm -fr dist/LostIt.app dist/lostit dist/LostIt.exe build
+	-rm -fr dist/LostIt.app dist/LostIt.pkg dist/lostit build
 
 clean-html:;
-	-rm -fr ABOUT.html lostit/data/help.html
+	-rm -fr ABOUT.html lostit/data/help.html tmp.html
 
 .PHONY: html clean clean-dist clean-html
