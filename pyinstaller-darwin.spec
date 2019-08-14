@@ -54,7 +54,7 @@ executable         = EXE(application_pyz,
                         )
 
 app             = BUNDLE(executable,
-                         name = 'Lostit.app',
+                         name = 'LostIt.app',
                          icon = 'dev/icons/generated-icons/lostit-icon-512px.icns',
                          bundle_identifier = None,
                          info_plist = {'NSHighResolutionCapable': 'True',

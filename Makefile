@@ -25,20 +25,20 @@ build: | dependencies data-files build-$(platform)
 
 # Platform-specific instructions.
 
-build-darwin: $(about-file) $(help-file) dist/Lostit.app
-#	packagesbuild dev/installer-builders/macos/packages-config/Lostit.pkgproj
-#	mv dist/Lostit-mac.pkg dist/Lostit-$(release)-macos-$(macos_vers).pkg 
+build-darwin: $(about-file) $(help-file) dist/LostIt.app
+#	packagesbuild dev/installer-builders/macos/packages-config/LostIt.pkgproj
+#	mv dist/LostIt-mac.pkg dist/LostIt-$(release)-macos-$(macos_vers).pkg 
 
 build-linux: dist/lostit
-	(cd dist; tar czf Lostit-$(release)-$(distro)-$(linux_vers).tar.gz lostit)
+	(cd dist; tar czf LostIt-$(release)-$(distro)-$(linux_vers).tar.gz lostit)
 
-dist/Lostit.app:
+dist/LostIt.app:
 	pyinstaller --clean pyinstaller-$(platform).spec
-	sed -i '' -e 's/0.0.0/$(release)/' dist/Lostit.app/Contents/Info.plist
-	rm -f dist/Lostit.app/Contents/Info.plist.bak
+	sed -i '' -e 's/0.0.0/$(release)/' dist/LostIt.app/Contents/Info.plist
+	rm -f dist/LostIt.app/Contents/Info.plist.bak
 	rm -f dist/lostit
 
-dist/lostit dist/Lostit.exe:
+dist/lostit dist/LostIt.exe:
 	pyinstaller --clean pyinstaller-$(platform).spec
 
 dependencies:;
@@ -63,7 +63,7 @@ $(help-file): lostit/data/help.md
 clean: clean-dist clean-html
 
 clean-dist:;
-	-rm -fr dist/Lostit.app dist/lostit dist/lostit.exe build
+	-rm -fr dist/LostIt.app dist/lostit dist/LostIt.exe build
 
 clean-html:;
 	-rm -fr ABOUT.html lostit/data/help.html
