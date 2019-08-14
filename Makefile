@@ -45,15 +45,14 @@ data-files: $(about-file) $(help-file)
 
 # Component files placed in the installers ------------------------------------
 
-$(about-file): README.md
-	pandoc --standalone --quiet -f gfm -H $(github-css) -o tmp.html $<
-	inliner -n < tmp.html > $@
-	rm -f tmp.html
+# Temporary link so that the generic .md -> .html rule works for ABOUT.html.
+ABOUT.md: README.md
+	ln -s ${<F} ${@F}
 
-$(help-file): lostit/data/help.md
-	pandoc --standalone --quiet -f gfm -H $(github-css) -o tmp.html $<
-	inliner -n < tmp.html > $@
-	rm -f tmp.html
+%.html: %.md
+	pandoc --standalone --quiet -f gfm -H $(github-css) -o $@~ $<
+	inliner -n < $@~ > $@
+	rm -f $@~
 
 # Miscellaneous directives ----------------------------------------------------
 
@@ -63,6 +62,6 @@ clean-dist:;
 	-rm -fr dist/LostIt.app dist/LostIt.pkg dist/lostit build
 
 clean-html:;
-	-rm -fr ABOUT.html lostit/data/help.html tmp.html
+	-rm -fr ABOUT.md ABOUT.html lostit/data/help.html tmp.html
 
 .PHONY: html clean clean-dist clean-html
