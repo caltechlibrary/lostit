@@ -9,7 +9,6 @@
 
 import imp
 import os
-import platform
 import sys
 
 # The list must contain tuples: ('file', 'destination directory').
@@ -42,7 +41,7 @@ executable         = EXE(application_pyz,
                          configuration.binaries,
                          configuration.zipfiles,
                          configuration.datas,
-                         name = 'Lostit',
+                         name = 'LostIt',
                          icon = r'dev\icons\generated-icons\lostit-icon-512px.ico',
                          debug = False,
                          strip = False,
@@ -52,7 +51,7 @@ executable         = EXE(application_pyz,
                         )
 
 app             = BUNDLE(executable,
-                         name = 'Lostit.exe',
+                         name = 'LostIt.exe',
                          icon = r'dev\icons\generated-icons\lostit-icon-512px.ico',
                          bundle_identifier = None,
                          info_plist = {'NSHighResolutionCapable': 'True'},
