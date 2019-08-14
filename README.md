@@ -105,14 +105,18 @@ _Lost It!_ makes use of numerous open-source packages, without which it would ha
 * [ipdb](https://github.com/gotcha/ipdb) &ndash; the IPython debugger
 * [keyring](https://github.com/jaraco/keyring) &ndash; a library to access the system keyring service from Python
 * [lxml](https://lxml.de) &ndash; an XML parsing library for Python
+* [nameparser](https://github.com/derek73/python-nameparser) &ndash; simple Python module for parsing human names into their individual components
 * [oauth2client](https://github.com/googleapis/oauth2client) &ndash; Google OAuth 2.0 library
 * [plac](http://micheles.github.io/plac/) &ndash; a command line argument parser
-* [PyInstaller](http://www.pyinstaller.org) &ndash; a packaging program that creates standalone applications from Python programs for Windows, macOS, Linux and other platforms
+* [PyInstaller](http://www.pyinstaller.org) &ndash; a packaging program that creates standalone applications from Python programs
 * [pypubsub](https://github.com/schollii/pypubsub) &ndash; a publish-and-subscribe message-passing library for Python
 * [requests](http://docs.python-requests.org) &ndash; an HTTP library for Python
 * [setuptools](https://github.com/pypa/setuptools) &ndash; library for `setup.py`
 * [termcolor](https://pypi.org/project/termcolor/) &ndash; ANSI color formatting for output in terminal
+* [urllib3](https://github.com/urllib3/urllib3) &ndash; Python HTTP library with thread-safe connection pooling, file post support, and more
 * [wxPython](https://wxpython.org) &ndash; a cross-platform GUI toolkit for the Python language
+
+Finally, _Lost It!_ uses the API services of [icanhazdadjoke.com](https://icanhazdadjoke.com) to insert random puns into the email messages it sends.
 
 
 ☮︎ Copyright and license
