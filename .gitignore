@@ -69,6 +69,7 @@ build
 dist
 README.html
 ABOUT.html
+ABOUT.md
 *.~is
 dev/installers/windows/lostit_innosetup_script.iss
 lostit/data/help.html
