@@ -6,6 +6,7 @@ Version 1.4.0
 
 * Link the TIND id to the Caltech tind.io page.
 * Fix capitalization of macOS app name: `Lostit` ->  `LostIt`.
+* A proper macOS installer is now available
 
 Version 1.3.2
 -------------
