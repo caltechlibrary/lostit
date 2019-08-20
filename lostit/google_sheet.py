@@ -65,20 +65,22 @@ _GS_BASE_URL = 'https://docs.google.com/spreadsheets/d/'
 
 _COL_INDEX = {
     'nos_status'           : 0,         # Not read by us, but need placeholder
-    'nos_notes'            : 1,         # Not read by us, but need placeholder
-    'nos_replacement_cost' : 2,        # Not read by us, but need placeholder
-    'date_lostit_recorded' : 3,
-    'date_requested'       : 4,
-    'requester_name'       : 5,
-    'requester_email'      : 6,
-    'requester_type'       : 7,
-    'item_title'           : 8,
-    'item_author'          : 9,
-    'item_tind_id'         : 10,
-    'item_call_number'     : 11,
-    'item_barcode'         : 12,
-    'item_location_code'   : 13,
-    'item_location_name'   : 14,
+    'nos_deciding_bib'     : 1,         # Not read by us, but need placeholder
+    'nos_decision_date'    : 2,         # Not read by us, but need placeholder
+    'nos_notes'            : 3,         # Not read by us, but need placeholder
+    'nos_replacement_cost' : 4,         # Not read by us, but need placeholder
+    'date_lostit_recorded' : 5,
+    'date_requested'       : 6,
+    'requester_name'       : 7,
+    'requester_email'      : 8,
+    'requester_type'       : 9,
+    'item_title'           : 10,
+    'item_author'          : 11,
+    'item_tind_id'         : 12,
+    'item_call_number'     : 13,
+    'item_barcode'         : 14,
+    'item_location_code'   : 15,
+    'item_location_name'   : 16,
 }
 
 
