@@ -1,12 +1,17 @@
 Change log for Lost It!
 =======================
 
+Version 1.4.2
+-------------
+
+* Version bump for final production release to Caltech Circulation desk staff.
+
 Version 1.4.0
 -------------
 
 * Link the TIND id to the Caltech tind.io page.
 * Fix capitalization of macOS app name: `Lostit` ->  `LostIt`.
-* A proper macOS installer is now available
+* A proper macOS installer is now available.
 
 Version 1.3.2
 -------------
