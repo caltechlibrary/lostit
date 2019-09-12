@@ -1,6 +1,12 @@
 Change log for Lost It!
 =======================
 
+Version 1.4.3
+-------------
+
+* Fix [issue #1](https://github.com/caltechlibrary/lostit/issues/1), (requester info is incorrect when multiple copies exist). The code now compares the barcodes of items requested on hold to match against the one that's reported lost.
+
+
 Version 1.4.2
 -------------
 
