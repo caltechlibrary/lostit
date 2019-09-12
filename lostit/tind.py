@@ -206,19 +206,29 @@ class TindLostRecord(LostRecord):
             if len(tables) < 2:
                 if __debug__: log('no loan details => no requests')
                 return
+
+            # After the header row, the table contains a list of borrowers for
+            # the item.  Since a given item may have multiple copies, it's
+            # possible for a copy other than the lost one to have a loan on it.
+            # Therefore, we start from the bottom of the table and work our
+            # way backwards, comparing bar codes, to see if the lost copy has
+            # a loan request on it.
             borrower_table = tables[1]
-            # Get the *last* borrower found in the table.
-            last_row = borrower_table.find_all('tr')[-1]
-            cells = last_row.find_all('td')
-            if len(cells) < 10:
-                if __debug__: log('loan details missing expected table cells')
-                return
-            self._requester_name = cells[0].get_text()
-            self._requester_url = cells[0].a['href']
-            self._date_requested = cells[9].get_text()
-            # Date is actually date + time, so strip the time part.
-            end = self._date_requested.find(' ')
-            self._date_requested = self._date_requested[:end]
+            for row in reversed(borrower_table.find_all('tr')[1:]):
+                cells = row.find_all('td')
+                if len(cells) < 10:
+                    if __debug__: log('loan details missing expected table cells')
+                    return
+                barcode = cells[5].get_text()
+                if barcode != self.item_barcode:
+                    continue
+                # If we get this far, we found a loan on this lost book.
+                self._requester_name = cells[0].get_text()
+                self._requester_url = cells[0].a['href']
+                self._date_requested = cells[9].get_text()
+                # Date is actually date + time, so strip the time part.
+                end = self._date_requested.find(' ')
+                self._date_requested = self._date_requested[:end]
 
 
     def _fill_patron_details(self, patron):
