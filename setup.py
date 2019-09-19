@@ -48,7 +48,6 @@ setup(
     packages         = ['lostit'],
     scripts          = ['bin/lostit'],
     package_data     = {'lostit': ['lostit/lostit.ini',
-                                   'lostit/data/default_template.docx',
                                    'lostit/data/client_secrets.json']},
     include_package_data = True,
     install_requires = reqs,

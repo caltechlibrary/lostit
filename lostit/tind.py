@@ -90,6 +90,10 @@ class TindLostRecord(LostRecord):
             start = title_text.find('[by]')
             self.item_title = title_text[:start].strip()
             author_text = title_text[start + 5:].strip()
+        elif title_text.rfind(', by') > 0:
+            start = title_text.rfind(', by')
+            self.item_title = title_text[:start].strip()
+            author_text = title_text[start + 5:].strip()
         else:
             self.item_title = title_text
         if author_text:
@@ -350,6 +354,7 @@ class Tind(object):
 
 
     def _tind_request(self, session, get_or_post, url, data, purpose):
+        fatal = self._notifier.fatal
         access = session.get if get_or_post == 'get' else session.post
         try:
             if __debug__: log('issuing network {} for {}', get_or_post, purpose)
