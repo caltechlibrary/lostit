@@ -354,6 +354,7 @@ class Tind(object):
 
 
     def _tind_request(self, session, get_or_post, url, data, purpose):
+        fatal = self._notifier.fatal
         access = session.get if get_or_post == 'get' else session.post
         try:
             if __debug__: log('issuing network {} for {}', get_or_post, purpose)
