@@ -8,8 +8,8 @@ When an item is discovered missing from the shelves of the Caltech Library stack
 *License*:      BSD/MIT derivative &ndash; see the [LICENSE](LICENSE) file for more information
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square)](https://choosealicense.com/licenses/bsd-3-clause)
-[![Python](https://img.shields.io/badge/Python-3.4+-brightgreen.svg?style=flat-square)](http://shields.io)
-[![Latest release](https://img.shields.io/github/v/release/caltechlibrary/lostit.svg?style=flat-square&color=b44e88)](http://shields.io)
+[![Python](https://img.shields.io/badge/Python-3.5+-brightgreen.svg?style=flat-square)](https://www.python.org/downloads/release/python-350/)
+[![Latest release](https://img.shields.io/github/v/release/caltechlibrary/lostit.svg?style=flat-square&color=b44e88)](https://github.com/caltechlibrary/lostit)
 
 
 Table of Contents
