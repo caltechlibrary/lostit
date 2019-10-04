@@ -11,8 +11,8 @@
 
 release	   := $(shell egrep 'version.*=' lostit/__version__.py | awk '{print $$3}' | tr -d "'")
 platform   := $(shell python3 -c 'import sys; print(sys.platform)')
-distro	   := $(shell python3 -c 'import platform; print(platform.dist()[0].lower())')
-linux_vers := $(shell python3 -c 'import platform; print(platform.dist()[1].lower())' | cut -f1-2 -d'.')
+distro	   := $(shell python3 -c 'import distro; print(distro.linux_distribution(False)[0])')
+linux_vers := $(shell python3 -c 'import distro; print(distro.linux_distribution(False)[1])' | cut -f1-2 -d'.')
 macos_vers := $(shell sw_vers -productVersion 2>/dev/null | cut -f1-2 -d'.' || true)
 github-css := dev/github-css/github-markdown-css.html
 
