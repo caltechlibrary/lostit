@@ -160,11 +160,27 @@ class Google(object):
         '''Returns a list of GoogleLostRecord objects.'''
         if __debug__: log('getting entries from Google spreadsheet')
         sheet_rows = self._content(gs_id, tab)
+        if not sheet_rows:
+            if __debug__: log('Google returned empty spreadsheet')
+            return []
+
+        # We have data from the spreadsheet.  Convert it to a list of records.
         if __debug__: log('building records from {} rows', len(sheet_rows) - 1)
         results = []
+        num_columns_expected = len(_COL_INDEX)
         # First row is the title row, so we skip it.
         for row in sheet_rows[1:]:
-            if not row or row[_COL_INDEX['item_barcode']] == '':
+            if not row:
+                if __debug__: log('skipping null row')
+                continue
+            # When a row from a Google spreadsheet has empty cells at the tail
+            # end, the list of values we get back is not the full length; it's
+            # only as long as the last column that has a value.  We still want
+            # to process the row as much as we can, so we try to cope.
+            row = padded(row, len(_COL_INDEX))
+            if row[_COL_INDEX['item_barcode']] == '':
+                # We use barcodes to track items, so we can't go on without it.
+                if __debug__: log('skipping row with missing barcode: {}', row)
                 continue
             results.append(GoogleLostRecord(row = row))
         return results
