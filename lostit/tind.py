@@ -190,9 +190,12 @@ class TindLostRecord(LostRecord):
         self._fill_loan_details(loans)
 
         # Get what we can from the loan details page.
-        patron = self._tind.patron_details(self._requester_name,
-                                           self._requester_url, self._session)
-        self._fill_patron_details(patron)
+        if self._requester_name:
+            patron = self._tind.patron_details(self._requester_name,
+                                               self._requester_url, self._session)
+            self._fill_patron_details(patron)
+        else:
+            if __debug__: log('no requester for {}', self.item_tind_id)
 
 
     def _fill_loan_details(self, loans):
@@ -211,14 +214,14 @@ class TindLostRecord(LostRecord):
                 if __debug__: log('no loan details => no requests')
                 return
 
-            # After the header row, the table contains a list of borrowers for
-            # the item.  Since a given item may have multiple copies, it's
-            # possible for a copy other than the lost one to have a loan on it.
-            # Therefore, we start from the bottom of the table and work our
-            # way backwards, comparing bar codes, to see if the lost copy has
-            # a loan request on it.
+            # After the header row, the table contains a list of patrons who
+            # requested the item.  Since a given item may have multiple
+            # copies, it's possible for a copy other than the lost one to
+            # have a loan on it.  There may also be more than one person who
+            # requested the same item.  We go down the list, comparing bar
+            # codes, to find the first loan request on the lost copy.
             borrower_table = tables[1]
-            for row in reversed(borrower_table.find_all('tr')[1:]):
+            for row in borrower_table.find_all('tr')[1:]:
                 cells = row.find_all('td')
                 if len(cells) < 10:
                     if __debug__: log('loan details missing expected table cells')
@@ -226,13 +229,19 @@ class TindLostRecord(LostRecord):
                 barcode = cells[5].get_text()
                 if barcode != self.item_barcode:
                     continue
-                # If we get this far, we found a loan on this lost book.
+                # If we get this far, we found a hold request on this lost book.
                 self._requester_name = cells[0].get_text()
                 self._requester_url = cells[0].a['href']
                 self._date_requested = cells[9].get_text()
                 # Date is actually date + time, so strip the time part.
                 end = self._date_requested.find(' ')
                 self._date_requested = self._date_requested[:end]
+                # We're done -- don't need to go further.
+                if __debug__: log("hold by {} on {}", self._requester_name,
+                                  self._date_requested)
+                break
+        else:
+            if __debug__: log('no loans for {}', self.item_tind_id)
 
 
     def _fill_patron_details(self, patron):
@@ -254,6 +263,8 @@ class TindLostRecord(LostRecord):
                 return
             self._requester_email = personal_table_rows[6].find('td').get_text()
             self._requester_type = personal_table_rows[8].find('td').get_text()
+        else:
+            if __debug__: log('no patron for {}', self.item_tind_id)
 
 
 class Tind(object):
@@ -495,7 +506,7 @@ class Tind(object):
 
         if not patron_name or not patron_url:
             if __debug__: log('no patron => no patron details to get')
-            return
+            return ''
         try:
             if self._tracer:
                 self._tracer.update('Getting patron details for {}'.format(patron_name))

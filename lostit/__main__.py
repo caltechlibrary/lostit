@@ -199,7 +199,7 @@ class MainBody(Thread):
         except ServiceFailure:
             tracer.stop('Stopping due to a problem connecting to services')
             controller.stop()
-        except Exception as err:
+        except Exception as ex:
             import traceback
             if debug:
                 tracer.stop('{}\n{}'.format(str(ex), traceback.format_exc()))
