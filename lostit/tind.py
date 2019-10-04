@@ -190,9 +190,12 @@ class TindLostRecord(LostRecord):
         self._fill_loan_details(loans)
 
         # Get what we can from the loan details page.
-        patron = self._tind.patron_details(self._requester_name,
-                                           self._requester_url, self._session)
-        self._fill_patron_details(patron)
+        if self._requester_name:
+            patron = self._tind.patron_details(self._requester_name,
+                                               self._requester_url, self._session)
+            self._fill_patron_details(patron)
+        else:
+            if __debug__: log('no requester for {}', self.item_tind_id)
 
 
     def _fill_loan_details(self, loans):
@@ -237,6 +240,8 @@ class TindLostRecord(LostRecord):
                 if __debug__: log("hold by {} on {}", self._requester_name,
                                   self._date_requested)
                 break
+        else:
+            if __debug__: log('no loans for {}', self.item_tind_id)
 
 
     def _fill_patron_details(self, patron):
@@ -258,6 +263,8 @@ class TindLostRecord(LostRecord):
                 return
             self._requester_email = personal_table_rows[6].find('td').get_text()
             self._requester_type = personal_table_rows[8].find('td').get_text()
+        else:
+            if __debug__: log('no patron for {}', self.item_tind_id)
 
 
 class Tind(object):
