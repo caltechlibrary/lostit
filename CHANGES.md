@@ -1,6 +1,12 @@
 Change log for Lost It!
 =======================
 
+Version 1.4.4
+-------------
+
+* Fix [issue #1](https://github.com/caltechlibrary/lostit/issues/1) (earliest -- not most recent -- hold request should be reported). 
+
+
 Version 1.4.3
 -------------
 
