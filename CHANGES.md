@@ -4,7 +4,9 @@ Change log for Lost It!
 Version 1.4.4
 -------------
 
-* Fix [issue #1](https://github.com/caltechlibrary/lostit/issues/1) (earliest -- not most recent -- hold request should be reported). 
+* Fix [issue #3](https://github.com/caltechlibrary/lostit/issues/3) (be robust in case of incomplete rows in the Google NOS spreadsheet)
+* Fix [issue #2](https://github.com/caltechlibrary/lostit/issues/2) 
+(earliest -- not most recent -- hold request should be reported). 
 
 
 Version 1.4.3
