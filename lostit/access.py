@@ -35,7 +35,7 @@ from lostit.debug import log
 # Global constants.
 # .............................................................................
 
-_KEYRING = "org.caltechlibrary.lostit"
+_KEYRING = "org.caltechlibrary.".format(__package__)
 '''
 The name of the keyring used to store Caltech access credentials, if any.
 '''
