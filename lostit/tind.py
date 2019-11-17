@@ -64,11 +64,11 @@ class TindLostRecord(LostRecord):
 
         # We get certain attributes on demand.  Setting them initially to None
         # (as opposed to '') is the marker it hasn't been set.
-        self.requester_name  = None
-        self.requester_email = None
-        self.requester_type  = None
-        self.requester_url   = None
-        self.date_requested  = None
+        self._requester_name  = None
+        self._requester_email = None
+        self._requester_type  = None
+        self._requester_url   = None
+        self._date_requested  = None
 
         # The following are additional attributes for Tind records.
         self._orig_data   = json_dict
@@ -99,9 +99,15 @@ class TindLostRecord(LostRecord):
         if author_text:
             self.item_author = first_author(author_text)
 
+        # Be careful about the location name because it's sometimes missing.
+        if 'location_name' in json_dict:
+            self.item_location_name = json_dict['location_name']
+            self.item_location_code = json_dict['location_code']
+        else:
+            self.item_location_name = json_dict['library_name']
+            self.item_location_code = ''
+
         self.item_call_number   = json_dict['call_no']
-        self.item_location_name = json_dict['location_name']
-        self.item_location_code = json_dict['location_code']
         self.item_loan_status   = json_dict['status']
         self.item_tind_id       = json_dict['id_bibrec']
         self.item_barcode       = json_dict['barcode']

@@ -10,7 +10,7 @@ When an item is discovered missing from the shelves of the Caltech Library stack
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square)](https://choosealicense.com/licenses/bsd-3-clause)
 [![Python](https://img.shields.io/badge/Python-3.5+-brightgreen.svg?style=flat-square)](https://www.python.org/downloads/release/python-350/)
 [![Latest release](https://img.shields.io/github/v/release/caltechlibrary/lostit.svg?style=flat-square&color=b44e88)](https://github.com/caltechlibrary/lostit)
-[![DOI](https://img.shields.io/badge/dynamic/json.svg?label=DOI&style=flat-square&colorA=gray&colorB=navy&query=$.metadata.doi&uri=https://data.caltech.edu/api/record/1291)](https://data.caltech.edu/records/1291)
+[![DOI](https://img.shields.io/badge/dynamic/json.svg?label=DOI&style=flat-square&colorA=gray&colorB=navy&query=$.metadata.doi&uri=https://data.caltech.edu/api/record/1312)](https://data.caltech.edu/records/1312)
 
 Table of Contents
 -----------------
@@ -127,6 +127,6 @@ Copyright (C) 2018-2019, Caltech.  This software is freely distributed under a B
     
 <div align="center">
   <a href="https://www.caltech.edu">
-    <img width="100" height="100" src=".graphics/caltech-round.svg">
+    <img width="100" height="100" src=".graphics/caltech-round.png">
   </a>
 </div>
