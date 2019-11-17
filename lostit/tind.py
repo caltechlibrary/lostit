@@ -99,9 +99,15 @@ class TindLostRecord(LostRecord):
         if author_text:
             self.item_author = first_author(author_text)
 
+        # Be careful about the location name because it's sometimes missing.
+        if 'location_name' in json_dict:
+            self.item_location_name = json_dict['location_name']
+            self.item_location_code = json_dict['location_code']
+        else:
+            self.item_location_name = json_dict['library_name']
+            self.item_location_code = ''
+
         self.item_call_number   = json_dict['call_no']
-        self.item_location_name = json_dict['location_name']
-        self.item_location_code = json_dict['location_code']
         self.item_loan_status   = json_dict['status']
         self.item_tind_id       = json_dict['id_bibrec']
         self.item_barcode       = json_dict['barcode']
