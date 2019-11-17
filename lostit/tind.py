@@ -64,11 +64,11 @@ class TindLostRecord(LostRecord):
 
         # We get certain attributes on demand.  Setting them initially to None
         # (as opposed to '') is the marker it hasn't been set.
-        self.requester_name  = None
-        self.requester_email = None
-        self.requester_type  = None
-        self.requester_url   = None
-        self.date_requested  = None
+        self._requester_name  = None
+        self._requester_email = None
+        self._requester_type  = None
+        self._requester_url   = None
+        self._date_requested  = None
 
         # The following are additional attributes for Tind records.
         self._orig_data   = json_dict
