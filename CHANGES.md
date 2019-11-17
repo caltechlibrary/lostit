@@ -1,6 +1,13 @@
 Change log for Lost It!
 =======================
 
+Version 1.4.5
+-------------
+
+* Fix [issue #4](https://github.com/caltechlibrary/lostit/issues/3) (Tind records sometimes lack all the expected fields)
+* Some minor internal code changes
+
+
 Version 1.4.4
 -------------
 
