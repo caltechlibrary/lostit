@@ -1,6 +1,12 @@
 Change log for Lost It!
 =======================
 
+Version 1.5.0
+-------------
+
+* At the request of Donna W., send one message per item lost instead of sending the entire list of lost items in one email message.
+
+
 Version 1.4.5
 -------------
 
