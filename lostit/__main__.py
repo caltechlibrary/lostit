@@ -184,15 +184,15 @@ class MainBody(Thread):
 
             # Send mail, if requested.
             if send_mail and num_new > 0:
-                tracer.update('Sending mail')
-                subject  = 'Lost It! reports {} lost item{}'.format(
-                    num_new, 's' if num_new > 1 else '')
-                body     = email_body(new_records, google.spreadsheet_url(sid))
-                sender   = accesser.user + '@caltech.edu'
-                password = accesser.password
-                mailer   = Mailer(mail_server, mail_port)
-                mailer.send(sender, password, recipients, subject, body)
-
+                tracer.update('Sending email for each lost item')
+                for num, record in enumerate(new_records, 1):
+                    subject  = 'Lost It! "{}"'.format(record.item_title)
+                    body     = email_body(record, google.spreadsheet_url(sid))
+                    sender   = accesser.user + '@caltech.edu'
+                    password = accesser.password
+                    mailer   = Mailer(mail_server, mail_port)
+                    mailer.send(sender, password, recipients, subject, body)
+                    tracer.update('Sent {}'.format(num))
         except (KeyboardInterrupt, UserCancelled) as err:
             tracer.stop('Quitting.')
             controller.stop()
@@ -210,24 +210,20 @@ class MainBody(Thread):
                 tracer.stop('Stopping due to error')
                 controller.stop()
         else:
-            tracer.stop('Done')
+            tracer.update('Done. You can quit when ready.')
             controller.stop()
 
 
 # Miscellaneous utilities.
 # .............................................................................
 
-def email_body(records, sheet_url):
+def email_body(record, sheet_url):
     # Helper function
     def value(field):
         return '-- none --' if field == '' else field
 
     if __debug__: log('formatting email body')
-    summary = ''
-    num_records = len(records)
-    joke = random_pun()
-    for rec in records:
-        summary += '''
+    summary = '''
           Title: {}
          Author: {}
          Call #: {}
@@ -238,20 +234,20 @@ def email_body(records, sheet_url):
 Requester email: {}
     Patron type: {}
 
-'''.format(value(rec.item_title), value(rec.item_author),
-           value(rec.item_call_number), value(rec.item_barcode),
-           value(rec.item_location_code), value(rec.item_location_name),
-           value(rec.requester_name), value(rec.requester_email),
-           value(rec.requester_type))
+'''.format(value(record.item_title), value(record.item_author),
+           value(record.item_call_number), value(record.item_barcode),
+           value(record.item_location_code), value(record.item_location_name),
+           value(record.requester_name), value(record.requester_email),
+           value(record.requester_type))
+    joke = random_pun()
     return '''
-Lost It! was just run and it discovered {} new lost item{} recorded in TIND:
+Lost It! was just run and it discovered a new lost item recorded in TIND:
 {}
 Here is the URL for the spreadsheet of lost items:
 {}
 
 {}
-'''.format(num_records, 's' if num_records > 1 else '', summary, sheet_url,
-           "---\nAnd here is a random pun:\n" + joke if joke else '')
+'''.format(summary, sheet_url, "---\nAnd here is a random pun:\n" + joke if joke else '')
 
 
 def random_pun():

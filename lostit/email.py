@@ -15,6 +15,7 @@ file "LICENSE" for more information.
 '''
 
 from   email.message import EmailMessage
+from   ratelimit import limits, sleep_and_retry
 from   smtplib import SMTP
 import ssl
 
@@ -25,6 +26,12 @@ from lostit.exceptions import *
 
 # Exported classes.
 # .............................................................................
+# As of 2019-11-20, Caltech uses office365 as its mail server, and Microsoft's
+# documentation states that the server allows a max of 30 msgs/minute:
+# https://docs.microsoft.com/en-us/office365/servicedescriptions/exchange-online-service-description/exchange-online-limits#receiving-and-sending-limits
+#
+# Archived version of the web page above:
+# https://web.archive.org/web/20191120212839/https://docs.microsoft.com/en-us/office365/servicedescriptions/exchange-online-service-description/exchange-online-limits?redirectedfrom=MSDN
 
 class Mailer():
     '''Simple interface for Lost It! to send mail.'''
@@ -35,6 +42,8 @@ class Mailer():
         self._smtp_port   = port
 
 
+    @sleep_and_retry
+    @limits(calls = 30, period = 60)
     def send(self, sender, password, recipients, subject, body):
         '''Send a message with the given subject and body.'''
 
@@ -54,4 +63,5 @@ class Mailer():
                 smtp.login(sender, password)
                 smtp.sendmail(sender, recipients, msg.as_string())
         except Exception as ex:
+            import pdb; pdb.set_trace()
             raise ServiceFailure(str(ex))
