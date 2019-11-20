@@ -3,13 +3,13 @@ Lost It!<img width="10%" align="right" src=".graphics/missing-book.svg">
 
 When an item is discovered missing from the shelves of the Caltech Library stacks, the information needs to be recorded in the Caltech TIND server as well as a tracking spreadsheet kept by the Library circulation staff. _Lost It!_ is a program to simplify the process of doing this.
 
-*Authors*:      [Michael Hucka](http://github.com/mhucka)<br>
+*Authors*:      [Michael Hucka](http://github.com/mhucka) (ORCID: [0000-0001-9105-5960](https://orcid.org/0000-0001-9105-5960))<br>
 *Repository*:   [https://github.com/caltechlibrary/lostit](https://github.com/caltechlibrary/lostit)<br>
 *License*:      BSD/MIT derivative &ndash; see the [LICENSE](LICENSE) file for more information
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square)](https://choosealicense.com/licenses/bsd-3-clause)
 [![Python](https://img.shields.io/badge/Python-3.5+-brightgreen.svg?style=flat-square)](https://www.python.org/downloads/release/python-350/)
-[![Latest release](https://img.shields.io/github/v/release/caltechlibrary/lostit.svg?style=flat-square&color=b44e88)](https://github.com/caltechlibrary/lostit)
+[![Latest release](https://img.shields.io/github/v/release/caltechlibrary/lostit.svg?style=flat-square&color=b44e88&label=Latest%20release)](https://github.com/caltechlibrary/lostit)
 [![DOI](https://img.shields.io/badge/dynamic/json.svg?label=DOI&style=flat-square&colorA=gray&colorB=navy&query=$.metadata.doi&uri=https://data.caltech.edu/api/record/1312)](https://data.caltech.edu/records/1312)
 
 Table of Contents
