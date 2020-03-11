@@ -1,6 +1,13 @@
 Change log for Lost It!
 =======================
 
+Version 1.5.1
+-------------
+
+* Fix error-printing bug that becomes evident when debugging is turned on and an error occurs.
+* In the documentation, mention the need for the Tind account to have access to Tind Global Lists
+
+
 Version 1.5.0
 -------------
 
