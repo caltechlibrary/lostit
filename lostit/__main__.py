@@ -193,7 +193,7 @@ class MainBody(Thread):
                     mailer   = Mailer(mail_server, mail_port)
                     mailer.send(sender, password, recipients, subject, body)
                     tracer.update('Sent {}'.format(num))
-        except (KeyboardInterrupt, UserCancelled) as err:
+        except (KeyboardInterrupt, UserCancelled) as ex:
             tracer.stop('Quitting.')
             controller.stop()
         except ServiceFailure:
@@ -206,7 +206,7 @@ class MainBody(Thread):
                 import pdb; pdb.set_trace()
             else:
                 notifier.fatal(lostit.__title__ + ' encountered an error',
-                               str(err) + '\n' + traceback.format_exc())
+                               str(ex) + '\n' + traceback.format_exc())
                 tracer.stop('Stopping due to error')
                 controller.stop()
         else:
