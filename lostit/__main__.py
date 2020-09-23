@@ -17,6 +17,7 @@ file "LICENSE" for more information.
 import os
 import os.path as path
 import plac
+from   sidetrack import set_debug, log
 import sys
 import time
 from   threading import Thread
@@ -25,7 +26,6 @@ import lostit
 from lostit.access import AccessHandlerGUI, AccessHandlerCLI
 from lostit.config import Config
 from lostit.control import LostItControlGUI, LostItControlCLI
-from lostit.debug import set_debug, log
 from lostit.email import Mailer
 from lostit.exceptions import *
 from lostit.files import module_path

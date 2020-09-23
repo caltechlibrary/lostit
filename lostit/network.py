@@ -22,6 +22,7 @@ import requests
 from   requests.packages.urllib3.exceptions import InsecureRequestWarning
 from   time import sleep
 import shutil
+from   sidetrack import log
 import ssl
 import urllib
 from   urllib import request
@@ -29,7 +30,6 @@ from   urllib.parse import urlsplit
 import urllib3
 import warnings
 
-from .debug import log
 from .exceptions import *
 
 

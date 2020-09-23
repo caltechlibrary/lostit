@@ -15,9 +15,9 @@ file "LICENSE" for more information.
 '''
 
 from datetime import datetime
+from sidetrack import log
 
 import lostit
-from lostit.debug import log
 
 
 # Class definitions.

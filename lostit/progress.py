@@ -16,6 +16,7 @@ file "LICENSE" for more information.
 
 from   halo import Halo
 from   pubsub import pub
+from   sidetrack import log
 import sys
 import time
 import wx
@@ -32,7 +33,6 @@ except:
 import lostit
 from lostit.exceptions import *
 from lostit.messages import color, msg
-from lostit.debug import log
 
 
 # Exported classes.

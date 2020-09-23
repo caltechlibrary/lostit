@@ -62,6 +62,7 @@ from   queue import Queue
 import wx
 import wx.adv
 import wx.richtext
+from   sidetrack import log
 import sys
 import textwrap
 from   threading import Thread
@@ -70,7 +71,6 @@ import webbrowser
 import lostit
 from lostit.files import datadir_path, readable
 from lostit.exceptions import *
-from lostit.debug import log
 
 
 # Exported classes.

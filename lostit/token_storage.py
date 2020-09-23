@@ -15,8 +15,8 @@ from   oauth2client import client
 from   oauth2client.client import Storage
 from   os import path
 import threading
+from   sidetrack import log
 
-from .debug import log
 from .files import user_data_path
 
 

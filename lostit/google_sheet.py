@@ -20,6 +20,7 @@ from httplib2 import Http
 from oauth2client import client, tools
 from oauth2client.client import OAuth2WebServerFlow
 from os import path
+from sidetrack import log
 import json as jsonlib
 import sys
 
@@ -34,7 +35,6 @@ elif sys.platform.startswith('win'):
     keyring.set_keyring(keyring.backends.Windows.WinVaultKeyring())
 
 import lostit
-from lostit.debug import log
 from lostit.exceptions import *
 from lostit.files import open_url, datadir_path
 from lostit.records import LostRecord

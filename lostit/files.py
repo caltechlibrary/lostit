@@ -17,12 +17,12 @@ file "LICENSE" for more information.
 from appdirs import user_data_dir
 import os
 from   os import path
+from   sidetrack import log
 import sys
 import subprocess
 import webbrowser
 
 import lostit
-from lostit.debug import log
 
 
 # Constants.

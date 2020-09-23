@@ -17,12 +17,12 @@ file "LICENSE" for more information.
 from   configparser import ConfigParser
 import os
 from   os import path as path
+from   sidetrack import log
 import sys
 import warnings
 
 import lostit
 from lostit.files import module_path
-from lostit.debug import log
 
 
 # Class definitions.

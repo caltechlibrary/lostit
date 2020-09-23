@@ -16,11 +16,11 @@ file "LICENSE" for more information.
 
 from   email.message import EmailMessage
 from   ratelimit import limits, sleep_and_retry
+from   sidetrack import log
 from   smtplib import SMTP
 import ssl
 
 import lostit
-from lostit.debug import log
 from lostit.exceptions import *
 
 

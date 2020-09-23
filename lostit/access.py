@@ -22,6 +22,7 @@ import wx
 import wx.adv
 import textwrap
 import webbrowser
+from   sidetrack import log
 import sys
 
 import lostit
@@ -29,7 +30,6 @@ from lostit.credentials import password, credentials
 from lostit.credentials import keyring_credentials, save_keyring_credentials
 from lostit.exceptions import *
 from lostit.files import datadir_path, readable
-from lostit.debug import log
 
 
 # Global constants.

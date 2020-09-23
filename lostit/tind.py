@@ -20,9 +20,9 @@ import re
 import requests
 from lxml import html
 from bs4 import BeautifulSoup
+from sidetrack import log
 
 import lostit
-from lostit.debug import log
 from lostit.exceptions import *
 from lostit.network import net
 from lostit.records import LostRecord

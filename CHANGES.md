@@ -4,8 +4,10 @@ Change log for Lost It!
 Version 1.5.1
 -------------
 
+* Fix problem with storing Google access token on Windows.
 * Fix error-printing bug that becomes evident when debugging is turned on and an error occurs.
 * In the documentation, mention the need for the Tind account to have access to Tind Global Lists
+* Use new [`sidetrack`](https://github.com/caltechlibrary/sidetrack) package instead of our own debug log code.
 
 
 Version 1.5.0
