@@ -19,7 +19,6 @@ from datetime import datetime
 from httplib2 import Http
 from oauth2client import client, tools
 from oauth2client.client import OAuth2WebServerFlow
-from oauth2client.contrib.keyring_storage import Storage as token_storage
 from os import path
 import json as jsonlib
 import sys
@@ -35,10 +34,11 @@ elif sys.platform.startswith('win'):
     keyring.set_keyring(keyring.backends.Windows.WinVaultKeyring())
 
 import lostit
-from lostit.exceptions import *
-from lostit.records import LostRecord
-from lostit.files import open_url, datadir_path
 from lostit.debug import log
+from lostit.exceptions import *
+from lostit.files import open_url, datadir_path
+from lostit.records import LostRecord
+from lostit.token_storage import TokenStorage
 
 import logging
 logging.getLogger('googleapiclient').setLevel(logging.CRITICAL)
@@ -260,7 +260,7 @@ class Google(object):
             if __debug__: log('returning stored creds for Google API')
             return self._creds
         if __debug__: log('getting token for Google API')
-        store = token_storage('Lost It!', self._accesser.user)
+        store = TokenStorage('Lost It!', self._accesser.user)
         creds = store.get()
         if not creds or creds.invalid:
             if __debug__: log('using secrets file for Google API')
