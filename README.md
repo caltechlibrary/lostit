@@ -1,4 +1,4 @@
-Lost It!<img width="10%" align="right" src=".graphics/missing-book.svg">
+Lost It!<img width="10%" align="right" src="https://raw.githubusercontent.com/caltechlibrary/lostit/main/.graphics/missing-book.png">
 ========
 
 When an item is discovered missing from the shelves of the Caltech Library stacks, the information needs to be recorded in the Caltech TIND server as well as a tracking spreadsheet kept by the Library circulation staff. _Lost It!_ is a program to simplify the process of doing this.
@@ -43,7 +43,7 @@ You can also build _Lost It!_ from sources.  Information about building the appl
 ▶︎ Basic operation
 ------------------
 
-<img align="right" width="50%" src=".graphics/lostit-initial-window.png">
+<img align="right" width="50%" src="https://raw.githubusercontent.com/caltechlibrary/lostit/main/.graphics/lostit-initial-window.png">
 
 _Lost It!_ has both a GUI interface and a command-line interface.  The GUI interface is simple: a user starts the program in a typical way (e.g., by double-clicking the program icon) and _Lost It!_ creates a main window, then immediately begins its work by connecting to Caltech.tind.io and asking the user for login credentials.  The image at right depicts the first dialog. After the user types in a login name and password, and clicks the **OK** button, the program does the following behind the scenes:
 
@@ -57,11 +57,11 @@ _Lost It!_ has both a GUI interface and a command-line interface.  The GUI inter
 
 Items in the spreadsheet are assumed to be never deleted.  "New lost items" are determined in the following way: _Lost It!_ searches the Caltech.tind.io global list for items with `status:lost`, compares their bar codes to the bar codes requested in the Google spreadsheet as well as the dates that they were added to the spreadsheet, and writes out records with never-before lost barcodes or (if a barcode has been seen before) barcodes that were added on a previous date.  (The latter catches the situation where an item has been reported lost in the past, then found again in the past, then lost again at some later date.  Without tracking the date it was added to the spreadsheet, _Lost It!_ would simply assume it was already know to be lost, whereas in reality it might have been found for a time and recently re-lost.)
 
-<p align="center"><img width="800px" src=".graphics/tind-lost-items.png"></p>
+<p align="center"><img width="800px" src="https://raw.githubusercontent.com/caltechlibrary/lostit/main/.graphics/tind-lost-items.png"></p>
 
 Unless an error occurs, _Lost It!_ presents only one other dialog: to ask the user whether the Google spreadsheet should be opened in a browser window.  If the user clicks the **Yes** button, it's opened.
 
-<p align="center"><img width="900px" src=".graphics/google-spreadsheet.png"></p>
+<p align="center"><img width="900px" src="https://raw.githubusercontent.com/caltechlibrary/lostit/main/.graphics/google-spreadsheet.png"></p>
 
 
 Finally, _Lost It!_ will by default send mail to a library mailing list to alert people if newly lost items have been found. _Lost It!_ exits after that.
@@ -70,7 +70,7 @@ Finally, _Lost It!_ will by default send mail to a library mailing list to alert
 
 The following are some additional details about how _Lost It!_ works and the assumptions built into it:
 
-* <img width="30%" align="right" src=".graphics/tind-global-lists.png">The Tind account of the user running _Lost It!_ must have access to Tind's Global Lists feature.  This requires a Tind administrator to set the permissions on the user's Tind account.  To find out if your Tind account has access to Global Lists, log in to Tind and look in the **Administration** menu for the Global Lists item.  If it's missing, contact your Tind administrator.
+* <img width="30%" align="right" src="https://raw.githubusercontent.com/caltechlibrary/lostit/main/.graphics/tind-global-lists.png">The Tind account of the user running _Lost It!_ must have access to Tind's Global Lists feature.  This requires a Tind administrator to set the permissions on the user's Tind account.  To find out if your Tind account has access to Global Lists, log in to Tind and look in the **Administration** menu for the Global Lists item.  If it's missing, contact your Tind administrator.
 * When looking up records in the Google spreadsheet of lost items, it looks at the two first tabs.  The tab lookup is done by position, _not_ by name, and the names of the tabs make no difference.  _Lost It!_ assumes that the first tab is the current NOS list and the second tab is a list of historical records, but it doesn't care what the cut-off is between the tabs.  It merely gathers the records from both tabs and treats the union of the records as the set of all known lost items.
 * _Lost It!_ finds the columns in the Google spreadsheet by position; in other words, the column ordering is hardwired into the program.  Changing the column order requires corresponding changes to the code.  On the other hand, the column headings can be changed at will, since _Lost It!_ ignores the column headings.  (This is a situation where _something_ must be hardwired _somewhere_ in order for _Lost It!_ to be able to read the spreadsheet.  Either it makes assumptions about the column positions, or it looks for specific column headings.  Using the latter approach would mean that changing the column titles would require changing the code too, to account for the new names.  There's no free lunch, and it was easier to hardwire the column order, so that's what I did.  The relevant code is in [lostit/google_sheet.py](lostit/google_sheet.py).)
 
@@ -128,6 +128,6 @@ Copyright (C) 2018-2019, Caltech.  This software is freely distributed under a B
     
 <div align="center">
   <a href="https://www.caltech.edu">
-    <img width="100" height="100" src=".graphics/caltech-round.png">
+    <img width="100" height="100" src="https://raw.githubusercontent.com/caltechlibrary/lostit/main/.graphics/caltech-round.png">
   </a>
 </div>
