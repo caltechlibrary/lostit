@@ -153,7 +153,7 @@ class LostItMainFrame(wx.Frame):
         self.panel = wx.Panel(self)
         headline = lostit.__name__ + " — update spreadsheet of lost items"
         self.headline = wx.StaticText(self.panel, wx.ID_ANY, headline, style = wx.ALIGN_CENTER)
-        self.headline.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC,
+        self.headline.SetFont(wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC,
                                       wx.FONTWEIGHT_BOLD, 0, "Arial"))
 
         # For macos, I figured out how to make the background color of the text
@@ -313,8 +313,10 @@ class LoginDialog(wx.Dialog):
         else:
             self.SetSize((330, 155))
         self.explanation = wx.StaticText(panel, wx.ID_ANY,
-                                         'Lost It! needs your Caltech Access credentials',
+                                         'Caltech Access credentials (to access TIND)',
                                          style = wx.ALIGN_CENTER)
+        self.explanation.SetFont(wx.Font(9, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC,
+                                         wx.FONTWEIGHT_NORMAL, 0, "Arial"))
         self.top_line = wx.StaticLine(panel, wx.ID_ANY)
         self.login_label = wx.StaticText(panel, wx.ID_ANY, "Caltech login: ", style = wx.ALIGN_RIGHT)
         self.login = wx.TextCtrl(panel, wx.ID_ANY, '', style = wx.TE_PROCESS_ENTER)
