@@ -68,6 +68,9 @@ import textwrap
 from   threading import Thread
 import webbrowser
 
+if sys.platform.startswith('win'):
+    import ctypes
+
 import lostit
 from lostit.files import datadir_path, readable
 from lostit.exceptions import *
@@ -144,9 +147,19 @@ class LostItMainFrame(wx.Frame):
     '''Defines the main application GUI frame.'''
 
     def __init__(self, *args, **kwds):
+        if sys.platform.startswith('win'):
+            self._scale_factor = ctypes.windll.shcore.GetScaleFactorForDevice(0)/100
+        else:
+            self._scale_factor = 1
+
         self._cancel = False
-        self._height = 350 if sys.platform.startswith('win') else 300
+        if self._scale_factor > 1.5:
+            self._height = 316
+        else:
+            self._height = 320
+        self._height *= self._scale_factor
         self._width  = 500
+        self._width  *= self._scale_factor
 
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
         wx.Frame.__init__(self, *args, **kwds)
@@ -164,13 +177,14 @@ class LostItMainFrame(wx.Frame):
             self.divider1 = wx.StaticLine(self.panel, wx.ID_ANY)
             self.divider1.SetMinSize((self._width, 2))
 
+        text_area_size = (self._width, 200 * self._scale_factor)
         self.text_area = wx.richtext.RichTextCtrl(self.panel, wx.ID_ANY,
-                                                  size = (self._width, 200),
+                                                  size = text_area_size,
                                                   style = wx.TE_MULTILINE | wx.TE_READONLY)
 
         # Quit button on the bottom.
-        if not sys.platform.startswith('win'):
-            self.divider2 = wx.StaticLine(self.panel, wx.ID_ANY)
+        # if not sys.platform.startswith('win'):
+        self.divider2 = wx.StaticLine(self.panel, wx.ID_ANY)
         self.quit_button = wx.Button(self.panel, label = "Quit")
         self.quit_button.Bind(wx.EVT_KEY_DOWN, self.on_cancel_or_quit)
 
@@ -224,17 +238,17 @@ class LostItMainFrame(wx.Frame):
         self.outermost_sizer = wx.BoxSizer(wx.VERTICAL)
         self.outermost_sizer.AddSpacer(5)
         self.outermost_sizer.Add(self.headline, 0, wx.ALIGN_CENTER, 0)
-        self.outermost_sizer.AddSpacer(5)
         if not sys.platform.startswith('win'):
+            self.outermost_sizer.AddSpacer(5)
             self.outermost_sizer.Add(self.divider1, 0, wx.EXPAND, 0)
             self.outermost_sizer.AddSpacer(5)
         self.outermost_sizer.Add(self.text_area, 0, wx.EXPAND, 0)
         self.outermost_sizer.AddSpacer(5)
-        if not sys.platform.startswith('win'):
-            self.outermost_sizer.Add(self.divider2, 0, wx.EXPAND, 0)
-            self.outermost_sizer.AddSpacer(5)
+        self.outermost_sizer.Add(self.divider2, 0, wx.EXPAND, 0)
+        self.outermost_sizer.AddSpacer(5 * self._scale_factor)
         self.outermost_sizer.Add(self.quit_button, 0, wx.BOTTOM | wx.CENTER, 0)
-        self.outermost_sizer.AddSpacer(5)
+        if not sys.platform.startswith('win'):
+            self.outermost_sizer.AddSpacer(5)
         self.SetSizer(self.outermost_sizer)
         self.Layout()
         self.Centre()
@@ -302,6 +316,11 @@ class LoginDialog(wx.Dialog):
 
     def __init__(self, *args, **kwargs):
         super(LoginDialog, self).__init__(*args, **kwargs)
+        if sys.platform.startswith('win'):
+            self._scale_factor = ctypes.windll.shcore.GetScaleFactorForDevice(0)/100
+        else:
+            self._scale_factor = 1
+
         self._user = None
         self._password = None
         self._cancel = False
@@ -309,7 +328,7 @@ class LoginDialog(wx.Dialog):
 
         panel = wx.Panel(self)
         if sys.platform.startswith('win'):
-            self.SetSize((360, 190))
+            self.SetSize((360 * self._scale_factor, 160 * self._scale_factor))
         else:
             self.SetSize((330, 155))
         self.explanation = wx.StaticText(panel, wx.ID_ANY,
@@ -354,9 +373,9 @@ class LoginDialog(wx.Dialog):
     def __set_properties(self):
         self.SetTitle(lostit.__name__)
         self.login_label.SetToolTip("The account name to use to log in to caltech.tind.io. This should be a Caltech access login name.")
-        self.login.SetMinSize((195, 22))
+        self.login.SetMinSize((195 * self._scale_factor, 22 * self._scale_factor))
         self.password_label.SetToolTip("The account password to use to log in to caltech.tind.io. This should be a Caltech access password.")
-        self.password.SetMinSize((195, 22))
+        self.password.SetMinSize((195 * self._scale_factor, 22 * self._scale_factor))
         self.ok_button.SetFocus()
 
 
@@ -364,26 +383,29 @@ class LoginDialog(wx.Dialog):
         self.outermost_sizer = wx.BoxSizer(wx.VERTICAL)
         self.button_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.login_sizer = wx.FlexGridSizer(2, 2, 5, 0)
-        self.outermost_sizer.Add((360, 5), 0, wx.ALIGN_CENTER, 0)
+        self.outermost_sizer.Add((360 * self._scale_factor, 5 * self._scale_factor), 0, wx.ALIGN_CENTER, 0)
         self.outermost_sizer.Add(self.explanation, 0, wx.ALIGN_CENTER, 0)
-        self.outermost_sizer.Add((360, 5), 0, wx.ALIGN_CENTER, 0)
+        self.outermost_sizer.Add((360 * self._scale_factor, 5 * self._scale_factor), 0, wx.ALIGN_CENTER, 0)
         self.outermost_sizer.Add(self.top_line, 0, wx.EXPAND, 0)
-        self.outermost_sizer.Add((360, 8), 0, wx.ALIGN_CENTER, 0)
+        self.outermost_sizer.Add((360 * self._scale_factor, 8 * self._scale_factor), 0, wx.ALIGN_CENTER, 0)
         self.login_sizer.Add(self.login_label, 0, wx.ALIGN_RIGHT, 0)
         self.login_sizer.Add(self.login, 0, wx.EXPAND, 0)
         self.login_sizer.Add(self.password_label, 0, wx.ALIGN_RIGHT, 0)
         self.login_sizer.Add(self.password, 0, wx.EXPAND, 0)
         self.outermost_sizer.Add(self.login_sizer, 1, wx.ALIGN_CENTER | wx.FIXED_MINSIZE, 5)
-        self.outermost_sizer.Add((360, 5), 0, 0, 0)
+        if sys.platform.startswith('win'):
+            self.outermost_sizer.Add((360, 10 * self._scale_factor), 0, 0, 0)
+        else:
+            self.outermost_sizer.Add((360, 5), 0, 0, 0)
         self.outermost_sizer.Add(self.bottom_line, 0, wx.EXPAND, 0)
-        self.outermost_sizer.Add((360, 5), 0, 0, 0)
+        self.outermost_sizer.Add((360 * self._scale_factor, 5), 0, 0, 0)
         self.button_sizer.Add((0, 0), 0, 0, 0)
         self.button_sizer.Add(self.cancel_button, 0, wx.ALIGN_CENTER, 0)
         self.button_sizer.Add((10, 20), 0, 0, 0)
         self.button_sizer.Add(self.ok_button, 0, wx.ALIGN_CENTER, 0)
         self.button_sizer.Add((10, 20), 0, wx.ALIGN_CENTER, 0)
         self.outermost_sizer.Add(self.button_sizer, 1, wx.ALIGN_RIGHT, 0)
-        self.outermost_sizer.Add((360, 5), 0, wx.ALIGN_CENTER, 0)
+        self.outermost_sizer.Add((360 * self._scale_factor, 5), 0, wx.ALIGN_CENTER, 0)
         self.SetSizer(self.outermost_sizer)
         self.Layout()
         self.Centre()
