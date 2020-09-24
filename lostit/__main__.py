@@ -43,7 +43,7 @@ from lostit.tind import Tind
 if sys.platform.startswith('win'):
     import ctypes
     try:
-        ctypes.windll.shcore.SetProcessDpiAwareness(True)
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
     except:
         pass
 
