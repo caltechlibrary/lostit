@@ -145,8 +145,8 @@ class LostItMainFrame(wx.Frame):
 
     def __init__(self, *args, **kwds):
         self._cancel = False
-        self._height = 330 if sys.platform.startswith('win') else 300
-        self._width  = 450
+        self._height = 350 if sys.platform.startswith('win') else 300
+        self._width  = 500
 
         kwds["style"] = kwds.get("style", 0) | wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL
         wx.Frame.__init__(self, *args, **kwds)
@@ -309,7 +309,7 @@ class LoginDialog(wx.Dialog):
 
         panel = wx.Panel(self)
         if sys.platform.startswith('win'):
-            self.SetSize((330, 175))
+            self.SetSize((360, 190))
         else:
             self.SetSize((330, 155))
         self.explanation = wx.StaticText(panel, wx.ID_ANY,
