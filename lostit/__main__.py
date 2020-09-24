@@ -17,7 +17,7 @@ file "LICENSE" for more information.
 import os
 import os.path as path
 import plac
-from   sidetrack import set_debug, log
+if __debug__: from sidetrack import set_debug, log
 import sys
 import time
 from   threading import Thread
@@ -84,7 +84,7 @@ def main(user = 'U', pswd = 'P',
 
     # Configure debug logging if it's turned on.
     if debug:
-        set_debug(True)
+        if __debug__: set_debug(True)
 
     # Switch between different ways of getting information from/to the user.
     if use_gui:
