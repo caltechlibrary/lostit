@@ -36,6 +36,17 @@ from lostit.progress import ProgressIndicatorGUI, ProgressIndicatorCLI
 from lostit.records import records_diff, records_filter
 from lostit.tind import Tind
 
+# The following is for fixing blurry fonts and controls in wxPython on Windows,
+# based on the solution by Nairen Zheng posted to Stack Overflow on
+# 2019-01-18: https://stackoverflow.com/a/54247018/743730.
+
+if sys.platform.startswith('win'):
+    import ctypes
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(True)
+    except:
+        pass
+
 
 # Main program.
 # ......................................................................
