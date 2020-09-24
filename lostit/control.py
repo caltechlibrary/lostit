@@ -315,8 +315,9 @@ class LoginDialog(wx.Dialog):
         self.explanation = wx.StaticText(panel, wx.ID_ANY,
                                          'Caltech Access credentials (to access TIND)',
                                          style = wx.ALIGN_CENTER)
-        self.explanation.SetFont(wx.Font(9, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC,
-                                         wx.FONTWEIGHT_NORMAL, 0, "Arial"))
+        if sys.platform.startswith('win'):
+            self.explanation.SetFont(wx.Font(9, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_ITALIC,
+                                             wx.FONTWEIGHT_NORMAL, 0, "Arial"))
         self.top_line = wx.StaticLine(panel, wx.ID_ANY)
         self.login_label = wx.StaticText(panel, wx.ID_ANY, "Caltech login: ", style = wx.ALIGN_RIGHT)
         self.login = wx.TextCtrl(panel, wx.ID_ANY, '', style = wx.TE_PROCESS_ENTER)
