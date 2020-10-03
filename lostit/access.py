@@ -149,7 +149,8 @@ class AccessHandlerGUI(AccessHandlerBase):
         # Results will be a tuple of user, password, cancelled
         self._user = results_tuple[0]
         self._pswd = results_tuple[1]
-        save_keyring_credentials(_KEYRING, self._user, '')
+        if self._use_keyring:
+            save_keyring_credentials(_KEYRING, self._user, '')
         return results_tuple[0], results_tuple[1], results_tuple[2]
 
 
