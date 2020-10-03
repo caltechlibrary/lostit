@@ -100,7 +100,7 @@ def main(user = 'U', pswd = 'P',
     # Switch between different ways of getting information from/to the user.
     if use_gui:
         controller = LostItControlGUI()
-        accesser   = AccessHandlerGUI(user, pswd)
+        accesser   = AccessHandlerGUI(user, pswd, use_keyring, reset_keys)
         notifier   = MessageHandlerGUI()
         tracer     = ProgressIndicatorGUI()
     else:
