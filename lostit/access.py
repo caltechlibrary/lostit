@@ -127,7 +127,6 @@ class AccessHandlerGUI(AccessHandlerBase):
         self._use_keyring = use_keyring
         self._reset = reset_keyring
         if not user and use_keyring and not reset_keyring:
-            import pdb; pdb.set_trace()
             self._user, _, _, _ = keyring_credentials(_KEYRING)
 
 
