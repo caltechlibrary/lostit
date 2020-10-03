@@ -259,9 +259,10 @@ class Google(object):
         if self._creds:
             if __debug__: log('returning stored creds for Google API')
             return self._creds
-        if __debug__: log('getting token for Google API')
+        if __debug__: log('getting stored token for Google API')
         store = TokenStorage('Lost It!', self._accesser.user)
         creds = store.get()
+        if __debug__: log('token value: {}', creds)
         if not creds or creds.invalid:
             if __debug__: log('using secrets file for Google API')
             secrets_file = path.join(datadir_path(), _SECRETS_FILE)
