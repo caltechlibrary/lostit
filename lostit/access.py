@@ -119,6 +119,18 @@ class AccessHandlerCLI(AccessHandlerBase):
 class AccessHandlerGUI(AccessHandlerBase):
     '''Class to use a GUI to ask the user for credentials.'''
 
+    def __init__(self, user, pswd, use_keyring = True, reset_keyring = False):
+        # In the GUI case, we don't store the complete user credentials, but
+        # we do store the last-used login name, as a convenience for people
+        # running Lost It repeatedly.
+        super().__init__(user, pswd)
+        self._use_keyring = use_keyring
+        self._reset = reset_keyring
+        if not user and use_keyring and not reset_keyring:
+            import pdb; pdb.set_trace()
+            self._user, _, _, _ = keyring_credentials(_KEYRING)
+
+
     def name_and_password(self):
         '''Shows a login-and-password dialog, and returns a tuple of user,
         password, and a Boolean indicating whether the user cancelled the
@@ -138,6 +150,7 @@ class AccessHandlerGUI(AccessHandlerBase):
         # Results will be a tuple of user, password, cancelled
         self._user = results_tuple[0]
         self._pswd = results_tuple[1]
+        save_keyring_credentials(_KEYRING, self._user, '')
         return results_tuple[0], results_tuple[1], results_tuple[2]
 
 
