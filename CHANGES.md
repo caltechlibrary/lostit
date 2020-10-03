@@ -1,6 +1,13 @@
 Change log for Lost It!
 =======================
 
+Version 1.6.0
+-------------
+
+* Remember the login name from previous runs, to save users the hassle of having to type it each time.  (However, the password must still be typed each time.)
+* Fix internal bug in the name of the keychain used to store the user's credentials.
+
+
 Version 1.5.1
 -------------
 
